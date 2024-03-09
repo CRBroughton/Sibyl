@@ -51,15 +51,15 @@ export async function Sibyl<T extends Record<string, any>>(table: string, wasm: 
         let query = `SELECT * from ${table} WHERE ${objectToWhereClause(args.where)}`
 
         if (args.offset && !args.limit) {
-            query += `LIMIT -1 OFFSET ${args.offset};`
+            query += ` LIMIT -1 OFFSET ${args.offset}`
         }
         if (args.offset && args.limit) {
-            query += `LIMIT ${args.limit} OFFSET ${args.offset};`
+            query += ` LIMIT ${args.limit} OFFSET ${args.offset}`
         }
         if (!args.offset && args.limit) {
-            query += `LIMIT ${args.limit};`
+            query += ` LIMIT ${args.limit}`
         }
-        return query
+        return query + ';'
     }
     function Select(args: SelectArgs<T>) {
         const query = buildSelectQuery(args)
