@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "module": "src/index.ts",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
