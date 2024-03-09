@@ -12,7 +12,7 @@ export async function Sibyl<T extends Record<string, any>>(table: string, wasm: 
         db.run(`CREATE TABLE ${table} (${columns});`)
     }
 
-    function Insert<T extends Record<string, any>>(table: string, structs: T[]) {
+    function Insert(table: string, structs: T[]) {
         const flattenedInsert = structs.map((obj) => Object.values(obj))
         let insertions: string = ''
         for (const insert of flattenedInsert){
@@ -28,8 +28,7 @@ export async function Sibyl<T extends Record<string, any>>(table: string, wasm: 
             insertions += `INSERT INTO ${table} VALUES (${row}); `
         }
         insertions.slice(0, -1)
-        insertions.trim()
-        return insertions
+        return insertions.trim()
     }
 
     function objectToWhereClause(obj: Partial<T>): string {
