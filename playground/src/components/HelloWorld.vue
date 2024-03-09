@@ -38,8 +38,11 @@ const selection = ref<QueryExecResult>()
   
 const resultsTest = All()
 selection.value = Select({
+   where: {
     sex: 'male',
-    name: 'Timothy'
+   },
+   offset: 10,
+   limit: 3,
 })
 </script>
 

@@ -42,8 +42,28 @@ export async function Sibyl<T extends Record<string, any>>(table: string, wasm: 
         return clauses.join(' AND ');
     }
 
-    function Select(args: Partial<T>) {
-        const record = db.exec(`SELECT * from ${table} WHERE ${objectToWhereClause(args)}`)
+    interface SelectArgs<T> {
+        where: Partial<T>
+        offset?: number
+        limit?: number
+    }
+    function buildSelectQuery(args: SelectArgs<T>){
+        let query = `SELECT * from ${table} WHERE ${objectToWhereClause(args.where)}`
+
+        if (args.offset && !args.limit) {
+            query += `LIMIT -1 OFFSET ${args.offset};`
+        }
+        if (args.offset && args.limit) {
+            query += `LIMIT ${args.limit} OFFSET ${args.offset};`
+        }
+        if (!args.offset && args.limit) {
+            query += `LIMIT ${args.limit};`
+        }
+        return query
+    }
+    function Select(args: SelectArgs<T>) {
+        const query = buildSelectQuery(args)
+        const record = db.exec(query)
 
         return {
             columns: record[0] ? record[0].columns : [],
