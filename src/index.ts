@@ -36,13 +36,13 @@ export async function Sibyl<T extends Record<string, any>>(db: Database, table: 
     }
 
     function objectToWhereClause(obj: Partial<T>): string {
-        const clauses = [];
+        const clauses = []
         for (const key in obj) {
             if (obj.hasOwnProperty(key)) {
-                clauses.push(`${key} = '${obj[key]}'`);
+                clauses.push(`${key} = '${obj[key]}'`)
             }
         }
-        return clauses.join(' AND ');
+        return clauses.join(' AND ')
     }
 
 
