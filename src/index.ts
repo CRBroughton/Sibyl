@@ -13,10 +13,10 @@ export async function Sibyl<T extends Record<string, any>>(table: string, wasm: 
     }
 
     function Insert<T extends Record<string, any>>(table: string, structs: T[]) {
-        const flattenedInsert =  structs.map((obj) => Object.values(obj))
+        const flattenedInsert = structs.map((obj) => Object.values(obj))
         let insertions: string = ''
         for (const insert of flattenedInsert){
-            let row: any[] = []
+            let row: T | string[] = []
             for (const cell of insert) {
                 if (typeof cell !== 'string') {
                     row = [...row, cell]
@@ -86,5 +86,6 @@ export async function Sibyl<T extends Record<string, any>>(table: string, wasm: 
         Insert,
         Select,
         All,
+        buildSelectQuery,
     }
 }
