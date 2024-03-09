@@ -1,0 +1,16 @@
+{
+  "name": "sibyl",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@types/bun": "latest",
+    "@types/sql.js": "^1.4.9"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "sql.js": "^1.10.2"
+  }
+}
