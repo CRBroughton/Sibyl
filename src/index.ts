@@ -108,5 +108,6 @@ export async function Sibyl<T extends Record<string, any>>(table: string, wasm: 
         Select,
         All,
         buildSelectQuery,
+        convertToObjects,
     }
 }
