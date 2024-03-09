@@ -1,4 +1,4 @@
-import { assert, describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { Sibyl } from '../index'
 
 describe('convertToObjects Tests', () => {
