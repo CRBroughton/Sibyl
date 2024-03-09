@@ -73,14 +73,12 @@ To insert new entries into the database, you can use the `Insert` function:
 ```typescript
 let insertions: tableRowType[] = []
 for (let index = 0; index < 1000; index++) {
-  insertions = [...insertions, 
-    {
-      id: faker.number.int(),
-      name: faker.person.firstName(),
-      sex: faker.person.sex(),
-      job: faker.person.jobTitle(),
-    },
-  ]
+  insertions.push({
+    id: faker.number.int(),
+    name: `${faker.person.firstName()}`,
+    sex: `${faker.person.sex()}`,
+    job: `${faker.person.jobTitle()}`,
+  })
 }
 const test = Insert('test', insertions) // formats the insertion instruction
 db.run(test) // execute the provided instruction - Data will now be in the DB

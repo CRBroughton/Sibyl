@@ -28,14 +28,12 @@ const selection = ref<tableRowType[]>()
 
   let insertions: tableRowType[] = []
     for (let index = 0; index < 1000; index++) {
-      insertions = [...insertions, 
-      {
+      insertions.push({
       id: faker.number.int(),
       name: `${faker.person.firstName()}`,
       sex: `${faker.person.sex()}`,
       job: `${faker.person.jobTitle()}`,
-    },
-    ]
+    })
   }
   const test = Insert('test', insertions)
   db.run(test)
