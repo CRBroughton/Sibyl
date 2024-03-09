@@ -18,7 +18,7 @@ bun install sql.js @types/sql.js @crbroughton/sibyl
 ```
 
 
-You can download Sibyl at DOWNLOAD_LINK via NPM
+You can download Sibyl at https://www.npmjs.com/package/@crbroughton/sibyl via NPM
 
 To start off with Sibyl, you'll first have to ensure Sibyl is able to be run inside
 of a top-level async/await file, alongside your `sql.js` database connection. As
