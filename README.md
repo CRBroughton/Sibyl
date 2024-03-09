@@ -90,7 +90,7 @@ db.run(test) // execute the provided instruction - Data will now be in the DB
 
 When selecting entries from the database, you can utilise the `Select` function
 to retrieve an array of type-safe entries, based from the generic interface
-you have supplied to Sybils main function (see above `tableRowType`).
+you have supplied to Sybil main function (see above `tableRowType`).
 
 ```typescript
 selection.value = Select({
@@ -98,7 +98,7 @@ selection.value = Select({
     id: 1, 
     name: "Craig", // can conbine multiple where clauses
    },
-   limit: 20, // limit the response from Sybil
+   limit: 20, // limit the response from Sibyl
    offset: 10, // offset the response, useful for pagination
 })
 ```
