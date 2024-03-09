@@ -13,7 +13,7 @@ interface tableRowType {
 const { db, createTable, Insert, Select, All } = await Sibyl<tableRowType>('test', '/sql-wasm.wasm')
 
 const myResults = ref<QueryExecResult>()
-const selection = ref<QueryExecResult>()
+const selection = ref<tableRowType[]>()
 
   createTable('id int, name char, sex char, job char')
 
@@ -41,8 +41,7 @@ selection.value = Select({
    where: {
     sex: 'male',
    },
-   offset: 10,
-   limit: 3,
+   limit: 20,
 })
 </script>
 

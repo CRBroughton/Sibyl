@@ -61,14 +61,35 @@ export async function Sibyl<T extends Record<string, any>>(table: string, wasm: 
         }
         return query + ';'
     }
+
+    interface DataStructure {
+        columns: string[]
+        values: any[][]
+    }
+    function convertToObjects(data: DataStructure): T[] {
+        const result: T[] = []
+        for (const valueArray of data.values) {
+            const obj: any = {}
+            for (let i = 0; i < data.columns.length; i++) {
+                obj[data.columns[i]] = valueArray[i]
+            }
+            result.push(obj)
+        }
+        return result
+    }
+
     function Select(args: SelectArgs<T>) {
         const query = buildSelectQuery(args)
         const record = db.exec(query)
 
-        return {
-            columns: record[0] ? record[0].columns : [],
-            values: record[0] ? record[0].values : [],
+        if (record[0]) {
+            return  convertToObjects({
+                columns: record[0].columns,
+                values: record[0].values
+            })
         }
+
+        return undefined
     }
 
     function All() {
