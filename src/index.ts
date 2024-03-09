@@ -1,13 +1,17 @@
-import sql from 'sql.js'
+import { type Database } from 'sql.js'
 
-export async function Sibyl<T extends Record<string, any>>(table: string, wasm: string) {
-    const SQL = await sql({
-        locateFile: () => {
-            return wasm
-        }
-    })
-    const db = new SQL.Database()
+interface SelectArgs<T> {
+    where: Partial<T>
+    offset?: number
+    limit?: number
+}
 
+interface DataStructure {
+    columns: string[]
+    values: any[][]
+}
+
+export async function Sibyl<T extends Record<string, any>>(db: Database, table: string) {
     function createTable(columns: string) {
         db.run(`CREATE TABLE ${table} (${columns});`)
     }
@@ -41,11 +45,7 @@ export async function Sibyl<T extends Record<string, any>>(table: string, wasm: 
         return clauses.join(' AND ');
     }
 
-    interface SelectArgs<T> {
-        where: Partial<T>
-        offset?: number
-        limit?: number
-    }
+
     function buildSelectQuery(args: SelectArgs<T>){
         let query = `SELECT * from ${table} WHERE ${objectToWhereClause(args.where)}`
 
@@ -61,10 +61,6 @@ export async function Sibyl<T extends Record<string, any>>(table: string, wasm: 
         return query + ';'
     }
 
-    interface DataStructure {
-        columns: string[]
-        values: any[][]
-    }
     function convertToObjects(data: DataStructure): T[] {
         const result: T[] = []
         for (const valueArray of data.values) {
@@ -101,7 +97,6 @@ export async function Sibyl<T extends Record<string, any>>(table: string, wasm: 
     }
 
     return {
-        db,
         createTable,
         Insert,
         Select,

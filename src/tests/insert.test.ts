@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest'
+import sql from 'sql.js'
 import { Sibyl } from '../index'
 
 interface TableRow {
@@ -9,7 +10,13 @@ interface TableRow {
 
 describe('insert tests', () => {
     test('Correctly formats a single INSERT statement for the DB', async() => {
-        const { Insert } = await Sibyl<TableRow>('testing-DB', 'playground/public/sql-wasm.wasm')
+        const SQL = await sql({
+            locateFile: () => {
+                return 'playground/public/sql-wasm.wasm'
+            }
+        })
+        const db = new SQL.Database()
+        const { Insert } = await Sibyl<TableRow>(db, 'testing-DB')
     
         const actual = Insert('test', [
             {
@@ -22,7 +29,13 @@ describe('insert tests', () => {
         expect(actual).toStrictEqual('INSERT INTO test VALUES (1,"Brighton","Craig");')
     })
     test('Correctly formats several INSERT statments for the DB', async() => {
-        const { Insert } = await Sibyl<TableRow>('testing-DB', 'playground/public/sql-wasm.wasm')
+        const SQL = await sql({
+            locateFile: () => {
+                return 'playground/public/sql-wasm.wasm'
+            }
+        })
+        const db = new SQL.Database()
+        const { Insert } = await Sibyl<TableRow>(db, 'testing-DB')
     
         const actual = Insert('test', [
             {

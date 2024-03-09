@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { Sibyl } from '../../../src/index'
 import { QueryExecResult } from 'sql.js'
+import sql from 'sql.js'
 import { faker } from '@faker-js/faker'
 
 interface tableRowType {
@@ -10,7 +11,15 @@ interface tableRowType {
     sex: string
     job: string
 }
-const { db, createTable, Insert, Select, All } = await Sibyl<tableRowType>('test', '/sql-wasm.wasm')
+
+const SQL = await sql({
+        locateFile: () => {
+            return '/sql-wasm.wasm'
+        }
+    })
+const db = new SQL.Database()
+
+const {  createTable, Insert, Select, All } = await Sibyl<tableRowType>(db,'test')
 
 const myResults = ref<QueryExecResult>()
 const selection = ref<tableRowType[]>()

@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest'
+import sql from 'sql.js'
 import { Sibyl } from '../index'
 
 interface TableRow {
@@ -10,7 +11,13 @@ interface TableRow {
 describe('buildSelectQuery tests', () => {
     test('Builds a SELECT query with a single where clause, with no provided offset or limit', async() => {
         const DBName = 'testing-DB'
-        const { buildSelectQuery } = await Sibyl<TableRow>('testing-DB', 'playground/public/sql-wasm.wasm')
+        const SQL = await sql({
+            locateFile: () => {
+                return 'playground/public/sql-wasm.wasm'
+            }
+        })
+        const db = new SQL.Database()
+        const { buildSelectQuery } = await Sibyl<TableRow>(db, 'testing-DB')
     
         const actual = buildSelectQuery({
             where: {
@@ -25,7 +32,13 @@ describe('buildSelectQuery tests', () => {
     
     test('Builds a SELECT query with multiple where clauses, with no provided offset or limit', async() => {
         const DBName = 'testing-DB'
-        const { buildSelectQuery } = await Sibyl<TableRow>('testing-DB', 'playground/public/sql-wasm.wasm')
+        const SQL = await sql({
+            locateFile: () => {
+                return 'playground/public/sql-wasm.wasm'
+            }
+        })
+        const db = new SQL.Database()
+        const { buildSelectQuery } = await Sibyl<TableRow>(db, 'testing-DB')
     
         const actual = buildSelectQuery({
             where: {
@@ -42,8 +55,14 @@ describe('buildSelectQuery tests', () => {
     
     test('Builds a SELECT query with multiple where clauses, with a provided limit, and no offset', async() => {
         const DBName = 'testing-DB'
-        const { buildSelectQuery } = await Sibyl<TableRow>('testing-DB', 'playground/public/sql-wasm.wasm')
-    
+        const SQL = await sql({
+            locateFile: () => {
+                return 'playground/public/sql-wasm.wasm'
+            }
+        })
+        const db = new SQL.Database()
+        const { buildSelectQuery } = await Sibyl<TableRow>(db, 'testing-DB')
+
         const actual = buildSelectQuery({
             where: {
                 id: 1,
@@ -60,7 +79,13 @@ describe('buildSelectQuery tests', () => {
     
     test('Builds a SELECT query with multiple where clauses, with a provided offset, and no limit', async() => {
         const DBName = 'testing-DB'
-        const { buildSelectQuery } = await Sibyl<TableRow>('testing-DB', 'playground/public/sql-wasm.wasm')
+        const SQL = await sql({
+            locateFile: () => {
+                return 'playground/public/sql-wasm.wasm'
+            }
+        })
+        const db = new SQL.Database()
+        const { buildSelectQuery } = await Sibyl<TableRow>(db, 'testing-DB')
     
         const actual = buildSelectQuery({
             where: {
@@ -78,7 +103,13 @@ describe('buildSelectQuery tests', () => {
     
     test('Builds a SELECT query with multiple where clauses, with a provided offset and limit', async() => {
         const DBName = 'testing-DB'
-        const { buildSelectQuery } = await Sibyl<TableRow>('testing-DB', 'playground/public/sql-wasm.wasm')
+        const SQL = await sql({
+            locateFile: () => {
+                return 'playground/public/sql-wasm.wasm'
+            }
+        })
+        const db = new SQL.Database()
+        const { buildSelectQuery } = await Sibyl<TableRow>(db, 'testing-DB')
     
         const actual = buildSelectQuery({
             where: {

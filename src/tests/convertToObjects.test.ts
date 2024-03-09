@@ -1,141 +1,147 @@
 import { describe, expect, test } from 'vitest'
+import sql from 'sql.js'
 import { Sibyl } from '../index'
 
 describe('convertToObjects Tests', () => {
     test('Converts the raw DB data into the correct shape', async() => {
+        const SQL = await sql({
+            locateFile: () => {
+                return 'playground/public/sql-wasm.wasm'
+            }
+        })
+        const db = new SQL.Database()
+        const { convertToObjects } = await Sibyl(db, 'testing-DB')
+        
         const mockData = {
-            "columns": [
-              "id",
-              "name",
-              "sex",
-              "job"
+          "columns": [
+            "id",
+            "name",
+            "sex",
+            "job"
+          ],
+          "values": [
+            [
+              6677037408321536,
+              "Alejandrin",
+              "male",
+              "Central Security Designer"
             ],
-            "values": [
-              [
-                6677037408321536,
-                "Alejandrin",
-                "male",
-                "Central Security Designer"
-              ],
-              [
-                927907004284928,
-                "Fiona",
-                "male",
-                "International Usability Associate"
-              ],
-              [
-                1564030560894976,
-                "Yasmin",
-                "male",
-                "Central Quality Assistant"
-              ],
-              [
-                5219980614303744,
-                "Tobin",
-                "male",
-                "Customer Usability Strategist"
-              ],
-              [
-                8578073427443712,
-                "Theresia",
-                "male",
-                "Principal Brand Administrator"
-              ],
-              [
-                5066780668067840,
-                "Brooks",
-                "male",
-                "Central Quality Executive"
-              ],
-              [
-                8632685001965568,
-                "Sammie",
-                "male",
-                "Lead Operations Technician"
-              ],
-              [
-                3481955305783296,
-                "Waldo",
-                "male",
-                "Central Research Coordinator"
-              ],
-              [
-                129470891556864,
-                "Tanya",
-                "male",
-                "Direct Usability Administrator"
-              ],
-              [
-                2092943076753408,
-                "Aletha",
-                "male",
-                "Forward Interactions Director"
-              ],
-              [
-                3136150640263168,
-                "Sadye",
-                "male",
-                "Customer Identity Consultant"
-              ],
-              [
-                1856537620381696,
-                "Ezekiel",
-                "male",
-                "Lead Interactions Officer"
-              ],
-              [
-                6233615807545344,
-                "Kade",
-                "male",
-                "Regional Tactics Supervisor"
-              ],
-              [
-                5782787944611840,
-                "Louie",
-                "male",
-                "District Interactions Consultant"
-              ],
-              [
-                6556661296660480,
-                "Nicklaus",
-                "male",
-                "District Brand Technician"
-              ],
-              [
-                2180446741856256,
-                "Ava",
-                "male",
-                "Central Identity Planner"
-              ],
-              [
-                3019715660218368,
-                "Amaya",
-                "male",
-                "Senior Usability Specialist"
-              ],
-              [
-                8937952516243456,
-                "Austyn",
-                "male",
-                "National Solutions Designer"
-              ],
-              [
-                5645304416174080,
-                "Lukas",
-                "male",
-                "Legacy Creative Officer"
-              ],
-              [
-                7871957672394752,
-                "Khalid",
-                "male",
-                "Human Tactics Technician"
-              ]
+            [
+              927907004284928,
+              "Fiona",
+              "male",
+              "International Usability Associate"
+            ],
+            [
+              1564030560894976,
+              "Yasmin",
+              "male",
+              "Central Quality Assistant"
+            ],
+            [
+              5219980614303744,
+              "Tobin",
+              "male",
+              "Customer Usability Strategist"
+            ],
+            [
+              8578073427443712,
+              "Theresia",
+              "male",
+              "Principal Brand Administrator"
+            ],
+            [
+              5066780668067840,
+              "Brooks",
+              "male",
+              "Central Quality Executive"
+            ],
+            [
+              8632685001965568,
+              "Sammie",
+              "male",
+              "Lead Operations Technician"
+            ],
+            [
+              3481955305783296,
+              "Waldo",
+              "male",
+              "Central Research Coordinator"
+            ],
+            [
+              129470891556864,
+              "Tanya",
+              "male",
+              "Direct Usability Administrator"
+            ],
+            [
+              2092943076753408,
+              "Aletha",
+              "male",
+              "Forward Interactions Director"
+            ],
+            [
+              3136150640263168,
+              "Sadye",
+              "male",
+              "Customer Identity Consultant"
+            ],
+            [
+              1856537620381696,
+              "Ezekiel",
+              "male",
+              "Lead Interactions Officer"
+            ],
+            [
+              6233615807545344,
+              "Kade",
+              "male",
+              "Regional Tactics Supervisor"
+            ],
+            [
+              5782787944611840,
+              "Louie",
+              "male",
+              "District Interactions Consultant"
+            ],
+            [
+              6556661296660480,
+              "Nicklaus",
+              "male",
+              "District Brand Technician"
+            ],
+            [
+              2180446741856256,
+              "Ava",
+              "male",
+              "Central Identity Planner"
+            ],
+            [
+              3019715660218368,
+              "Amaya",
+              "male",
+              "Senior Usability Specialist"
+            ],
+            [
+              8937952516243456,
+              "Austyn",
+              "male",
+              "National Solutions Designer"
+            ],
+            [
+              5645304416174080,
+              "Lukas",
+              "male",
+              "Legacy Creative Officer"
+            ],
+            [
+              7871957672394752,
+              "Khalid",
+              "male",
+              "Human Tactics Technician"
             ]
+          ]
         }
-
-        const { convertToObjects } = await Sibyl('testing-DB', 'playground/public/sql-wasm.wasm')
-
         const actual = convertToObjects(mockData)
         const expectation = [
             {
