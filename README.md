@@ -46,6 +46,7 @@ With top-level async/await enabled, you can then use Sibyl. Sibyl provides the f
 functions:
 
 - `createTable` - Allows you to create the table
+- `Create` - Creates and returns a new entry into your table
 - `Insert` - Allows you to provide an array of insertable entries into your table
 - `Select` - Returns a type-safe array of entries from the table
 - `All` - Returns all entries from the table
@@ -65,7 +66,20 @@ your specified table row type you supply to Sibyl's root function, and that the 
 are in alphabetical order, otherwise
 you'll be unable to get data from your database, have malformed data, or crash your program.
 
-### Inserting entries into the DB
+### Inserting a single entry into the DB
+
+To create a new entry, you can use the `Create` function:
+
+```typescript
+const result = Create('test', { // returns the resulting entry
+    id: faker.number.int(),
+    name: 'Craig',
+    sex: 'male',
+    job: 'Software Engineer',
+})
+```
+
+### Inserting mutiple entries into the DB
 
 To insert new entries into the database, you can use the `Insert` function:
 
