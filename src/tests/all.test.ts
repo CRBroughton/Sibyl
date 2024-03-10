@@ -4,8 +4,8 @@ import { Sibyl } from '../index'
 
 interface TableRow {
   id: number
-  name: string
   location: string
+  name: string
 }
 
 describe('all tests', () => {
@@ -19,7 +19,7 @@ describe('all tests', () => {
     const db = new SQL.Database()
     const { createTable, Insert, All } = await Sibyl<TableRow>(db, 'testingDB')
 
-    createTable('id int, name char, location char')
+    createTable('id int, location char, name char')
     const insertion = Insert(DBName, [
       {
         id: 1,

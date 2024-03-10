@@ -16,8 +16,20 @@ export async function Sibyl<T extends Record<string, any>>(db: Database, table: 
     db.run(`CREATE TABLE ${table} (${columns});`)
   }
 
+  function sortKeys<T extends { [key: string]: any }>(arr: T[]): T[] {
+    return arr.map(obj => {
+      const sortedKeys = Object.keys(obj).sort()
+      const sortedObj: { [key: string]: any } = {}
+      sortedKeys.forEach(key => {
+        sortedObj[key] = obj[key]
+      })
+      return sortedObj as T
+    })
+  }
+
   function Insert(table: string, structs: T[]) {
-    const flattenedInsert = structs.map(obj => Object.values(obj))
+    const sortedStructs = sortKeys(structs)
+    const flattenedInsert = sortedStructs.map(obj => Object.values(obj))
     let insertions: string = ''
     for (const insert of flattenedInsert) {
       let row: T | string[] = []
@@ -106,5 +118,6 @@ export async function Sibyl<T extends Record<string, any>>(db: Database, table: 
     objectToWhereClause,
     buildSelectQuery,
     convertToObjects,
+    sortKeys,
   }
 }

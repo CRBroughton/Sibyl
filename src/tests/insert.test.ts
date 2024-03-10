@@ -4,8 +4,8 @@ import { Sibyl } from '../index'
 
 interface TableRow {
   id: number
-  name: string
   location: string
+  name: string
 }
 
 describe('insert tests', () => {
@@ -46,6 +46,30 @@ describe('insert tests', () => {
       {
         id: 2,
         location: 'Cornwall',
+        name: 'Bob',
+      },
+    ])
+
+    expect(actual).toStrictEqual('INSERT INTO test VALUES (1,"Brighton","Craig"); INSERT INTO test VALUES (2,"Cornwall","Bob");')
+  })
+  it('catches incorrect insert keys being the wrong way around and fixes itself', async () => {
+    const SQL = await sql({
+      locateFile: () => {
+        return 'playground/public/sql-wasm.wasm'
+      },
+    })
+    const db = new SQL.Database()
+    const { Insert } = await Sibyl<TableRow>(db, 'testing-DB')
+
+    const actual = Insert('test', [
+      {
+        id: 1,
+        name: 'Craig',
+        location: 'Brighton',
+      },
+      {
+        location: 'Cornwall',
+        id: 2,
         name: 'Bob',
       },
     ])
