@@ -105,9 +105,14 @@ export async function Sibyl<T extends Record<string, any>>(db: Database, table: 
   function Create(table: string, entry: T) {
     const statement = formatInsertStatement(table, [entry])
     db.run(statement)
-    return Select({
+    const result = Select({
       where: entry
     })
+
+    if (result !== undefined) {
+      return result[0]
+    }
+    return undefined
   }
 
   function All() {

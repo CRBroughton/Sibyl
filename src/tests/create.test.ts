@@ -26,14 +26,11 @@ describe('create tests', () => {
         location: 'Brighton',
     })
 
-    const expectation = [
-      {
+    const expectation = {
         id: 2344,
         location: 'Brighton',
         name: 'Craig',
-      },
-    ]
-
+    }
     expect(actual).toStrictEqual(expectation)
   })
 })
