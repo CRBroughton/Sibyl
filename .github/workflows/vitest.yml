@@ -18,6 +18,8 @@ jobs:
         bun-version: latest
     - name: Install FE dependencies
       run: bun install
+    - name: Download WASM DB
+      run: wget https://github.com/sql-js/sql.js/releases/download/latest/sqljs-wasm.zip && unzip sqljs-wasm.zip -d playground/public
     - name: Run unit tests
       run: bun run test
     - uses: actions/upload-artifact@v3
