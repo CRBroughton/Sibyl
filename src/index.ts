@@ -86,10 +86,14 @@ export async function Sibyl<T extends Record<string, any>>(db: Database, table: 
   }
 
   function All() {
-    const result = db.exec(`SELECT * from ${table}`)
+    const record = db.exec(`SELECT * from ${table}`)
 
-    if (result !== undefined)
-      return result[0]
+    if (record[0]) {
+      return convertToObjects({
+        columns: record[0].columns,
+        values: record[0].values,
+      })
+    }
 
     return undefined
   }
