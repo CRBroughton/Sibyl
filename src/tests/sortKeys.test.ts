@@ -8,7 +8,7 @@ interface TableRow {
     location: string
 }
 
-describe('objectToWhereClause tests', () => {
+describe('sortKeys tests', () => {
     it('Formats a given set of array of objects alphabetically by their keys', async () => {
         const DBName = 'testingDB'
         const SQL = await sql({
