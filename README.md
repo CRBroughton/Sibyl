@@ -56,13 +56,14 @@ To create a new table (at the moment, it is recommended to only use one table),
 use the `createTable` command:
 
 ```typescript
-createTable('id int, name char, sex char, job char')
+createTable('id int, job char, name char, sex char')
 ```
 
 `createTable` takes a single argument; This argument will create the specified
 columns for your database; It is vitally important that your columns match that of
-your specified table row type you supply to Sibyl's root function, otherwise
-you'll be unable to get data from your database, or crash your program.
+your specified table row type you supply to Sibyl's root function, and that the entries
+are in alphabetical order, otherwise
+you'll be unable to get data from your database, have malformed data, or crash your program.
 
 ### Inserting entries into the DB
 
