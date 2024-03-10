@@ -24,7 +24,7 @@ const { createTable, Insert, Select, All } = await Sibyl<tableRowType>(db, 'test
 const myResults = ref<QueryExecResult>()
 const selection = ref<tableRowType[]>()
 
-createTable('id int, name char, job char, sex char')
+createTable('id int, job char, name char, sex char')
 
 let insertions: tableRowType[] = []
 for (let index = 0; index < 1000; index++) {
