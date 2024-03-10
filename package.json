@@ -30,7 +30,8 @@
     "lint:fix": "eslint . --fix",
     "changeset": "npx changeset",
     "changeset:status": "npx changeset status --verbose",
-    "changeset:version": "npx changeset version"
+    "changeset:version": "npx changeset version",
+    "publish": "bun run build && npm publish --access=public"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
