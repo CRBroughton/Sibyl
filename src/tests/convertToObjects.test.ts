@@ -1,17 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import sql from 'sql.js'
-import { Sibyl } from '../index'
+import { convertToObjects } from '../sibylLib'
 
 describe('convertToObjects Tests', () => {
   it('converts the raw DB data into the correct shape', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
-    const { convertToObjects } = await Sibyl(db, 'testing-DB')
-
     const mockData = {
       columns: [
         'id',

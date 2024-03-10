@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import sql from 'sql.js'
-import { Sibyl } from '../index'
+import { sortKeys } from '../sibylLib'
 
 interface TableRow {
     id: number
@@ -10,15 +9,6 @@ interface TableRow {
 
 describe('sortKeys tests', () => {
     it('Formats a given set of array of objects alphabetically by their keys', async () => {
-        const DBName = 'testingDB'
-        const SQL = await sql({
-            locateFile: () => {
-                return 'playground/public/sql-wasm.wasm'
-            },
-        })
-        const db = new SQL.Database()
-        const { sortKeys } = await Sibyl<TableRow>(db, DBName)
-
         const unsortedArray = [
             {
                 name: 'Craig',
@@ -31,7 +21,7 @@ describe('sortKeys tests', () => {
                 id: 2,
             }
         ]
-        const actual = sortKeys(unsortedArray)
+        const actual = sortKeys<TableRow>(unsortedArray)
 
         const expectation = [
             {

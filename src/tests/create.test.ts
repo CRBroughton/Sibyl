@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import sql from 'sql.js'
-import { Sibyl } from '../index'
+import Sibyl from '../index'
 
 interface TableRow {
   id: number

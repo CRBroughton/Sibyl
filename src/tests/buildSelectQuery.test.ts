@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import sql from 'sql.js'
-import { Sibyl } from '../index'
+import { buildSelectQuery } from '../sibylLib'
 
 interface TableRow {
   id: number
@@ -10,37 +9,19 @@ interface TableRow {
 
 describe('buildSelectQuery tests', () => {
   it('builds a SELECT query with a single where clause, with no provided offset or limit', async () => {
-    const DBName = 'testing-DB'
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
-    const { buildSelectQuery } = await Sibyl<TableRow>(db, 'testing-DB')
-
-    const actual = buildSelectQuery({
+    const actual = buildSelectQuery<TableRow>('test', {
       where: {
         id: 1,
       },
     })
 
-    const expectation = `SELECT * from ${DBName} WHERE id = '1';`
+    const expectation = `SELECT * from test WHERE id = '1';`
 
     expect(actual).toStrictEqual(expectation)
   })
 
   it('builds a SELECT query with multiple where clauses, with no provided offset or limit', async () => {
-    const DBName = 'testing-DB'
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
-    const { buildSelectQuery } = await Sibyl<TableRow>(db, 'testing-DB')
-
-    const actual = buildSelectQuery({
+    const actual = buildSelectQuery<TableRow>('test', {
       where: {
         id: 1,
         name: 'Craig',
@@ -48,22 +29,13 @@ describe('buildSelectQuery tests', () => {
       },
     })
 
-    const expectation = `SELECT * from ${DBName} WHERE id = '1' AND name = 'Craig' AND location = 'Brighton';`
+    const expectation = `SELECT * from test WHERE id = '1' AND name = 'Craig' AND location = 'Brighton';`
 
     expect(actual).toStrictEqual(expectation)
   })
 
   it('builds a SELECT query with multiple where clauses, with a provided limit, and no offset', async () => {
-    const DBName = 'testing-DB'
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
-    const { buildSelectQuery } = await Sibyl<TableRow>(db, 'testing-DB')
-
-    const actual = buildSelectQuery({
+    const actual = buildSelectQuery<TableRow>('test', {
       where: {
         id: 1,
         name: 'Craig',
@@ -72,22 +44,13 @@ describe('buildSelectQuery tests', () => {
       limit: 10,
     })
 
-    const expectation = `SELECT * from ${DBName} WHERE id = '1' AND name = 'Craig' AND location = 'Brighton' LIMIT 10;`
+    const expectation = `SELECT * from test WHERE id = '1' AND name = 'Craig' AND location = 'Brighton' LIMIT 10;`
 
     expect(actual).toStrictEqual(expectation)
   })
 
   it('builds a SELECT query with multiple where clauses, with a provided offset, and no limit', async () => {
-    const DBName = 'testing-DB'
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
-    const { buildSelectQuery } = await Sibyl<TableRow>(db, 'testing-DB')
-
-    const actual = buildSelectQuery({
+    const actual = buildSelectQuery<TableRow>('test', {
       where: {
         id: 1,
         name: 'Craig',
@@ -96,22 +59,13 @@ describe('buildSelectQuery tests', () => {
       offset: 10,
     })
 
-    const expectation = `SELECT * from ${DBName} WHERE id = '1' AND name = 'Craig' AND location = 'Brighton' LIMIT -1 OFFSET 10;`
+    const expectation = `SELECT * from test WHERE id = '1' AND name = 'Craig' AND location = 'Brighton' LIMIT -1 OFFSET 10;`
 
     expect(actual).toStrictEqual(expectation)
   })
 
   it('builds a SELECT query with multiple where clauses, with a provided offset and limit', async () => {
-    const DBName = 'testing-DB'
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
-    const { buildSelectQuery } = await Sibyl<TableRow>(db, 'testing-DB')
-
-    const actual = buildSelectQuery({
+    const actual = buildSelectQuery<TableRow>('test', {
       where: {
         id: 1,
         name: 'Craig',
@@ -121,7 +75,7 @@ describe('buildSelectQuery tests', () => {
       offset: 10,
     })
 
-    const expectation = `SELECT * from ${DBName} WHERE id = '1' AND name = 'Craig' AND location = 'Brighton' LIMIT 10 OFFSET 10;`
+    const expectation = `SELECT * from test WHERE id = '1' AND name = 'Craig' AND location = 'Brighton' LIMIT 10 OFFSET 10;`
 
     expect(actual).toStrictEqual(expectation)
   })

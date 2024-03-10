@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import sql from 'sql.js'
-import { Sibyl } from '../index'
+import { formatInsertStatement } from '../sibylLib'
 
 interface TableRow {
   id: number
@@ -10,15 +9,7 @@ interface TableRow {
 
 describe('formatInsertStatment tests', () => {
   it('correctly formats a single INSERT statement for the DB', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
-    const { formatInsertStatement } = await Sibyl<TableRow>(db, 'testing-DB')
-
-    const actual = formatInsertStatement('test', [
+    const actual = formatInsertStatement<TableRow>('test', [
       {
         id: 1,
         location: 'Brighton',
@@ -29,15 +20,7 @@ describe('formatInsertStatment tests', () => {
     expect(actual).toStrictEqual('INSERT INTO test VALUES (1,"Brighton","Craig");')
   })
   it('correctly formats several INSERT statments for the DB', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
-    const { formatInsertStatement } = await Sibyl<TableRow>(db, 'testing-DB')
-
-    const actual = formatInsertStatement('test', [
+    const actual = formatInsertStatement<TableRow>('test', [
       {
         id: 1,
         location: 'Brighton',
@@ -53,15 +36,7 @@ describe('formatInsertStatment tests', () => {
     expect(actual).toStrictEqual('INSERT INTO test VALUES (1,"Brighton","Craig"); INSERT INTO test VALUES (2,"Cornwall","Bob");')
   })
   it('catches incorrect insert keys being the wrong way around and fixes itself', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
-    const { formatInsertStatement } = await Sibyl<TableRow>(db, 'testing-DB')
-
-    const actual = formatInsertStatement('test', [
+    const actual = formatInsertStatement<TableRow>('test', [
       {
         id: 1,
         name: 'Craig',
