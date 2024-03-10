@@ -103,6 +103,7 @@ export async function Sibyl<T extends Record<string, any>>(db: Database, table: 
     Insert,
     Select,
     All,
+    objectToWhereClause,
     buildSelectQuery,
     convertToObjects,
   }
