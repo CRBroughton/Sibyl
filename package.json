@@ -25,9 +25,13 @@
   ],
   "scripts": {
     "build": "bun run build.ts",
-    "test": "vitest"
+    "test": "vitest",
+    "changeset": "npx changeset",
+    "changeset:status": "npx changeset status --verbose",
+    "changeset:version": "npx changeset version"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.1",
     "@faker-js/faker": "^8.4.1",
     "@types/bun": "latest",
     "@types/sql.js": "^1.4.9",
