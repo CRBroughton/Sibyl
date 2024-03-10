@@ -8,8 +8,8 @@ interface TableRow {
   name: string
 }
 
-describe('all tests', () => {
-  it('returns all data available in the given table', async () => {
+describe('create tests', () => {
+  it('creates a new entry in the DB', async () => {
     const DBName = 'testingDB'
     const SQL = await sql({
       locateFile: () => {
@@ -17,34 +17,20 @@ describe('all tests', () => {
       },
     })
     const db = new SQL.Database()
-    const { createTable, Insert, All } = await Sibyl<TableRow>(db, 'testingDB')
+    const { createTable, Create } = await Sibyl<TableRow>(db, 'testingDB')
 
     createTable('id int, location char, name char')
-    Insert(DBName, [
-      {
-        id: 1,
-        name: 'Craig',
+    const actual = Create(DBName, {
+        name: "Craig",
+        id: 2344,
         location: 'Brighton',
-      },
-      {
-        id: 2,
-        name: 'Bob',
-        location: 'Cornwall',
-      },
-    ])
-
-    const actual = All()
+    })
 
     const expectation = [
       {
-        id: 1,
+        id: 2344,
         location: 'Brighton',
         name: 'Craig',
-      },
-      {
-        id: 2,
-        location: 'Cornwall',
-        name: 'Bob',
       },
     ]
 

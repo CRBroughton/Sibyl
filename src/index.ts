@@ -102,6 +102,14 @@ export async function Sibyl<T extends Record<string, any>>(db: Database, table: 
     return undefined
   }
 
+  function Create(table: string, entry: T) {
+    const statement = formatInsertStatement(table, [entry])
+    db.run(statement)
+    return Select({
+      where: entry
+    })
+  }
+
   function All() {
     const record = db.exec(`SELECT * from ${table}`)
 
@@ -125,5 +133,6 @@ export async function Sibyl<T extends Record<string, any>>(db: Database, table: 
     buildSelectQuery,
     convertToObjects,
     sortKeys,
+    Create,
   }
 }

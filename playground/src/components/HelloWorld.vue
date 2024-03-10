@@ -19,7 +19,7 @@ const SQL = await sql({
 })
 const db = new SQL.Database()
 
-const { createTable, Insert, Select, All } = await Sibyl<tableRowType>(db, 'test')
+const { createTable, Insert, Select, All, Create } = await Sibyl<tableRowType>(db, 'test')
 
 const myResults = ref<QueryExecResult>()
 const selection = ref<tableRowType[]>()
@@ -35,12 +35,6 @@ for (let index = 0; index < 1000; index++) {
     job: `${faker.person.jobTitle()}`,
   })
 }
-insertions.push({
-  id: faker.number.int(),
-    name: 'Craig',
-    sex: 'male',
-    job: 'Software Engineer',
-})
 Insert('test', insertions)
 
 const results = db.exec('select * from test')
@@ -52,14 +46,25 @@ const resultsTest = All()
 selection.value = Select({
   where: {
     sex: 'male',
-    name: 'Craig',
-    job: 'Software Engineer'
   },
   limit: 20,
 })
+
+function submitEntry() {
+  const result = Create('test', {
+      id: faker.number.int(),
+      name: 'Craig',
+      sex: 'male',
+      job: 'Software Engineer',
+  })
+console.log(result)
+}
 </script>
 
 <template>
+  <button @click="submitEntry">
+    Submit
+  </button>
   <div>
     {{ selection }}
   </div>
