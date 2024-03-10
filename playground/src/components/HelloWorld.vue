@@ -35,6 +35,12 @@ for (let index = 0; index < 1000; index++) {
     job: `${faker.person.jobTitle()}`,
   })
 }
+insertions.push({
+  id: faker.number.int(),
+    name: 'Craig',
+    sex: 'male',
+    job: 'Software Engineer',
+})
 Insert('test', insertions)
 
 const results = db.exec('select * from test')
@@ -46,6 +52,8 @@ const resultsTest = All()
 selection.value = Select({
   where: {
     sex: 'male',
+    name: 'Craig',
+    job: 'Software Engineer'
   },
   limit: 20,
 })
