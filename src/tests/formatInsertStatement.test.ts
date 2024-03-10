@@ -8,7 +8,7 @@ interface TableRow {
   name: string
 }
 
-describe('insert tests', () => {
+describe('formatInsertStatment tests', () => {
   it('correctly formats a single INSERT statement for the DB', async () => {
     const SQL = await sql({
       locateFile: () => {
@@ -16,9 +16,9 @@ describe('insert tests', () => {
       },
     })
     const db = new SQL.Database()
-    const { Insert } = await Sibyl<TableRow>(db, 'testing-DB')
+    const { formatInsertStatement } = await Sibyl<TableRow>(db, 'testing-DB')
 
-    const actual = Insert('test', [
+    const actual = formatInsertStatement('test', [
       {
         id: 1,
         location: 'Brighton',
@@ -35,9 +35,9 @@ describe('insert tests', () => {
       },
     })
     const db = new SQL.Database()
-    const { Insert } = await Sibyl<TableRow>(db, 'testing-DB')
+    const { formatInsertStatement } = await Sibyl<TableRow>(db, 'testing-DB')
 
-    const actual = Insert('test', [
+    const actual = formatInsertStatement('test', [
       {
         id: 1,
         location: 'Brighton',
@@ -59,9 +59,9 @@ describe('insert tests', () => {
       },
     })
     const db = new SQL.Database()
-    const { Insert } = await Sibyl<TableRow>(db, 'testing-DB')
+    const { formatInsertStatement } = await Sibyl<TableRow>(db, 'testing-DB')
 
-    const actual = Insert('test', [
+    const actual = formatInsertStatement('test', [
       {
         id: 1,
         name: 'Craig',

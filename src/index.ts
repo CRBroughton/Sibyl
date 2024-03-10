@@ -27,7 +27,7 @@ export async function Sibyl<T extends Record<string, any>>(db: Database, table: 
     })
   }
 
-  function Insert(table: string, structs: T[]) {
+  function formatInsertStatement(table: string, structs: T[]) {
     const sortedStructs = sortKeys(structs)
     const flattenedInsert = sortedStructs.map(obj => Object.values(obj))
     let insertions: string = ''
@@ -44,6 +44,11 @@ export async function Sibyl<T extends Record<string, any>>(db: Database, table: 
     }
     insertions.slice(0, -1)
     return insertions.trim()
+  }
+
+  function Insert(table: string, rows: T[]) {
+    const statement = formatInsertStatement(table, rows)
+    db.run(statement)
   }
 
   function objectToWhereClause(obj: Partial<T>): string {
@@ -112,9 +117,10 @@ export async function Sibyl<T extends Record<string, any>>(db: Database, table: 
 
   return {
     createTable,
-    Insert,
+    formatInsertStatement,
     Select,
     All,
+    Insert,
     objectToWhereClause,
     buildSelectQuery,
     convertToObjects,
