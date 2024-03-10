@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import sql from 'sql.js'
-import { Sibyl } from '../index'
+import { objectToWhereClause } from '../sibylLib'
 
 interface TableRow {
   id: number
@@ -10,16 +9,7 @@ interface TableRow {
 
 describe('objectToWhereClause tests', () => {
   it('converts a single where object clause to a SQL WHERE clause', async () => {
-    const DBName = 'testingDB'
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
-    const { objectToWhereClause } = await Sibyl<TableRow>(db, DBName)
-
-    const actual = objectToWhereClause({
+    const actual = objectToWhereClause<TableRow>({
       name: 'Craig',
     })
 
@@ -28,16 +18,7 @@ describe('objectToWhereClause tests', () => {
     expect(actual).toStrictEqual(expectation)
   })
   it('converts the where object with multiple WHERE clauses to a SQL WHERE clause', async () => {
-    const DBName = 'testingDB'
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
-    const { objectToWhereClause } = await Sibyl<TableRow>(db, DBName)
-
-    const actual = objectToWhereClause({
+    const actual = objectToWhereClause<TableRow>({
       id: 1,
       location: 'Brighton',
       name: 'Craig',
