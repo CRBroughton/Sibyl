@@ -35,8 +35,7 @@ for (let index = 0; index < 1000; index++) {
     job: `${faker.person.jobTitle()}`,
   })
 }
-const test = Insert('test', insertions)
-db.run(test)
+Insert('test', insertions)
 
 const results = db.exec('select * from test')
 const result = results[0]
