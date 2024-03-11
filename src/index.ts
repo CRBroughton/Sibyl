@@ -2,11 +2,11 @@ import type { Database } from 'sql.js'
 import { buildSelectQuery, convertCreateTableStatement, convertToObjects, formatInsertStatement } from './sibylLib'
 import type { SelectArgs } from './types'
 
-export default async function Sibyl<T extends Record<string, any>>(db: Database, table: string) {
+export default async function Sibyl<T extends Record<string, any>, U extends string[]>(db: Database, tables: U) {
 type MappedTable = {
   [Key in keyof T]: 'int' | 'char' | 'blob'
 }
-function createTable(tableRow: MappedTable) {
+function createTable(table: typeof tables[number], tableRow: MappedTable) {
   const statement = convertCreateTableStatement(tableRow)
   db.run(`CREATE TABLE ${table} (${statement});`)
 }
@@ -16,7 +16,7 @@ function Insert(table: string, rows: T[]) {
   db.run(statement)
 }
 
-function Select(args: SelectArgs<T>) {
+function Select(table: typeof tables[number], args: SelectArgs<T>) {
   const query = buildSelectQuery(table, args)
   const record = db.exec(query)
 
@@ -30,10 +30,10 @@ function Select(args: SelectArgs<T>) {
   return undefined
 }
 
-function Create(table: string, entry: T) {
+function Create(table: typeof tables[number], entry: T) {
   const statement = formatInsertStatement(table, [entry])
   db.run(statement)
-  const result = Select({
+  const result = Select(table, {
     where: entry,
   })
 
@@ -43,7 +43,7 @@ function Create(table: string, entry: T) {
   return undefined
 }
 
-function All() {
+function All(table: typeof tables[number]) {
   const record = db.exec(`SELECT * from ${table}`)
 
   if (record[0]) {

@@ -19,12 +19,12 @@ const SQL = await sql({
 })
 const db = new SQL.Database()
 
-const { createTable, Insert, Select, All, Create } = await Sibyl<tableRowType>(db, 'test')
+const { createTable, Insert, Select, All, Create } = await Sibyl<tableRowType, ['test']>(db, ['test'])
 
 const myResults = ref<QueryExecResult>()
 const selection = ref<tableRowType[]>()
 
-createTable({
+createTable('test', {
   id: 'int',
   job: 'char',
   name: 'char',
@@ -47,8 +47,8 @@ const result = results[0]
 myResults.value = result;
 
 
-const resultsTest = All()
-selection.value = Select({
+const resultsTest = All('test')
+selection.value = Select('test', {
   where: {
     sex: 'male',
   },

@@ -17,9 +17,9 @@ describe('all tests', () => {
       },
     })
     const db = new SQL.Database()
-    const { createTable, Insert, All } = await Sibyl<TableRow>(db, 'testingDB')
+    const { createTable, Insert, All } = await Sibyl<TableRow, [typeof DBName]>(db, ['testingDB'])
 
-    createTable({
+    createTable('testingDB', {
       id: 'int',
       location: 'char',
       name: 'char',
@@ -38,7 +38,7 @@ describe('all tests', () => {
       },
     ])
 
-    const actual = All()
+    const actual = All('testingDB')
 
     const expectation = [
       {
