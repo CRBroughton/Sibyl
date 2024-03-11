@@ -1,4 +1,4 @@
-import type { DataStructure, SelectArgs } from "./types"
+import type { DataStructure, SelectArgs } from './types'
 
 export function formatInsertStatement<T extends Record<string, any>>(table: string, structs: T[]) {
   const sortedStructs = sortKeys(structs)
@@ -20,10 +20,10 @@ export function formatInsertStatement<T extends Record<string, any>>(table: stri
 }
 
 export function sortKeys<T extends { [key: string]: any }>(arr: T[]): T[] {
-  return arr.map(obj => {
+  return arr.map((obj) => {
     const sortedKeys = Object.keys(obj).sort()
     const sortedObj: { [key: string]: any } = {}
-    sortedKeys.forEach(key => {
+    sortedKeys.forEach((key) => {
       sortedObj[key] = obj[key]
     })
     return sortedObj as T
@@ -65,4 +65,13 @@ export function buildSelectQuery<T>(table: string, args: SelectArgs<T>) {
     query += ` LIMIT ${args.limit}`
 
   return `${query};`
+}
+
+export function convertCreateTableStatement<T extends Record<string, any>>(obj: T): string {
+  let result = ''
+  for (const [columnName, columnType] of Object.entries(sortKeys([obj])[0]))
+    result += `${columnName} ${columnType}, `
+
+  result = result.slice(0, -2)
+  return result
 }

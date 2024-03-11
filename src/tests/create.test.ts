@@ -19,17 +19,21 @@ describe('create tests', () => {
     const db = new SQL.Database()
     const { createTable, Create } = await Sibyl<TableRow>(db, 'testingDB')
 
-    createTable('id int, location char, name char')
+    createTable({
+      id: 'int',
+      location: 'char',
+      name: 'char',
+    })
     const actual = Create(DBName, {
-        name: "Craig",
-        id: 2344,
-        location: 'Brighton',
+      name: 'Craig',
+      id: 2344,
+      location: 'Brighton',
     })
 
     const expectation = {
-        id: 2344,
-        location: 'Brighton',
-        name: 'Craig',
+      id: 2344,
+      location: 'Brighton',
+      name: 'Craig',
     }
     expect(actual).toStrictEqual(expectation)
   })

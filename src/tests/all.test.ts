@@ -19,7 +19,12 @@ describe('all tests', () => {
     const db = new SQL.Database()
     const { createTable, Insert, All } = await Sibyl<TableRow>(db, 'testingDB')
 
-    createTable('id int, location char, name char')
+    createTable({
+      id: 'int',
+      location: 'char',
+      name: 'char',
+    })
+
     Insert(DBName, [
       {
         id: 1,
