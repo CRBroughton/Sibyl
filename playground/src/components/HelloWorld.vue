@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Sibyl } from '../../../src/index'
+import Sibyl  from '../../../src/index'
 import { QueryExecResult } from 'sql.js'
 import sql from 'sql.js'
 import { faker } from '@faker-js/faker'

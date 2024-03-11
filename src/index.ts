@@ -2,7 +2,6 @@ import type { Database } from 'sql.js'
 import { buildSelectQuery, convertToObjects, formatInsertStatement } from './sibylLib'
 import type { SelectArgs } from './types'
 
-
 export default async function Sibyl<T extends Record<string, any>>(db: Database, table: string) {
   function createTable(columns: string) {
     db.run(`CREATE TABLE ${table} (${columns});`)
@@ -18,7 +17,7 @@ export default async function Sibyl<T extends Record<string, any>>(db: Database,
     const record = db.exec(query)
 
     if (record[0]) {
-      return convertToObjects({
+      return convertToObjects<T>({
         columns: record[0].columns,
         values: record[0].values,
       })
@@ -31,12 +30,12 @@ export default async function Sibyl<T extends Record<string, any>>(db: Database,
     const statement = formatInsertStatement(table, [entry])
     db.run(statement)
     const result = Select({
-      where: entry
+      where: entry,
     })
 
-    if (result !== undefined) {
+    if (result !== undefined)
       return result[0]
-    }
+
     return undefined
   }
 
@@ -44,7 +43,7 @@ export default async function Sibyl<T extends Record<string, any>>(db: Database,
     const record = db.exec(`SELECT * from ${table}`)
 
     if (record[0]) {
-      return convertToObjects({
+      return convertToObjects<T>({
         columns: record[0].columns,
         values: record[0].values,
       })
