@@ -4,7 +4,10 @@ import type { SelectArgs } from './types'
 
 export default async function Sibyl<T extends Record<string, any>, U extends string[]>(db: Database, tables: U) {
 type MappedTable = {
-  [Key in keyof T]: 'int' | 'char' | 'blob'
+  [Key in keyof T]:
+  T[Key] extends number ? 'int' :
+    T[Key] extends string ? 'char' :
+      'blob'
 }
 function createTable(table: typeof tables[number], tableRow: MappedTable) {
   const statement = convertCreateTableStatement(tableRow)
