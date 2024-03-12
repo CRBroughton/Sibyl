@@ -8,24 +8,27 @@ interface TableRow {
   name: string
 }
 
+interface Tables {
+  first: TableRow
+}
+
 describe('all tests', () => {
   it('returns all data available in the given table', async () => {
-    const DBName = 'testingDB'
     const SQL = await sql({
       locateFile: () => {
         return 'playground/public/sql-wasm.wasm'
       },
     })
     const db = new SQL.Database()
-    const { createTable, Insert, All } = await Sibyl<TableRow, [typeof DBName]>(db, ['testingDB'])
+    const { createTable, Insert, All } = await Sibyl<Tables>(db)
 
-    createTable('testingDB', {
+    createTable('first', {
       id: 'int',
       location: 'char',
       name: 'char',
     })
 
-    Insert(DBName, [
+    Insert('first', [
       {
         id: 1,
         name: 'Craig',
@@ -38,7 +41,7 @@ describe('all tests', () => {
       },
     ])
 
-    const actual = All('testingDB')
+    const actual = All('first')
 
     const expectation = [
       {
