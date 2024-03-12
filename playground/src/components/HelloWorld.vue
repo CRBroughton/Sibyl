@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Sibyl } from '../../../src/index'
+import Sibyl  from '../../../src/index'
 import { QueryExecResult } from 'sql.js'
 import sql from 'sql.js'
 import { faker } from '@faker-js/faker'
@@ -19,12 +19,17 @@ const SQL = await sql({
 })
 const db = new SQL.Database()
 
-const { createTable, Insert, Select, All, Create } = await Sibyl<tableRowType>(db, 'test')
+const { createTable, Insert, Select, All, Create } = await Sibyl<tableRowType, ['test']>(db, ['test'])
 
 const myResults = ref<QueryExecResult>()
 const selection = ref<tableRowType[]>()
 
-createTable('id int, job char, name char, sex char')
+createTable('test', {
+  id: 'int',
+  job: 'char',
+  name: 'char',
+  sex: 'char'
+})
 
 let insertions: tableRowType[] = []
 for (let index = 0; index < 1000; index++) {
@@ -42,8 +47,8 @@ const result = results[0]
 myResults.value = result;
 
 
-const resultsTest = All()
-selection.value = Select({
+const resultsTest = All('test')
+selection.value = Select('test', {
   where: {
     sex: 'male',
   },

@@ -38,8 +38,9 @@ const SQL = await sql({
     }
 })
 const db = new SQL.Database()
+const tables = ['my-first-table', 'my-second-table']
 
-const { createTable, Insert, Select, All } = await Sibyl<tableRowType>(db, 'my-db')
+const { createTable, Insert, Select, All } = await Sibyl<tableRowType, typeof tables>(db, tables)
 ```
 
 With top-level async/await enabled, you can then use Sibyl. Sibyl provides the following
@@ -57,14 +58,17 @@ To create a new table (at the moment, it is recommended to only use one table),
 use the `createTable` command:
 
 ```typescript
-createTable('id int, job char, name char, sex char')
+createTable('test', { // inferred table name and entry
+  id: 'int', // only allows for known data types ('int', 'char', 'blob')
+  job: 'char',
+  name: 'char',
+  sex: 'char'
+})
 ```
 
 `createTable` takes a single argument; This argument will create the specified
-columns for your database; It is vitally important that your columns match that of
-your specified table row type you supply to Sibyl's root function, and that the entries
-are in alphabetical order, otherwise
-you'll be unable to get data from your database, have malformed data, or crash your program.
+columns for your database. Sibyl will handle the order and creation of each
+column you have specified, and only allow known data types.
 
 ### Inserting a single entry into the DB
 
@@ -93,8 +97,7 @@ for (let index = 0; index < 1000; index++) {
     job: `${faker.person.jobTitle()}`,
   })
 }
-const test = Insert('test', insertions) // formats the insertion instruction
-db.run(test) // execute the provided instruction - Data will now be in the DB
+const test = Insert('test', insertions) // execute the provided instruction - Data will now be in the DB
 ```
 
 ### Selecting entries from the DB
