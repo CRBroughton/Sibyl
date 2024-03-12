@@ -26,21 +26,29 @@ like so:
 
 ```typescript
 interface tableRowType {
-    id: number
-    name: string
-    sex: string
-    job: string
+  id: number
+  name: string
+  sex: string
+  job: string
+}
+
+interface secondRowType {
+  id: number
+}
+
+interface Tables {
+  firstTable: tableRowType
+  secondTable: secondRowType
 }
 
 const SQL = await sql({
-    locateFile: () => {
-        return '/sql-wasm.wasm'
-    }
+  locateFile: () => {
+    return '/sql-wasm.wasm'
+  }
 })
 const db = new SQL.Database()
-const tables = ['my-first-table', 'my-second-table']
 
-const { createTable, Insert, Select, All } = await Sibyl<tableRowType, typeof tables>(db, tables)
+const { createTable, Insert, Select, All, Create } = await Sibyl<Tables>(db)
 ```
 
 With top-level async/await enabled, you can then use Sibyl. Sibyl provides the following
@@ -92,9 +100,9 @@ let insertions: tableRowType[] = []
 for (let index = 0; index < 1000; index++) {
   insertions.push({
     id: faker.number.int(),
-    name: `${faker.person.firstName()}`,
-    sex: `${faker.person.sex()}`,
-    job: `${faker.person.jobTitle()}`,
+    name: faker.person.firstName(),
+    sex: faker.person.sex(),
+    job: faker.person.jobTitle(),
   })
 }
 const test = Insert('test', insertions) // execute the provided instruction - Data will now be in the DB
