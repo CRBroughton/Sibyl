@@ -2,29 +2,32 @@ import type { Database } from 'sql.js'
 import { buildSelectQuery, convertCreateTableStatement, convertToObjects, formatInsertStatement } from './sibylLib'
 import type { SelectArgs } from './types'
 
-export default async function Sibyl<T extends Record<string, any>, U extends string[]>(db: Database, tables: U) {
-type MappedTable = {
+export default async function Sibyl<T extends Record<string, any>>(db: Database) {
+type MappedTable<T> = {
   [Key in keyof T]:
   T[Key] extends number ? 'int' :
     T[Key] extends string ? 'char' :
       'blob'
 }
-function createTable(table: typeof tables[number], tableRow: MappedTable) {
+
+type TableKeys = keyof T
+type AccessTable<I extends keyof T> = T[I]
+function createTable<T extends TableKeys>(table: T, tableRow: MappedTable<AccessTable<T>>) {
   const statement = convertCreateTableStatement(tableRow)
-  db.run(`CREATE TABLE ${table} (${statement});`)
+  db.run(`CREATE TABLE ${String(table)} (${statement});`)
 }
 
-function Insert(table: string, rows: T[]) {
-  const statement = formatInsertStatement(table, rows)
+function Insert<K extends TableKeys>(table: K, rows: AccessTable<K>[]) {
+  const statement = formatInsertStatement(String(table), rows)
   db.run(statement)
 }
 
-function Select(table: typeof tables[number], args: SelectArgs<T>) {
-  const query = buildSelectQuery(table, args)
+function Select<K extends TableKeys>(table: K, args: SelectArgs<AccessTable<K>>) {
+  const query = buildSelectQuery(String(table), args)
   const record = db.exec(query)
 
   if (record[0]) {
-    return convertToObjects<T>({
+    return convertToObjects<AccessTable<K>>({
       columns: record[0].columns,
       values: record[0].values,
     })
@@ -33,8 +36,8 @@ function Select(table: typeof tables[number], args: SelectArgs<T>) {
   return undefined
 }
 
-function Create(table: typeof tables[number], entry: T) {
-  const statement = formatInsertStatement(table, [entry])
+function Create<T extends TableKeys>(table: T, entry: AccessTable<T>) {
+  const statement = formatInsertStatement(String(table), [entry])
   db.run(statement)
   const result = Select(table, {
     where: entry,
@@ -46,11 +49,11 @@ function Create(table: typeof tables[number], entry: T) {
   return undefined
 }
 
-function All(table: typeof tables[number]) {
-  const record = db.exec(`SELECT * from ${table}`)
+function All<K extends TableKeys>(table: K) {
+  const record = db.exec(`SELECT * from ${String(table)}`)
 
   if (record[0]) {
-    return convertToObjects<T>({
+    return convertToObjects<AccessTable<K>>({
       columns: record[0].columns,
       values: record[0].values,
     })

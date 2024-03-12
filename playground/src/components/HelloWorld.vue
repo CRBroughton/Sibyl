@@ -12,6 +12,15 @@ interface tableRowType {
   job: string
 }
 
+interface secondRowType {
+  id: number
+}
+
+interface Tables {
+  firstTable: tableRowType
+  secondTable: secondRowType
+}
+
 const SQL = await sql({
   locateFile: () => {
     return '/sql-wasm.wasm'
@@ -19,44 +28,56 @@ const SQL = await sql({
 })
 const db = new SQL.Database()
 
-const { createTable, Insert, Select, All, Create } = await Sibyl<tableRowType, ['test']>(db, ['test'])
+const { createTable, Insert, Select, All, Create } = await Sibyl<Tables>(db)
 
 const myResults = ref<QueryExecResult>()
-const selection = ref<tableRowType[]>()
+const selection = ref<tableRowType[] | secondRowType[]>()
 
-createTable('test', {
+createTable('firstTable', {
   id: 'int',
   job: 'char',
   name: 'char',
   sex: 'char'
 })
 
+createTable('secondTable', {
+  id: 'int',
+})
+
 let insertions: tableRowType[] = []
 for (let index = 0; index < 1000; index++) {
   insertions.push({
     id: faker.number.int(),
-    name: `${faker.person.firstName()}`,
-    sex: `${faker.person.sex()}`,
-    job: `${faker.person.jobTitle()}`,
+    name: faker.person.firstName(),
+    sex: faker.person.sex(),
+    job: faker.person.jobTitle(),
   })
 }
-Insert('test', insertions)
+Insert('firstTable', insertions)
 
-const results = db.exec('select * from test')
+let sec: secondRowType[] = []
+for (let index = 0; index < 1000; index++) {
+  sec.push({
+    id: faker.number.int(),
+  })
+}
+Insert('secondTable', sec)
+
+const results = db.exec('select * from firstTable')
 const result = results[0]
 myResults.value = result;
 
 
-const resultsTest = All('test')
-selection.value = Select('test', {
+const resultsTest = All('secondTable')
+selection.value = Select('firstTable', {
   where: {
-    sex: 'male',
+    id: 1,
   },
   limit: 20,
 })
 
 function submitEntry() {
-  const result = Create('test', {
+  const result = Create('firstTable', {
       id: faker.number.int(),
       name: 'Craig',
       sex: 'male',
