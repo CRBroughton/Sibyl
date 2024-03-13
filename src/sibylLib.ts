@@ -30,12 +30,18 @@ export function sortKeys<T extends { [key: string]: any }>(arr: T[]): T[] {
   })
 }
 
-export function objectToWhereClause<T>(obj: Partial<T>): string {
+export function objectToWhereClause<T>(obj: Partial<T>, mode?: 'in' | 'out'): string {
   const clauses = []
   for (const key in obj) {
     // eslint-disable-next-line no-prototype-builtins
-    if (obj.hasOwnProperty(key))
-      clauses.push(`${key} = '${obj[key]}'`)
+    if (obj.hasOwnProperty(key)) {
+      if (obj[key] === true || obj[key] === false && mode === 'in')
+        clauses.push(`${key} = '${Number(obj[key])}'`)
+      if (obj[key] === true || obj[key] === false && mode === 'out')
+        clauses.push(`${key} = '${Boolean(obj[key])}'`)
+      else
+        clauses.push(`${key} = '${obj[key]}'`)
+    }
   }
   return clauses.join(' AND ')
 }
@@ -53,7 +59,7 @@ export function convertToObjects<T>(data: DataStructure): T[] {
 }
 
 export function buildSelectQuery<T>(table: string, args: SelectArgs<T>) {
-  let query = `SELECT * from ${table} WHERE ${objectToWhereClause(args.where)}`
+  let query = `SELECT * from ${table} WHERE ${objectToWhereClause(args.where, 'out')}`
 
   if (args.offset && !args.limit)
     query += ` LIMIT -1 OFFSET ${args.offset}`

@@ -66,7 +66,7 @@ function All<K extends TableKeys>(table: K) {
 }
 
 function Delete<K extends TableKeys>(table: K, args: DeleteArgs<AccessTable<K>>) {
-  db.run(`DELETE FROM ${String(table)} WHERE ${objectToWhereClause(args.where)}`)
+  db.run(`DELETE FROM ${String(table)} WHERE ${objectToWhereClause(args.where, 'in')}`)
 }
 
 return {

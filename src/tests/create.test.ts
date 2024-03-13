@@ -6,6 +6,7 @@ interface TableRow {
   id: number
   location: string
   name: string
+  booleanTest: boolean
 }
 
 interface Tables {
@@ -26,17 +27,20 @@ describe('create tests', () => {
       id: 'int',
       location: 'char',
       name: 'char',
+      booleanTest: 'bool',
     })
     const actual = Create('first', {
       name: 'Craig',
       id: 2344,
       location: 'Brighton',
+      booleanTest: true,
     })
 
-    const expectation = {
+    const expectation: TableRow = {
       id: 2344,
       location: 'Brighton',
       name: 'Craig',
+      booleanTest: true,
     }
     expect(actual).toStrictEqual(expectation)
   })
