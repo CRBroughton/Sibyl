@@ -9,11 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@crbroughton/sibyl": "1.0.0",
+    "@types/sql.js": "^1.4.9",
     "@vueuse/core": "^10.9.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "lucide-vue-next": "^0.356.0",
     "radix-vue": "^1.5.2",
+    "sql.js": "^1.10.2",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "vue": "^3.4.19"

@@ -1,6 +1,6 @@
 import sql from 'sql.js'
 import { faker } from '@faker-js/faker'
-import Sibyl from '../../src/index'
+import Sibyl from '@crbroughton/sibyl'
 
 export interface Order {
   id: number
