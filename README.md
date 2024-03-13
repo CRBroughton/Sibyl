@@ -54,19 +54,19 @@ const { createTable, Insert, Select, All, Create } = await Sibyl<Tables>(db)
 With top-level async/await enabled, you can then use Sibyl. Sibyl provides the following
 functions:
 
-- `createTable` - Allows you to create the table
-- `Create` - Creates and returns a new entry into your table
-- `Insert` - Allows you to provide an array of insertable entries into your table
-- `Select` - Returns a type-safe array of entries from the table
-- `All` - Returns all entries from the table
+- `createTable` - Allows you to create a table
+- `Create` - Creates and returns a new entry into your selected table
+- `Insert` - Allows you to provide an array of insertable entries into your selected table
+- `Select` - Returns a type-safe array of entries from the selected table
+- `All` - Returns all entries from the selected table
+- `Delete` - Deletes an entry from a selected table
 
 ### Creating the table
 
-To create a new table (at the moment, it is recommended to only use one table),
-use the `createTable` command:
+To create a new table, use the `createTable` command:
 
 ```typescript
-createTable('test', { // inferred table name and entry
+createTable('firstTable', { // inferred table name and entry
   id: 'int', // only allows for known data types ('int', 'char', 'blob')
   job: 'char',
   name: 'char',
@@ -74,16 +74,16 @@ createTable('test', { // inferred table name and entry
 })
 ```
 
-`createTable` takes a single argument; This argument will create the specified
-columns for your database. Sibyl will handle the order and creation of each
-column you have specified, and only allow known data types.
+`createTable` takes two arguments, the first is the name of the table you wish to select, This
+is based off the generic interface you first supplied to Sibyl.
+The second argument will create the specified columns for your database. Sibyl will handle the order and creation of each column you have specified, and only allow known data types.
 
 ### Inserting a single entry into the DB
 
 To create a new entry, you can use the `Create` function:
 
 ```typescript
-const result = Create('test', { // returns the resulting entry
+const result = Create('firstTable', { // returns the resulting entry
     id: faker.number.int(),
     name: 'Craig',
     sex: 'male',
@@ -105,7 +105,8 @@ for (let index = 0; index < 1000; index++) {
     job: faker.person.jobTitle(),
   })
 }
-const test = Insert('test', insertions) // execute the provided instruction - Data will now be in the DB
+// execute the provided instruction - Data will now be in the DB
+const test = Insert('firstTable', insertions)
 ```
 
 ### Selecting entries from the DB
@@ -115,7 +116,7 @@ to retrieve an array of type-safe entries, based from the generic interface
 you have supplied to Sybil main function (see above `tableRowType`).
 
 ```typescript
-selection.value = Select({
+selection.value = Select('firstTable', {
    where: {
     id: 1,
     name: "Craig", // can combine multiple where clauses
