@@ -5,9 +5,12 @@ import type { DeleteArgs, SelectArgs } from './types'
 export default async function Sibyl<T extends Record<string, any>>(db: Database) {
 type MappedTable<T> = {
   [Key in keyof T]:
-  T[Key] extends number ? 'int' :
-    T[Key] extends string ? 'char' :
-      'blob'
+  T[Key] extends boolean ? 'bool' :
+    T[Key] extends number ? 'int' | 'real' :
+      T[Key] extends string ? 'varchar' | 'char' :
+        T[Key] extends Date ? 'text' | 'int' | 'real' :
+          T[Key] extends Blob ? 'blob' :
+            null
 }
 
 type TableKeys = keyof T
