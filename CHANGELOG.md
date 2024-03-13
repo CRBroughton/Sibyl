@@ -1,4 +1,14 @@
 # @crbroughton/sibyl
+V
+## 1.1.0
+
+### Minor Changes
+
+- a9690f4: Feature - Implement Delete - You can now delete entries from your embedded database
+
+### Patch Changes
+
+- 380b598: Remove module line from package.json to fix importing Sibyl
 
 ## 1.0.0
 
