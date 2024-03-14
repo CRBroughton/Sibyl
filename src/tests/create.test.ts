@@ -35,12 +35,11 @@ describe('create tests', () => {
       location: 'Brighton',
       booleanTest: true,
     })
-
-    const expectation: TableRow = {
+    const expectation = {
       id: 2344,
       location: 'Brighton',
       name: 'Craig',
-      booleanTest: true,
+      booleanTest: 1,
     }
     expect(actual).toStrictEqual(expectation)
   })

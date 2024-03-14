@@ -7,6 +7,7 @@ export interface Order {
   product: string
   currency: string
   price: string
+  booleanTest: boolean
 }
 
 interface Tables {
@@ -26,6 +27,7 @@ createTable('orders', {
   product: 'char',
   id: 'int',
   price: 'char',
+  booleanTest: 'bool',
 })
 
 const insertions: Order[] = []
@@ -35,6 +37,7 @@ for (let index = 0; index < 1000; index++) {
     product: faker.commerce.product(),
     currency: faker.finance.currency().name,
     price: faker.commerce.price(),
+    booleanTest: false,
   })
 }
 Insert('orders', insertions)
