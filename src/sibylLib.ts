@@ -33,8 +33,7 @@ export function sortKeys<T extends { [key: string]: any }>(arr: T[]): T[] {
 export function objectToWhereClause<T>(obj: Partial<T>): string {
   const clauses = []
   for (const key in obj) {
-    // eslint-disable-next-line no-prototype-builtins
-    if (obj.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
       if (obj[key] === true || obj[key] === false)
         clauses.push(`${key} = '${Number(obj[key])}'`)
       else
