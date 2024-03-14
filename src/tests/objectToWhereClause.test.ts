@@ -35,7 +35,7 @@ describe('objectToWhereClause tests', () => {
       location: 'Brighton',
       name: 'Craig',
       booleanTest: false,
-    }, 'in')
+    })
 
     const expectation = 'id = \'1\' AND location = \'Brighton\' AND name = \'Craig\' AND booleanTest = \'0\''
 
