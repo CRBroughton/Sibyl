@@ -1,4 +1,4 @@
-import type { DataStructure, SelectArgs } from './types'
+import type { DataStructure, SelectArgs, SibylResponse } from './types'
 
 export function formatInsertStatement<T extends Record<string, any>>(table: string, structs: T[]) {
   const sortedStructs = sortKeys(structs)
@@ -54,6 +54,19 @@ export function convertToObjects<T>(data: DataStructure): T[] {
     result.push(obj)
   }
   return result
+}
+
+export function convertBooleanValues<T>(arr: T[]) {
+  return arr.map((obj) => {
+    const convertedObj = {} as SibylResponse<T>
+    for (const key in obj) {
+      if (typeof obj[key] === 'boolean')
+        convertedObj[key as keyof T] = obj[key] ? 1 : 0 as any
+      else
+        convertedObj[key as keyof T] = obj[key] as SibylResponse<T>[keyof T]
+    }
+    return convertedObj
+  })
 }
 
 export function buildSelectQuery<T>(table: string, args: SelectArgs<T>) {
