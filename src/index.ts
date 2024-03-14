@@ -79,28 +79,3 @@ return {
   Delete,
 }
 }
-
-interface TableRow {
-  id: number
-  name: string
-  location: string
-  booleanTest: boolean
-}
-
-type MutableTableRow<T> = {
-  [K in keyof T]: K extends keyof TableRow ? (TableRow[K] extends boolean ? 0 | 1 : TableRow[K]) : 0 | 1
-}
-
-// Example usage
-const mutableRow: MutableTableRow<TableRow> = {
-  id: 1,
-  location: 'New York',
-  name: 'John Doe',
-  booleanTest: true,
-}
-
-mutableRow.id = 2 // Works
-mutableRow.location = 'Los Angeles' // Works
-mutableRow.name = 'Jane Doe' // Works
-mutableRow.booleanTest = 0 // Works
-mutableRow.booleanTest = false // Works
