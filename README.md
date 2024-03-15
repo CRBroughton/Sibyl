@@ -30,6 +30,7 @@ interface tableRowType {
   name: string
   sex: string
   job: string
+  hasReadTheReadme: boolean
 }
 
 interface secondRowType {
@@ -70,7 +71,8 @@ createTable('firstTable', { // inferred table name and entry
   id: 'int', // only allows for known data types ('int', 'char', 'blob')
   job: 'char',
   name: 'char',
-  sex: 'char'
+  sex: 'char',
+  hasReadTheReadme: 'bool'
 })
 ```
 
@@ -88,6 +90,7 @@ const result = Create('firstTable', { // returns the resulting entry
     name: 'Craig',
     sex: 'male',
     job: 'Software Engineer',
+    hasReadTheReadme: true,
 })
 ```
 
@@ -96,13 +99,14 @@ const result = Create('firstTable', { // returns the resulting entry
 To insert new entries into the database, you can use the `Insert` function:
 
 ```typescript
-let insertions: tableRowType[] = []
+let insertions: SibylResponse<tableRowType>[] = []
 for (let index = 0; index < 1000; index++) {
   insertions.push({
     id: faker.number.int(),
     name: faker.person.firstName(),
     sex: faker.person.sex(),
     job: faker.person.jobTitle(),
+    hasReadTheReadme: true,
   })
 }
 // execute the provided instruction - Data will now be in the DB
@@ -125,6 +129,11 @@ selection.value = Select('firstTable', {
    offset: 10, // offset the response, useful for pagination
 })
 ```
+
+Sibyl also offers a custom type the `SibylResponse` type; This type can be helpful
+when wanting to convert data types to TypeScript types; At the moment the custom type
+only support boolean conversions from `boolean` to `0 | 1`. It's recommended to use
+this type as a wrapper, if you're ever using boolean values.
 
 ## Development
 

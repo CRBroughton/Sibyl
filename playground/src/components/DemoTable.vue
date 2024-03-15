@@ -28,14 +28,14 @@ import { Button } from '@/components/ui/button'
 import { All, Order, Select as SelectOrders, Create } from '@/sibyl'
 import { computed, onMounted, ref } from 'vue'
 import { faker } from '@faker-js/faker'
+import type { SibylResponse } from '@crbroughton/sibyl'
 
-const results = ref<Order[] | undefined>([])
-
+const results = ref<SibylResponse<Order>[] | undefined>([])
 const currencies = ref<string[]>([])
 const selectedCurrency = ref('')
 onMounted(() => {
   results.value = All('orders')
-  function getCurrencies(orders: Order[]): string[] {
+  function getCurrencies(orders: SibylResponse<Order>[]): string[] {
   currencies.value.push('All')
 
   orders.forEach(order => {
@@ -81,6 +81,7 @@ function createNewEntry() {
     product: faker.commerce.product(),
     currency: faker.finance.currency().name,
     price: faker.commerce.price(),
+    booleanTest: false,
   })
   results.value = All('orders')
 }

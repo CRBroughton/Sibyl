@@ -1,4 +1,4 @@
-import type { DataStructure, SelectArgs } from './types'
+import type { DataStructure, SelectArgs, SibylResponse } from './types'
 
 export function formatInsertStatement<T extends Record<string, any>>(table: string, structs: T[]) {
   const sortedStructs = sortKeys(structs)
@@ -33,9 +33,12 @@ export function sortKeys<T extends { [key: string]: any }>(arr: T[]): T[] {
 export function objectToWhereClause<T>(obj: Partial<T>): string {
   const clauses = []
   for (const key in obj) {
-    // eslint-disable-next-line no-prototype-builtins
-    if (obj.hasOwnProperty(key))
-      clauses.push(`${key} = '${obj[key]}'`)
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      if (obj[key] === true || obj[key] === false)
+        clauses.push(`${key} = '${Number(obj[key])}'`)
+      else
+        clauses.push(`${key} = '${obj[key]}'`)
+    }
   }
   return clauses.join(' AND ')
 }
@@ -50,6 +53,19 @@ export function convertToObjects<T>(data: DataStructure): T[] {
     result.push(obj)
   }
   return result
+}
+
+export function convertBooleanValues<T>(arr: T[]) {
+  return arr.map((obj) => {
+    const convertedObj = {} as SibylResponse<T>
+    for (const key in obj) {
+      if (typeof obj[key] === 'boolean')
+        convertedObj[key as keyof T] = obj[key] ? 1 : 0 as any
+      else
+        convertedObj[key as keyof T] = obj[key] as SibylResponse<T>[keyof T]
+    }
+    return convertedObj
+  })
 }
 
 export function buildSelectQuery<T>(table: string, args: SelectArgs<T>) {

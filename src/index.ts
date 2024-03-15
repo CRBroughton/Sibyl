@@ -1,13 +1,16 @@
 import type { Database } from 'sql.js'
-import { buildSelectQuery, convertCreateTableStatement, convertToObjects, formatInsertStatement, objectToWhereClause } from './sibylLib'
+import { buildSelectQuery, convertBooleanValues, convertCreateTableStatement, convertToObjects, formatInsertStatement, objectToWhereClause } from './sibylLib'
 import type { DeleteArgs, SelectArgs } from './types'
 
 export default async function Sibyl<T extends Record<string, any>>(db: Database) {
 type MappedTable<T> = {
   [Key in keyof T]:
-  T[Key] extends number ? 'int' :
-    T[Key] extends string ? 'char' :
-      'blob'
+  T[Key] extends boolean ? 'bool' :
+    T[Key] extends number ? 'int' | 'real' :
+      T[Key] extends string ? 'varchar' | 'char' :
+        T[Key] extends Date ? 'text' | 'int' | 'real' :
+          T[Key] extends Blob ? 'blob' :
+            null
 }
 
 type TableKeys = keyof T
@@ -27,10 +30,10 @@ function Select<K extends TableKeys>(table: K, args: SelectArgs<AccessTable<K>>)
   const record = db.exec(query)
 
   if (record[0]) {
-    return convertToObjects<AccessTable<K>>({
+    return convertBooleanValues(convertToObjects<AccessTable<K>>({
       columns: record[0].columns,
       values: record[0].values,
-    })
+    }))
   }
 
   return undefined
@@ -53,10 +56,10 @@ function All<K extends TableKeys>(table: K) {
   const record = db.exec(`SELECT * from ${String(table)}`)
 
   if (record[0]) {
-    return convertToObjects<AccessTable<K>>({
+    return convertBooleanValues(convertToObjects<AccessTable<K>>({
       columns: record[0].columns,
       values: record[0].values,
-    })
+    }))
   }
 
   return undefined
