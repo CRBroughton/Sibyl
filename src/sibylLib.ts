@@ -1,4 +1,4 @@
-import type { DataStructure, SelectArgs, SibylResponse } from './types'
+import type { DataStructure, SelectArgs, SibylResponse, UpdateArgs } from './types'
 
 export function formatInsertStatement<T extends Record<string, any>>(table: string, structs: T[]) {
   const sortedStructs = sortKeys(structs)
@@ -83,6 +83,23 @@ export function buildSelectQuery<T>(table: string, args: SelectArgs<T>) {
   return `${query};`
 }
 
+export function objectToUpdateSetter<T>(obj: Partial<T>): string {
+  const clauses = []
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      if (obj[key] === true || obj[key] === false)
+        clauses.push(`${key} = '${Number(obj[key])}'`)
+      else
+        clauses.push(`${key} = '${obj[key]}'`)
+    }
+  }
+  return clauses.join(' SET ')
+}
+
+export function buildUpdateQuery<T, K extends string | number | symbol = 'id'>(table: string, args: UpdateArgs<T, K>) {
+  const setStatement = objectToUpdateSetter(args.updates)
+  return `UPDATE ${table} SET ${setStatement} WHERE ${objectToWhereClause(args.where)};`
+}
 export function convertCreateTableStatement<T extends Record<string, any>>(obj: T): string {
   let result = ''
   for (const [columnName, columnType] of Object.entries(sortKeys([obj])[0]))
