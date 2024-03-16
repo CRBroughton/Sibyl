@@ -10,6 +10,11 @@ export interface SelectArgs<T> {
   limit?: number
 }
 
+export interface UpdateArgs<T, K extends string | number | symbol = 'id'> {
+  where: Partial<T>
+  updates: Partial<Omit<T, | K>>
+}
+
 export interface DeleteArgs<T> {
   where: Partial<T>
 }
