@@ -131,11 +131,6 @@ selection.value = Select('firstTable', {
 })
 ```
 
-Sibyl also offers a custom type the `SibylResponse` type; This type can be helpful
-when wanting to convert data types to TypeScript types; At the moment the custom type
-only support boolean conversions from `boolean` to `0 | 1`. It's recommended to use
-this type as a wrapper, if you're ever using boolean values.
-
 ### Updating an entry in the DB
 
 To update a single entry in the database, you can use the `Update` function:
@@ -152,6 +147,13 @@ const updatedEntry = Update('firstTable', { // infers the table and response typ
    }
 })
 ```
+
+### Sibyl Responses
+
+Sibyl also offers a custom type the `SibylResponse` type; This type can be helpful
+when wanting to convert data types to TypeScript types; At the moment the custom type
+only support boolean conversions from `boolean` to `0 | 1`. It's recommended to use
+this type as a wrapper, if you're ever using boolean values.
 
 ## Development
 
