@@ -10,7 +10,7 @@ interface TableRow {
 
 describe('buildUpdateQuery tests', () => {
   it('builds an update query with a singluar where and singular update clause', async () => {
-    const actual = buildUpdateQuery<'test', TableRow>('testTable', {
+    const actual = buildUpdateQuery<TableRow>('testTable', {
       where: {
         id: 1,
       },

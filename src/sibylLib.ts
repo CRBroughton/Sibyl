@@ -93,12 +93,11 @@ export function objectToUpdateSetter<T>(obj: Partial<T>): string {
         clauses.push(`${key} = '${obj[key]}'`)
     }
   }
-  return clauses.join(' SET ')
+  return clauses.join(', ')
 }
 
-export function buildUpdateQuery<T, K extends string | number | symbol = 'id'>(table: string, args: UpdateArgs<T, K>) {
-  const setStatement = objectToUpdateSetter(args.updates)
-  return `UPDATE ${table} SET ${setStatement} WHERE ${objectToWhereClause(args.where)};`
+export function buildUpdateQuery<T, K extends string | number | symbol = 'id'>(table: string | number | symbol, args: UpdateArgs<T, K>) {
+  return `UPDATE ${String(table)} SET ${objectToUpdateSetter(args.updates)} WHERE ${objectToWhereClause(args.where)};`
 }
 export function convertCreateTableStatement<T extends Record<string, any>>(obj: T): string {
   let result = ''

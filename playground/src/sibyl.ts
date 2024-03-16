@@ -20,7 +20,7 @@ const SQL = await sql({
   },
 })
 const db = new SQL.Database()
-const { createTable, Insert, All, Select, Create } = await Sibyl<Tables>(db)
+const { createTable, Insert, All, Select, Create, Update } = await Sibyl<Tables>(db)
 
 createTable('orders', {
   currency: 'char',
@@ -41,6 +41,15 @@ for (let index = 0; index < 1000; index++) {
   })
 }
 Insert('orders', insertions)
+Update('orders', {
+  where: {
+    id: 1,
+  },
+  updates: {
+    booleanTest: true,
+    product: 'asdasd',
+  },
+})
 
 export {
   All,
