@@ -10,7 +10,7 @@ interface TableRow {
 
 describe('buildUpdateQuery tests', () => {
   it('builds an update query with a singluar where and singular update clause', async () => {
-    const actual = buildUpdateQuery<TableRow>('testTable', {
+    const actual = buildUpdateQuery<'test', TableRow>('testTable', {
       where: {
         id: 1,
       },
@@ -22,7 +22,7 @@ describe('buildUpdateQuery tests', () => {
     const expectation = `UPDATE testTable SET name = 'Bill' WHERE id = '1';`
     expect(actual).toStrictEqual(expectation)
   })
-  it('builds an update query with a singluar where and multiple update clause', async () => {
+  it('builds an update query with a singular where and multiple update clause', async () => {
     const actual = buildUpdateQuery<TableRow>('testTable', {
       where: {
         id: 1,
@@ -33,7 +33,7 @@ describe('buildUpdateQuery tests', () => {
       },
     })
 
-    const expectation = `UPDATE testTable SET name = 'Bill' SET location = 'Brighton' WHERE id = '1';`
+    const expectation = `UPDATE testTable SET name = 'Bill', location = 'Brighton' WHERE id = '1';`
     expect(actual).toStrictEqual(expectation)
   })
   it('builds an update query with multiple where clauses and a single update clause', async () => {
@@ -62,7 +62,7 @@ describe('buildUpdateQuery tests', () => {
       },
     })
 
-    const expectation = `UPDATE testTable SET name = 'Bill' SET location = 'Brighton' WHERE id = '1' AND name = 'Craig';`
+    const expectation = `UPDATE testTable SET name = 'Bill', location = 'Brighton' WHERE id = '1' AND name = 'Craig';`
     expect(actual).toStrictEqual(expectation)
   })
 })
