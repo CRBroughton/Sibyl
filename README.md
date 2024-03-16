@@ -60,6 +60,7 @@ functions:
 - `Insert` - Allows you to provide an array of insertable entries into your selected table
 - `Select` - Returns a type-safe array of entries from the selected table
 - `All` - Returns all entries from the selected table
+- `Update` Updates and returns a single entry from the selected table
 - `Delete` - Deletes an entry from a selected table
 
 ### Creating the table
@@ -134,6 +135,23 @@ Sibyl also offers a custom type the `SibylResponse` type; This type can be helpf
 when wanting to convert data types to TypeScript types; At the moment the custom type
 only support boolean conversions from `boolean` to `0 | 1`. It's recommended to use
 this type as a wrapper, if you're ever using boolean values.
+
+### Updating an entry in the DB
+
+To update a single entry in the database, you can use the `Update` function:
+
+```typescript
+const updatedEntry = Update('firstTable', { // infers the table and response type
+   where: { // Can combine multiple where clauses
+    id: 1,
+    name: 'Craig',
+   },
+   updates: {
+    name: 'Bob', // Can update multiple values at once
+    job: 'Engineer',
+   }
+})
+```
 
 ## Development
 
