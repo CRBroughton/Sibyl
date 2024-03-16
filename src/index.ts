@@ -67,14 +67,7 @@ function All<K extends TableKeys>(table: K) {
 
 function Update<K extends TableKeys>(table: K, args: UpdateArgs<AccessTable<K>>) {
   const query = buildUpdateQuery(table, args)
-  const record = db.exec(query)
-
-  if (record[0]) {
-    return convertBooleanValues(convertToObjects<AccessTable<K>>({
-      columns: record[0].columns,
-      values: record[0].values,
-    }))
-  }
+  db.exec(query)
 
   const result = Select(table, {
     where: args.where,
