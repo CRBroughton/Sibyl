@@ -31,7 +31,7 @@ createTable('orders', {
 })
 
 const insertions: Order[] = []
-for (let index = 0; index < 1000; index++) {
+for (let index = 0; index < 10000; index++) {
   insertions.push({
     id: faker.number.int(),
     product: faker.commerce.product(),

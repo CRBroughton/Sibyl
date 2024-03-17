@@ -28,13 +28,23 @@ import { Button } from '@/components/ui/button'
 import { All, Order, Select as SelectOrders, Create } from '@/sibyl'
 import { computed, onMounted, ref } from 'vue'
 import { faker } from '@faker-js/faker'
+import { useVirtualList } from '@vueuse/core'
 import type { SibylResponse } from '@crbroughton/sibyl'
 
-const results = ref<SibylResponse<Order>[] | undefined>([])
+const results = ref<SibylResponse<Order>[]>([])
+const { list, wrapperProps, containerProps, scrollTo } = useVirtualList(results, {
+  itemHeight: 53,
+})
+
 const currencies = ref<string[]>([])
 const selectedCurrency = ref('')
 onMounted(() => {
-  results.value = All('orders')
+  const response = All('orders')
+
+  if (response !== undefined) {
+    results.value = response
+  }
+
   function getCurrencies(orders: SibylResponse<Order>[]): string[] {
   currencies.value.push('All')
 
@@ -53,27 +63,34 @@ if (results.value !== undefined) {
 
 function filterOrders() {
   if (selectedCurrency.value !== 'All') {
-    results.value = SelectOrders('orders', {
+    const response = SelectOrders('orders', {
     where: {
       currency: selectedCurrency.value
     }
   })
-  } else {
-    results.value = All('orders')
+  if (response !== undefined) {
+    results.value = response
   }
+  } else {
+    const response = All('orders')
+    if (response !== undefined) {
+      results.value = response
+    }
+  }
+  scrollTo(0)
 }
 
-const tableClasses = computed(() => {
-  if (results.value!.length <= 15)
-    return ''
+// const tableClasses = computed(() => {
+//   if (results.value!.length <= 15)
+//     return ''
 
-  if (results.value!.length === 1)
-    return ''
+//   if (results.value!.length === 1)
+//     return ''
 
-  if (results.value!.length > 0)
-    return 'block overflow-scroll h-96 min-h-96'
-  return ''
-})
+//   if (results.value!.length > 0)
+//     return 'block overflow-scroll h-96 min-h-96'
+//   return ''
+// })
 
 function createNewEntry() {
   Create('orders', {
@@ -83,7 +100,10 @@ function createNewEntry() {
     price: faker.commerce.price(),
     booleanTest: false,
   })
-  results.value = All('orders')
+  const response = All('orders')
+  if (response !== undefined) {
+      results.value = response
+  }
 }
 
 const amountOfOrders = computed(() => {
@@ -120,7 +140,8 @@ const amountOfOrders = computed(() => {
         </div>
       </CardHeader>
       <CardContent>
-        <Table class="mb-6" :class="tableClasses">
+        <div v-bind="containerProps" class="h-[380px]">
+          <Table v-bind="wrapperProps" class="mb-6 h-[380px]">
           <TableHeader>
             <TableRow>
               <TableHead class="w-[25%]">
@@ -138,18 +159,19 @@ const amountOfOrders = computed(() => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow v-for="row in results" :key="row.id">
+            <TableRow v-for="row in list" :key="row.index">
               <TableCell class="font-medium">
-                {{ row.id }}
+                {{ row.data.id }}
               </TableCell>
               <TableCell>
-                {{ row.currency }}
+                {{ row.data.currency }}
               </TableCell>
-              <TableCell>{{ row.product }}</TableCell>
-              <TableCell>{{ row.price }}</TableCell>
+              <TableCell>{{ row.data.product }}</TableCell>
+              <TableCell>{{ row.data.price }}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
+        </div>
         <div>
           <Button @click="createNewEntry">
             Create New Entry
