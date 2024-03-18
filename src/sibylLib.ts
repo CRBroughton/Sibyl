@@ -69,16 +69,20 @@ export function convertBooleanValues<T>(arr: T[]) {
 }
 
 export function buildSelectQuery<T>(table: string, args: SelectArgs<T>) {
-  let query = `SELECT * from ${table} WHERE ${objectToWhereClause(args.where)}`
+  let query: string = ''
 
-  if (args.offset && !args.limit)
-    query += ` LIMIT -1 OFFSET ${args.offset}`
+  if (args.where.OR === undefined) {
+    query = `SELECT * from ${table} WHERE ${objectToWhereClause(args.where)}`
 
-  if (args.offset && args.limit)
-    query += ` LIMIT ${args.limit} OFFSET ${args.offset}`
+    if (args.offset && !args.limit)
+      query += ` LIMIT -1 OFFSET ${args.offset}`
 
-  if (!args.offset && args.limit)
-    query += ` LIMIT ${args.limit}`
+    if (args.offset && args.limit)
+      query += ` LIMIT ${args.limit} OFFSET ${args.offset}`
+
+    if (!args.offset && args.limit)
+      query += ` LIMIT ${args.limit}`
+  }
 
   return `${query};`
 }
