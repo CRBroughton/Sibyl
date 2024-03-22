@@ -9,7 +9,7 @@ interface OR<T> {
 }
 
 export interface SelectArgs<T> {
-  where: Partial<T> & OR<T>
+  where: Partial<T> & OR<Partial<T>>
   offset?: number
   limit?: number
 }

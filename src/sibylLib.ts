@@ -43,6 +43,20 @@ export function objectToWhereClause<T>(obj: Partial<T>): string {
   return clauses.join(' AND ')
 }
 
+export function objectToOrClause<T>(data: Partial<T>[]) {
+  const orConditions: string[] = []
+  for (const item of data) {
+    const conditions: string[] = []
+    for (const [key, value] of Object.entries(item)) {
+      const condition = `${key} = '${value}'`
+      conditions.push(condition)
+    }
+    orConditions.push(`${conditions.join(' OR ')}`)
+  }
+  const orStatement = orConditions.join(' OR ')
+  return orStatement
+}
+
 export function convertToObjects<T>(data: DataStructure): T[] {
   const result: T[] = []
   for (const valueArray of data.values) {
