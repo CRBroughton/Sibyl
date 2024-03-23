@@ -79,4 +79,95 @@ describe('buildSelectQuery tests', () => {
 
     expect(actual).toStrictEqual(expectation)
   })
+  it('builds an OR query with a single or clause, with no offset or limit', async () => {
+    const actual = buildSelectQuery<TableRow>('test', {
+      where: {
+        OR: [
+          {
+            id: 1,
+          },
+        ],
+      },
+    })
+
+    const expectation = `SELECT * from test WHERE id = '1';`
+
+    expect(actual).toStrictEqual(expectation)
+  })
+  it('builds an OR query with multiple or clauses, with no offset or limit', async () => {
+    const actual = buildSelectQuery<TableRow>('test', {
+      where: {
+        OR: [
+          {
+            id: 1,
+          },
+          {
+            id: 2,
+          },
+        ],
+      },
+    })
+
+    const expectation = `SELECT * from test WHERE id = '1' OR id = '2';`
+
+    expect(actual).toStrictEqual(expectation)
+  })
+  it('builds an OR query with multiple or clauses, with an offset, but no limit', async () => {
+    const actual = buildSelectQuery<TableRow>('test', {
+      where: {
+        OR: [
+          {
+            id: 1,
+          },
+          {
+            id: 2,
+          },
+        ],
+      },
+      offset: 10,
+    })
+
+    const expectation = `SELECT * from test WHERE id = '1' OR id = '2' LIMIT -1 OFFSET 10;`
+
+    expect(actual).toStrictEqual(expectation)
+  })
+  it('builds an OR query with multiple or clauses, with a limit, but no offset', async () => {
+    const actual = buildSelectQuery<TableRow>('test', {
+      where: {
+        OR: [
+          {
+            id: 1,
+          },
+          {
+            id: 2,
+          },
+        ],
+      },
+      limit: 10,
+    })
+
+    const expectation = `SELECT * from test WHERE id = '1' OR id = '2' LIMIT 10;`
+
+    expect(actual).toStrictEqual(expectation)
+  })
+  it('builds an OR query with multiple or clauses, with a limit and offset', async () => {
+    const actual = buildSelectQuery<TableRow>('test', {
+      where: {
+        OR: [
+          {
+            id: 1,
+          },
+          {
+            id: 2,
+          },
+        ],
+      },
+      limit: 10,
+      offset: 10,
+    })
+
+    const expectation = `SELECT * from test WHERE id = '1' OR id = '2' LIMIT 10 OFFSET 10;`
+
+    expect(actual).toStrictEqual(expectation)
+  })
 })

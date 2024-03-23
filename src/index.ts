@@ -25,12 +25,12 @@ function Insert<K extends TableKeys>(table: K, rows: AccessTable<K>[]) {
   db.run(statement)
 }
 
-function Select<K extends TableKeys>(table: K, args: SelectArgs<AccessTable<K>>) {
+function Select<T extends TableKeys>(table: T, args: SelectArgs<AccessTable<T>>) {
   const query = buildSelectQuery(String(table), args)
   const record = db.exec(query)
 
   if (record[0]) {
-    return convertBooleanValues(convertToObjects<AccessTable<K>>({
+    return convertBooleanValues(convertToObjects<AccessTable<T>>({
       columns: record[0].columns,
       values: record[0].values,
     }))

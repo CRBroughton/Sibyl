@@ -4,8 +4,12 @@ export type SibylResponse<T> = {
     T[Key]
 }
 
+interface OR<T> {
+  OR?: T[]
+}
+
 export interface SelectArgs<T> {
-  where: Partial<T>
+  where: Partial<T> & OR<Partial<T>>
   offset?: number
   limit?: number
 }

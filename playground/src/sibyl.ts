@@ -8,6 +8,7 @@ export interface Order {
   currency: string
   price: string
   booleanTest: boolean
+  status: 'processing' | 'completed' | 'failed'
 }
 
 interface Tables {
@@ -28,6 +29,7 @@ createTable('orders', {
   id: 'int',
   price: 'char',
   booleanTest: 'bool',
+  status: 'varchar',
 })
 
 const insertions: Order[] = []
@@ -38,6 +40,27 @@ for (let index = 0; index < 10000; index++) {
     currency: faker.finance.currency().name,
     price: faker.commerce.price(),
     booleanTest: false,
+    status: 'completed',
+  })
+}
+for (let index = 0; index < 10; index++) {
+  insertions.push({
+    id: faker.number.int(),
+    product: faker.commerce.product(),
+    currency: faker.finance.currency().name,
+    price: faker.commerce.price(),
+    booleanTest: false,
+    status: 'processing',
+  })
+}
+for (let index = 0; index < 10; index++) {
+  insertions.push({
+    id: faker.number.int(),
+    product: faker.commerce.product(),
+    currency: faker.finance.currency().name,
+    price: faker.commerce.price(),
+    booleanTest: false,
+    status: 'failed',
   })
 }
 Insert('orders', insertions)
@@ -56,4 +79,5 @@ export {
   Select,
   Insert,
   Create,
+  Update,
 }

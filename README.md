@@ -131,6 +131,48 @@ selection.value = Select('firstTable', {
 })
 ```
 
+#### OR Selection
+
+When selecting entries from the database, the `Select` function, by
+default, uses an AND statement to build you query. You can however,
+include an optional OR array to select entries:
+
+```typescript
+const response = Select('firstTable', { // Returns all entries where name is Craig OR Bob
+  where: {
+    OR: [
+      {
+        name: 'Craig'
+      },
+      {
+        name: 'Bob'
+      }
+    ]
+  }
+})
+```
+
+You can also combine multiple OR statements as part of a single object,
+if the keys do no clash:
+
+```typescript
+const response = Select('firstTable', { // Returns all entries where name is Craig OR Bob OR hasReadTheReadme is false
+  where: {
+    OR: [
+      {
+        name: 'Craig',
+        hasReadTheReadme: false,
+      },
+      {
+        name: 'Bob'
+      }
+    ]
+  }
+})
+```
+When using the optional OR array to build a query, you can still use
+the optional `offset` and `limit` keys.
+
 ### Updating an entry in the DB
 
 To update a single entry in the database, you can use the `Update` function:
