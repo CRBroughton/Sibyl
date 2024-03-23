@@ -1,26 +1,8 @@
 import type { Database } from 'sql.js'
 import { buildSelectQuery, buildUpdateQuery, convertBooleanValues, convertCreateTableStatement, convertToObjects, formatInsertStatement, objectToWhereClause } from './sibylLib'
-import type { DeleteArgs, SelectArgs, UpdateArgs } from './types'
+import type { DBBlob, DBBoolean, DBDate, DBEntry, DBNumber, DBString, DBValue, DeleteArgs, SelectArgs, UpdateArgs } from './types'
 
 export default async function Sibyl<T extends Record<string, any>>(db: Database) {
-type DBBoolean = 'bool'
-type DBNumber = 'int' | 'real'
-type DBString = 'varchar' | 'char'
-type DBDate = 'text' | 'int' | 'real'
-type DBBlob = 'blob'
-
-interface DBEntry<T> {
-  type: T
-  primary?: boolean
-  nullable?: boolean
-  unique?: boolean
-  autoincrement: boolean
-}
-
-type DBValue<T> = T extends DBNumber
-  ? DBEntry<T>
-  : Omit<DBEntry<T>, 'autoincrement'>
-
 type MappedTable<T> = {
   [Key in keyof T]:
   T[Key] extends boolean ? DBValue<DBBoolean> :
