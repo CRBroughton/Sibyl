@@ -18,7 +18,7 @@ interface DBEntry<T> {
 
 type DBValue<T> = T extends DBNumber
   ? DBEntry<T>
-  : Omit<DBEntry<T>, 'autoincrement'> & { type: T }
+  : Omit<DBEntry<T>, 'autoincrement'>
 
 type MappedTable<T> = {
   [Key in keyof T]:
