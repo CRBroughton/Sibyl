@@ -28,11 +28,11 @@ describe('select tests', () => {
         primary: true,
         autoincrement: true,
         nullable: false,
-        type: 'int',
+        type: 'INTEGER',
         unique: true,
       },
       location: {
-        primary: true,
+        primary: false,
         nullable: false,
         type: 'char',
         unique: false,
@@ -198,10 +198,31 @@ describe('select tests', () => {
     const { createTable, Insert, Select } = await Sibyl<Tables>(db)
 
     createTable('first', {
-      id: 'int',
-      location: 'char',
-      name: 'char',
-      booleanTest: 'bool',
+      id: {
+        autoincrement: true,
+        type: 'INTEGER',
+        nullable: false,
+        primary: true,
+        unique: true,
+      },
+      location: {
+        type: 'char',
+        nullable: false,
+        primary: false,
+        unique: false,
+      },
+      name: {
+        type: 'char',
+        nullable: false,
+        primary: false,
+        unique: false,
+      },
+      booleanTest: {
+        type: 'bool',
+        nullable: false,
+        primary: false,
+        unique: false,
+      },
     })
     Insert('first', [
       {

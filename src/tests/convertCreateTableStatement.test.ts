@@ -12,7 +12,7 @@ describe('convertCreateTableStatement tests', () => {
     const actual = convertCreateTableStatement<TableRow>({
       id: {
         autoincrement: true,
-        type: 'int',
+        type: 'INTEGER',
         nullable: false,
         primary: true,
         unique: true,
@@ -25,7 +25,7 @@ describe('convertCreateTableStatement tests', () => {
       },
     })
 
-    const expectation = 'id int PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, name char NOT NULL'
+    const expectation = 'id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, name char NOT NULL'
     expect(actual).toStrictEqual(expectation)
   })
 })

@@ -23,9 +23,25 @@ describe('delete tests', () => {
     const { createTable, Insert, All, Delete } = await Sibyl<Tables>(db)
 
     createTable('first', {
-      id: 'int',
-      location: 'char',
-      name: 'char',
+      id: {
+        autoincrement: true,
+        type: 'INTEGER',
+        nullable: false,
+        primary: true,
+        unique: true,
+      },
+      location: {
+        type: 'char',
+        nullable: false,
+        primary: false,
+        unique: false,
+      },
+      name: {
+        type: 'char',
+        nullable: false,
+        primary: false,
+        unique: false,
+      },
     })
     Insert('first', [
       {

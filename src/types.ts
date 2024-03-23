@@ -7,7 +7,7 @@ export interface DBEntry<T> {
 }
 
 export type DBBoolean = 'bool'
-export type DBNumber = 'int' | 'real'
+export type DBNumber = 'int' | 'real' | 'INTEGER'
 export type DBString = 'varchar' | 'char'
 export type DBDate = 'text' | 'int' | 'real'
 export type DBBlob = 'blob'
