@@ -3,13 +3,30 @@ import { buildSelectQuery, buildUpdateQuery, convertBooleanValues, convertCreate
 import type { DeleteArgs, SelectArgs, UpdateArgs } from './types'
 
 export default async function Sibyl<T extends Record<string, any>>(db: Database) {
+type DBBoolean = 'bool'
+type DBNumber = 'int' | 'real'
+type DBString = 'varchar' | 'char'
+type DBDate = 'text' | 'int' | 'real'
+type DBBlob = 'blob'
+
+interface DBEntry<T> {
+  type: T
+  nullable: boolean
+  unique: boolean
+  autoincrement: boolean
+}
+
+type DBValue<T> = T extends DBNumber
+  ? DBEntry<T>
+  : Omit<DBEntry<T>, 'autoincrement'> & { type: T }
+
 type MappedTable<T> = {
   [Key in keyof T]:
-  T[Key] extends boolean ? 'bool' :
-    T[Key] extends number ? 'int' | 'real' :
-      T[Key] extends string ? 'varchar' | 'char' :
-        T[Key] extends Date ? 'text' | 'int' | 'real' :
-          T[Key] extends Blob ? 'blob' :
+  T[Key] extends boolean ? DBValue<DBBoolean> :
+    T[Key] extends number ? DBValue<DBNumber> :
+      T[Key] extends string ? DBValue<DBString> :
+        T[Key] extends Date ? DBValue<DBDate> :
+          T[Key] extends Blob ? DBValue<DBBlob> :
             null
 }
 
