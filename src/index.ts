@@ -11,8 +11,9 @@ type DBBlob = 'blob'
 
 interface DBEntry<T> {
   type: T
-  nullable: boolean
-  unique: boolean
+  primary?: boolean
+  nullable?: boolean
+  unique?: boolean
   autoincrement: boolean
 }
 
