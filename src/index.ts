@@ -71,10 +71,7 @@ function Create<T extends TableKeys>(table: T, entry: AccessTable<T>) {
   return undefined
 }
 
-interface AllArgs<T extends TableKeys> {
-  sort: Sort<Partial<AccessTable<T>>>
-}
-function All<K extends TableKeys>(table: K, args?: AllArgs<K>) {
+function All<K extends TableKeys>(table: K, args?: { sort: Sort<Partial<AccessTable<K>>> }) {
   let query = `SELECT * from ${String(table)}`
 
   if (args !== undefined && args.sort) {
