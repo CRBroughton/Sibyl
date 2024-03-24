@@ -1,6 +1,25 @@
 import type { Database } from 'sql.js'
-import { buildSelectQuery, buildUpdateQuery, convertBooleanValues, convertCreateTableStatement, convertToObjects, formatInsertStatement, objectToWhereClause } from './sibylLib'
-import type { DBBlob, DBBoolean, DBDate, DBEntry, DBNumber, DBString, DBValue, DeleteArgs, SelectArgs, Sort, UpdateArgs } from './types'
+import {
+  buildSelectQuery,
+  buildUpdateQuery,
+  convertBooleanValues,
+  convertCreateTableStatement,
+  convertToObjects,
+  formatInsertStatement,
+  objectToWhereClause,
+} from './sibylLib'
+import type {
+  DBBlob,
+  DBBoolean,
+  DBDate,
+  DBNumber,
+  DBString,
+  DBValue,
+  DeleteArgs,
+  SelectArgs,
+  Sort,
+  UpdateArgs,
+} from './types'
 
 export default async function Sibyl<T extends Record<string, any>>(db: Database) {
 type MappedTable<T> = {
@@ -59,8 +78,9 @@ function All<K extends TableKeys>(table: K, args?: AllArgs<K>) {
   let query = `SELECT * from ${String(table)}`
 
   if (args !== undefined && args.sort) {
+    query += ' ORDER BY '
     for (const [key, value] of Object.entries(args.sort))
-      query += ` ORDER BY ${key} ${value}`
+      query += `${key} ${value}`
   }
 
   const record = db.exec(query)
