@@ -32,15 +32,9 @@ describe('delete tests', () => {
       },
       location: {
         type: 'char',
-        nullable: false,
-        primary: false,
-        unique: false,
       },
       name: {
         type: 'char',
-        nullable: false,
-        primary: false,
-        unique: false,
       },
     })
     Insert('first', [
