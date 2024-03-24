@@ -1,4 +1,4 @@
-import type { DataStructure, SelectArgs, SibylResponse, UpdateArgs } from './types'
+import type { DBEntry, DataStructure, SelectArgs, SibylResponse, UpdateArgs } from './types'
 
 export function formatInsertStatement<T extends Record<string, any>>(table: string, structs: T[]) {
   const sortedStructs = sortKeys(structs)
@@ -121,8 +121,26 @@ export function buildUpdateQuery<T, K extends string | number | symbol = 'id'>(t
 }
 export function convertCreateTableStatement<T extends Record<string, any>>(obj: T): string {
   let result = ''
-  for (const [columnName, columnType] of Object.entries(sortKeys([obj])[0]))
-    result += `${columnName} ${columnType}, `
+  for (const [columnName, columnType] of Object.entries<DBEntry<any>>(sortKeys([obj])[0])) {
+    result += columnName
+
+    if (columnType.type)
+      result += ` ${columnType.type}`
+
+    if (columnType.primary)
+      result += ' PRIMARY KEY'
+
+    if (columnType.autoincrement)
+      result += ' AUTOINCREMENT'
+
+    if (columnType.nullable === false)
+      result += ' NOT NULL'
+
+    if (columnType.unique)
+      result += ' UNIQUE'
+
+    result += ', '
+  }
 
   result = result.slice(0, -2)
   return result

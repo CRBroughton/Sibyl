@@ -24,10 +24,22 @@ describe('select tests', () => {
     const { createTable, Create, Select } = await Sibyl<Tables>(db)
 
     createTable('first', {
-      id: 'int',
-      location: 'char',
-      name: 'char',
-      booleanTest: 'bool',
+      id: {
+        primary: true,
+        autoincrement: true,
+        nullable: false,
+        type: 'INTEGER',
+        unique: true,
+      },
+      location: {
+        type: 'char',
+      },
+      name: {
+        type: 'char',
+      },
+      booleanTest: {
+        type: 'bool',
+      },
     })
     Create('first', {
       name: 'Craig',
@@ -60,10 +72,22 @@ describe('select tests', () => {
     const { createTable, Insert, Select } = await Sibyl<Tables>(db)
 
     createTable('first', {
-      id: 'int',
-      location: 'char',
-      name: 'char',
-      booleanTest: 'bool',
+      id: {
+        autoincrement: true,
+        type: 'INTEGER',
+        nullable: false,
+        primary: true,
+        unique: true,
+      },
+      location: {
+        type: 'char',
+      },
+      name: {
+        type: 'char',
+      },
+      booleanTest: {
+        type: 'bool',
+      },
     })
     Insert('first', [
       {
@@ -88,16 +112,16 @@ describe('select tests', () => {
 
     const expectation = [
       {
-        id: 2344,
-        location: 'Brighton',
-        name: 'Craig',
-        booleanTest: 1,
-      },
-      {
         name: 'Bob',
         id: 1,
         location: 'Brighton',
         booleanTest: 0,
+      },
+      {
+        id: 2344,
+        location: 'Brighton',
+        name: 'Craig',
+        booleanTest: 1,
       },
     ]
     expect(actual).toStrictEqual(expectation)
@@ -112,10 +136,21 @@ describe('select tests', () => {
     const { createTable, Insert, Select } = await Sibyl<Tables>(db)
 
     createTable('first', {
-      id: 'int',
-      location: 'char',
-      name: 'char',
-      booleanTest: 'bool',
+      id: {
+        autoincrement: true,
+        type: 'INTEGER',
+        primary: true,
+        unique: true,
+      },
+      location: {
+        type: 'char',
+      },
+      name: {
+        type: 'char',
+      },
+      booleanTest: {
+        type: 'bool',
+      },
     })
     Insert('first', [
       {
@@ -153,16 +188,16 @@ describe('select tests', () => {
 
     const expectation = [
       {
-        name: 'Craig',
-        id: 2344,
-        location: 'Brighton',
-        booleanTest: 1,
-      },
-      {
         name: 'Chris',
         id: 2,
         location: 'Cornwall',
         booleanTest: 0,
+      },
+      {
+        name: 'Craig',
+        id: 2344,
+        location: 'Brighton',
+        booleanTest: 1,
       },
     ]
     expect(actual).toStrictEqual(expectation)
@@ -177,10 +212,22 @@ describe('select tests', () => {
     const { createTable, Insert, Select } = await Sibyl<Tables>(db)
 
     createTable('first', {
-      id: 'int',
-      location: 'char',
-      name: 'char',
-      booleanTest: 'bool',
+      id: {
+        autoincrement: true,
+        type: 'INTEGER',
+        nullable: false,
+        primary: true,
+        unique: true,
+      },
+      location: {
+        type: 'char',
+      },
+      name: {
+        type: 'char',
+      },
+      booleanTest: {
+        type: 'bool',
+      },
     })
     Insert('first', [
       {
@@ -216,16 +263,16 @@ describe('select tests', () => {
 
     const expectation = [
       {
-        name: 'Craig',
-        id: 2344,
-        location: 'Brighton',
-        booleanTest: 1,
-      },
-      {
         name: 'Chris',
         id: 2,
         location: 'Cornwall',
         booleanTest: 0,
+      },
+      {
+        name: 'Craig',
+        id: 2344,
+        location: 'Brighton',
+        booleanTest: 1,
       },
     ]
     expect(actual).toStrictEqual(expectation)

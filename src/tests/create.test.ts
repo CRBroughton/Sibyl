@@ -24,10 +24,21 @@ describe('create tests', () => {
     const { createTable, Create } = await Sibyl<Tables>(db)
 
     createTable('first', {
-      id: 'int',
-      location: 'char',
-      name: 'char',
-      booleanTest: 'bool',
+      id: {
+        autoincrement: true,
+        type: 'INTEGER',
+        primary: true,
+        unique: true,
+      },
+      location: {
+        type: 'char',
+      },
+      name: {
+        type: 'char',
+      },
+      booleanTest: {
+        type: 'bool',
+      },
     })
     const actual = Create('first', {
       name: 'Craig',

@@ -23,9 +23,19 @@ describe('delete tests', () => {
     const { createTable, Insert, All, Delete } = await Sibyl<Tables>(db)
 
     createTable('first', {
-      id: 'int',
-      location: 'char',
-      name: 'char',
+      id: {
+        autoincrement: true,
+        type: 'INTEGER',
+        nullable: false,
+        primary: true,
+        unique: true,
+      },
+      location: {
+        type: 'char',
+      },
+      name: {
+        type: 'char',
+      },
     })
     Insert('first', [
       {
@@ -44,14 +54,14 @@ describe('delete tests', () => {
 
     let expectation = [
       {
-        name: 'Craig',
-        id: 2344,
-        location: 'Brighton',
-      },
-      {
         id: 1,
         name: 'Bob',
         location: 'Cornwall',
+      },
+      {
+        name: 'Craig',
+        id: 2344,
+        location: 'Brighton',
       },
     ]
     expect(actual).toStrictEqual(expectation)
