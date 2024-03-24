@@ -1,5 +1,28 @@
 # @crbroughton/sibyl
-V
+
+## 2.0.0
+
+Version 2.0.0 introduces some breaking API changes to how you create tables; Please see the README.md 
+file for more information. A new type, SibylResponse, is introduced; You can wrap you table type with this
+type, to help convert boolean values. Sibyl now also supports more datatypes, including booleans, variable
+characters, and blob types. Siyby also now supports OR statements, again, see the README.md file for 
+more information. You can also now sort on both the 
+Select function and the All function.
+
+### Major Changes
+
+- efd0f74: Introducing new SibylResponse type - acts as a wrapper to convert types from TS to database types
+
+### Minor Changes
+
+- 1078868: Add support for OR statements to the Select function
+- 64eadea: add the ability to sort using the All function
+
+### Patch Changes
+
+- edb15a7: Add new datatypes to Sibyl - bool, real, varchar, text and blob
+  V
+
 ## 1.1.0
 
 ### Minor Changes
