@@ -32,22 +32,13 @@ describe('select tests', () => {
         unique: true,
       },
       location: {
-        primary: false,
-        nullable: false,
         type: 'char',
-        unique: false,
       },
       name: {
-        primary: false,
-        nullable: false,
         type: 'char',
-        unique: false,
       },
       booleanTest: {
-        primary: false,
-        nullable: false,
         type: 'bool',
-        unique: false,
       },
     })
     Create('first', {
@@ -230,21 +221,12 @@ describe('select tests', () => {
       },
       location: {
         type: 'char',
-        nullable: false,
-        primary: false,
-        unique: false,
       },
       name: {
         type: 'char',
-        nullable: false,
-        primary: false,
-        unique: false,
       },
       booleanTest: {
         type: 'bool',
-        nullable: false,
-        primary: false,
-        unique: false,
       },
     })
     Insert('first', [
