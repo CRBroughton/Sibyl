@@ -24,12 +24,26 @@ const db = new SQL.Database()
 const { createTable, Insert, All, Select, Create, Update } = await Sibyl<Tables>(db)
 
 createTable('orders', {
-  currency: 'char',
-  product: 'char',
-  id: 'int',
-  price: 'char',
-  booleanTest: 'bool',
-  status: 'varchar',
+  currency: {
+    type: 'char',
+  },
+  product: {
+    type: 'char',
+  },
+  id: {
+    autoincrement: true,
+    type: 'INTEGER',
+    primary: true,
+  },
+  price: {
+    type: 'char',
+  },
+  booleanTest: {
+    type: 'bool',
+  },
+  status: {
+    type: 'varchar',
+  },
 })
 
 const insertions: Order[] = []
