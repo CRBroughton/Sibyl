@@ -23,9 +23,18 @@ describe('all tests', () => {
     const { createTable, Insert, All } = await Sibyl<Tables>(db)
 
     createTable('first', {
-      id: 'int',
-      location: 'char',
-      name: 'char',
+      id: {
+        autoincrement: true,
+        type: 'INTEGER',
+        primary: true,
+        unique: true,
+      },
+      location: {
+        type: 'char',
+      },
+      name: {
+        type: 'char',
+      },
     })
 
     Insert('first', [
@@ -53,6 +62,122 @@ describe('all tests', () => {
         id: 2,
         location: 'Cornwall',
         name: 'Bob',
+      },
+    ]
+
+    expect(actual).toStrictEqual(expectation)
+  })
+  it('returns all data available in the given table and sorts then in ascending order by ID', async () => {
+    const SQL = await sql({
+      locateFile: () => {
+        return 'playground/public/sql-wasm.wasm'
+      },
+    })
+    const db = new SQL.Database()
+    const { createTable, Insert, All } = await Sibyl<Tables>(db)
+
+    createTable('first', {
+      id: {
+        autoincrement: true,
+        type: 'INTEGER',
+        primary: true,
+        unique: true,
+      },
+      location: {
+        type: 'char',
+      },
+      name: {
+        type: 'char',
+      },
+    })
+
+    Insert('first', [
+      {
+        id: 1,
+        name: 'Craig',
+        location: 'Brighton',
+      },
+      {
+        id: 2,
+        name: 'Bob',
+        location: 'Cornwall',
+      },
+    ])
+
+    const actual = All('first', {
+      sort: {
+        id: 'ASC',
+      },
+    })
+
+    const expectation = [
+      {
+        id: 1,
+        location: 'Brighton',
+        name: 'Craig',
+      },
+      {
+        id: 2,
+        location: 'Cornwall',
+        name: 'Bob',
+      },
+    ]
+
+    expect(actual).toStrictEqual(expectation)
+  })
+  it('returns all data available in the given table and sorts then in descending order by ID', async () => {
+    const SQL = await sql({
+      locateFile: () => {
+        return 'playground/public/sql-wasm.wasm'
+      },
+    })
+    const db = new SQL.Database()
+    const { createTable, Insert, All } = await Sibyl<Tables>(db)
+
+    createTable('first', {
+      id: {
+        autoincrement: true,
+        type: 'INTEGER',
+        primary: true,
+        unique: true,
+      },
+      location: {
+        type: 'char',
+      },
+      name: {
+        type: 'char',
+      },
+    })
+
+    Insert('first', [
+      {
+        id: 1,
+        name: 'Craig',
+        location: 'Brighton',
+      },
+      {
+        id: 2,
+        name: 'Bob',
+        location: 'Cornwall',
+      },
+    ])
+
+    const actual = All('first', {
+      sort: {
+        id: 'DESC',
+      },
+    })
+
+    const expectation = [
+      {
+        id: 2,
+        location: 'Cornwall',
+        name: 'Bob',
+      },
+      {
+        id: 1,
+        location: 'Brighton',
+        name: 'Craig',
       },
     ]
 

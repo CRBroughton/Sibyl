@@ -26,7 +26,7 @@ interface OR<T> {
   OR?: T[]
 }
 
-type Sort<T> = {
+export type Sort<T> = {
   [Key in keyof T]:
   T[Key] extends T[Key] ? 'ASC' | 'DESC' : T[Key]
 }
