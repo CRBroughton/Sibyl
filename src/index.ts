@@ -1,6 +1,25 @@
 import type { Database } from 'sql.js'
-import { buildSelectQuery, buildUpdateQuery, convertBooleanValues, convertCreateTableStatement, convertToObjects, formatInsertStatement, objectToWhereClause } from './sibylLib'
-import type { DBBlob, DBBoolean, DBDate, DBEntry, DBNumber, DBString, DBValue, DeleteArgs, SelectArgs, UpdateArgs } from './types'
+import {
+  buildSelectQuery,
+  buildUpdateQuery,
+  convertBooleanValues,
+  convertCreateTableStatement,
+  convertToObjects,
+  formatInsertStatement,
+  objectToWhereClause,
+} from './sibylLib'
+import type {
+  DBBlob,
+  DBBoolean,
+  DBDate,
+  DBNumber,
+  DBString,
+  DBValue,
+  DeleteArgs,
+  SelectArgs,
+  Sort,
+  UpdateArgs,
+} from './types'
 
 export default async function Sibyl<T extends Record<string, any>>(db: Database) {
 type MappedTable<T> = {
@@ -52,8 +71,18 @@ function Create<T extends TableKeys>(table: T, entry: AccessTable<T>) {
   return undefined
 }
 
-function All<K extends TableKeys>(table: K) {
-  const record = db.exec(`SELECT * from ${String(table)}`)
+function All<K extends TableKeys>(table: K, args?: { sort: Sort<Partial<AccessTable<K>>> }) {
+  let query = `SELECT * from ${String(table)}`
+
+  if (args !== undefined && args.sort) {
+    const orders: string[] = []
+    query += ' ORDER BY '
+    for (const [key, value] of Object.entries(args.sort))
+      orders.push(`${key} ${value}`)
+    query += orders.join(', ')
+  }
+
+  const record = db.exec(query)
 
   if (record[0]) {
     return convertBooleanValues(convertToObjects<AccessTable<K>>({
@@ -85,7 +114,6 @@ function Delete<K extends TableKeys>(table: K, args: DeleteArgs<AccessTable<K>>)
 
 return {
   createTable,
-  formatInsertStatement,
   Select,
   All,
   Insert,

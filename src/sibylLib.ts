@@ -94,6 +94,14 @@ export function buildSelectQuery<T>(table: string, args: SelectArgs<T>) {
   if (args.offset && !args.limit)
     query += ` LIMIT -1 OFFSET ${args.offset}`
 
+  if (args.sort) {
+    const orders: string[] = []
+    query += ' ORDER BY '
+    for (const [key, value] of Object.entries(args.sort))
+      orders.push(`${key} ${value}`)
+    query += orders.join(', ')
+  }
+
   if (args.offset && args.limit)
     query += ` LIMIT ${args.limit} OFFSET ${args.offset}`
 

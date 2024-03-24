@@ -277,4 +277,77 @@ describe('select tests', () => {
     ]
     expect(actual).toStrictEqual(expectation)
   })
+  it('selects multiple entries with the OR statement and sorts them in ascending order by id', async () => {
+    const SQL = await sql({
+      locateFile: () => {
+        return 'playground/public/sql-wasm.wasm'
+      },
+    })
+    const db = new SQL.Database()
+    const { createTable, Insert, Select } = await Sibyl<Tables>(db)
+
+    createTable('first', {
+      id: {
+        autoincrement: true,
+        type: 'INTEGER',
+        nullable: false,
+        primary: true,
+        unique: true,
+      },
+      location: {
+        type: 'char',
+      },
+      name: {
+        type: 'char',
+      },
+      booleanTest: {
+        type: 'bool',
+      },
+    })
+    Insert('first', [
+      {
+        name: 'Craig',
+        id: 2344,
+        location: 'Brighton',
+        booleanTest: true,
+      },
+      {
+        name: 'Bob',
+        id: 1,
+        location: 'Brighton',
+        booleanTest: false,
+      },
+      {
+        name: 'Chris',
+        id: 2,
+        location: 'Cornwall',
+        booleanTest: false,
+      },
+    ])
+
+    const actual = Select('first', {
+      where: {
+        location: 'Brighton',
+      },
+      sort: {
+        id: 'ASC',
+      },
+    })
+
+    const expectation = [
+      {
+        id: 1,
+        location: 'Brighton',
+        name: 'Bob',
+        booleanTest: 0,
+      },
+      {
+        name: 'Craig',
+        id: 2344,
+        location: 'Brighton',
+        booleanTest: 1,
+      },
+    ]
+    expect(actual).toStrictEqual(expectation)
+  })
 })
