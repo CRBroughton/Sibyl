@@ -117,7 +117,6 @@ function Delete<K extends TableKeys>(table: K, args: DeleteArgs<AccessTable<K>>)
 
 return {
   createTable,
-  formatInsertStatement,
   Select,
   All,
   Insert,
