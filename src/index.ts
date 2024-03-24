@@ -78,9 +78,11 @@ function All<K extends TableKeys>(table: K, args?: AllArgs<K>) {
   let query = `SELECT * from ${String(table)}`
 
   if (args !== undefined && args.sort) {
+    const orders: string[] = []
     query += ' ORDER BY '
     for (const [key, value] of Object.entries(args.sort))
-      query += `${key} ${value}`
+      orders.push(`${key} ${value}`)
+    query += orders.join(', ')
   }
 
   const record = db.exec(query)
