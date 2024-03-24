@@ -60,14 +60,14 @@ describe('delete tests', () => {
 
     let expectation = [
       {
-        name: 'Craig',
-        id: 2344,
-        location: 'Brighton',
-      },
-      {
         id: 1,
         name: 'Bob',
         location: 'Cornwall',
+      },
+      {
+        name: 'Craig',
+        id: 2344,
+        location: 'Brighton',
       },
     ]
     expect(actual).toStrictEqual(expectation)
