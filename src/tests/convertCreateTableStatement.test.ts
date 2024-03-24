@@ -19,6 +19,7 @@ describe('convertCreateTableStatement tests', () => {
       },
       name: {
         type: 'char',
+        nullable: false,
       },
     })
 
