@@ -212,4 +212,26 @@ describe('buildSelectQuery tests', () => {
 
     expect(actual).toStrictEqual(expectation)
   })
+  it('builds select query with multiple sorting variables', async () => {
+    const actual = buildSelectQuery<TableRow>('test', {
+      where: {
+        OR: [
+          {
+            id: 1,
+          },
+          {
+            id: 2,
+          },
+        ],
+      },
+      sort: {
+        id: 'DESC',
+        name: 'ASC',
+      },
+    })
+
+    const expectation = `SELECT * from test WHERE id = '1' OR id = '2' ORDER BY id DESC, name ASC;`
+
+    expect(actual).toStrictEqual(expectation)
+  })
 })
