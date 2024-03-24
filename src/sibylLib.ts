@@ -30,6 +30,13 @@ export function sortKeys<T extends { [key: string]: any }>(arr: T[]): T[] {
   })
 }
 
+export function sortBy<T>(elements: T[], key: keyof T, order: 'ASC' | 'DESC' = 'ASC') {
+  if (order === 'ASC')
+    return elements.slice().sort((a, b) => (a[key] > b[key]) ? 1 : ((b[key] > a[key]) ? -1 : 0))
+  else if (order === 'DESC')
+    return elements.slice().sort((a, b) => (b[key] > a[key]) ? 1 : ((a[key] > b[key]) ? -1 : 0))
+}
+
 export function objectToWhereClause<T>(obj: Partial<T>): string {
   const clauses = []
   for (const key in obj) {
