@@ -69,11 +69,25 @@ To create a new table, use the `createTable` command:
 
 ```typescript
 createTable('firstTable', { // inferred table name and entry
-  id: 'int', // only allows for known data types ('int', 'char', 'blob')
-  job: 'char',
-  name: 'char',
-  sex: 'char',
-  hasReadTheReadme: 'bool'
+  id: {
+    autoincrement: true,
+    type: 'INTEGER', // only allows for known data types ('int', 'char', 'blob')
+    nullable: false,
+    primary: true,
+    unique: true,
+  },
+  job: {
+    type: 'char',
+  },
+  name: {
+    type: 'char',
+  },
+  sex: {
+    type: 'char',
+  },
+  hasReadTheReadme: {
+    type: 'bool',
+  },
 })
 ```
 
