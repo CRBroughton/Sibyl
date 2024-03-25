@@ -1,3 +1,9 @@
+export type SibylResponse<T> = {
+  [Key in keyof T]:
+  T[Key] extends boolean ? 0 | 1 :
+    T[Key]
+}
+
 export interface DBEntry<T> {
   type: T
   primary?: boolean

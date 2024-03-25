@@ -1,8 +1,10 @@
-import type { DBEntry } from '../types'
 import type {
-  DataStructure,
+  DBEntry,
   SelectArgs,
   SibylResponse,
+} from '../types'
+import type {
+  DataStructure,
   UpdateArgs,
 } from './types'
 

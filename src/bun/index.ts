@@ -1,5 +1,9 @@
 import type { Database, SQLQueryBindings } from 'bun:sqlite'
-import type { MappedTable, SelectArgs } from '../types'
+import type {
+  MappedTable,
+  SelectArgs,
+  SibylResponse,
+} from '../types'
 import {
   buildSelectQuery,
   convertCreateTableStatement,
@@ -16,10 +20,10 @@ function createTable<T extends TableKeys>(table: T, tableRow: MappedTable<Access
 function Insert() { }
 function Select<T extends TableKeys>(table: T, args: SelectArgs<AccessTable<T>>) {
   const query = buildSelectQuery(String(table), args)
-  const record = db.query<AccessTable<T>, SQLQueryBindings[]>(query)
+  const record = db.query<SibylResponse<AccessTable<T>>, SQLQueryBindings[]>(query)
 
   if (record !== undefined)
-    return record
+    return record.all()[0]
 
   return undefined
 }
@@ -31,7 +35,7 @@ function Create<T extends TableKeys>(table: T, entry: AccessTable<T>) {
   })
 
   if (result !== undefined)
-    return result.all()[0]
+    return result
 
   return undefined
 }
