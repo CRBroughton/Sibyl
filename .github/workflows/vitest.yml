@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: [develop, master]
 jobs:
-  vitest:
+  bun_test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
