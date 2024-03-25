@@ -1,5 +1,5 @@
 import type { Database } from 'sql.js'
-import type { MappedTable } from '../types'
+import type { MappedTable, SelectArgs, Sort } from '../types'
 import {
   buildSelectQuery,
   buildUpdateQuery,
@@ -11,8 +11,6 @@ import {
 } from './sibylLib'
 import type {
   DeleteArgs,
-  SelectArgs,
-  Sort,
   UpdateArgs,
 } from './types'
 
