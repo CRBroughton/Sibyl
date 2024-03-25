@@ -1,4 +1,4 @@
-name: Vitest Tests
+name: Bun Tests
 
 env:
   VERSION: v1.10.2
