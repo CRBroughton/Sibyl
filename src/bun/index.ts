@@ -1,4 +1,4 @@
-import type { Database } from 'bun:sqlite'
+import type { Database, SQLQueryBindings } from 'bun:sqlite'
 import type { MappedTable, SelectArgs } from '../types'
 import {
   buildSelectQuery,
@@ -16,7 +16,7 @@ function createTable<T extends TableKeys>(table: T, tableRow: MappedTable<Access
 function Insert() { }
 function Select<T extends TableKeys>(table: T, args: SelectArgs<AccessTable<T>>) {
   const query = buildSelectQuery(String(table), args)
-  const record = db.query(query)
+  const record = db.query<AccessTable<T>, SQLQueryBindings[]>(query)
 
   if (record !== undefined)
     return record
