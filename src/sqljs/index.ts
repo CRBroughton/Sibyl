@@ -1,4 +1,5 @@
 import type { Database } from 'sql.js'
+import type { MappedTable } from '../types'
 import {
   buildSelectQuery,
   buildUpdateQuery,
@@ -9,12 +10,6 @@ import {
   objectToWhereClause,
 } from './sibylLib'
 import type {
-  DBBlob,
-  DBBoolean,
-  DBDate,
-  DBNumber,
-  DBString,
-  DBValue,
   DeleteArgs,
   SelectArgs,
   Sort,
@@ -22,16 +17,6 @@ import type {
 } from './types'
 
 export default async function Sibyl<T extends Record<string, any>>(db: Database) {
-type MappedTable<T> = {
-  [Key in keyof T]:
-  T[Key] extends boolean ? DBValue<DBBoolean> :
-    T[Key] extends number ? DBValue<DBNumber> :
-      T[Key] extends string ? DBValue<DBString> :
-        T[Key] extends Date ? DBValue<DBDate> :
-          T[Key] extends Blob ? DBValue<DBBlob> :
-            null
-}
-
 type TableKeys = keyof T
 type AccessTable<I extends keyof T> = T[I]
 function createTable<T extends TableKeys>(table: T, tableRow: MappedTable<AccessTable<T>>) {

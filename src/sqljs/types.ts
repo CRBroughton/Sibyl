@@ -1,21 +1,3 @@
-export interface DBEntry<T> {
-  type: T
-  primary?: boolean
-  nullable?: boolean
-  unique?: boolean
-  autoincrement: boolean
-}
-
-export type DBBoolean = 'bool'
-export type DBNumber = 'int' | 'real' | 'INTEGER'
-export type DBString = 'varchar' | 'char'
-export type DBDate = 'text' | 'int' | 'real'
-export type DBBlob = 'blob'
-
-export type DBValue<T> = T extends DBNumber
-  ? DBEntry<T>
-  : Omit<DBEntry<T>, 'autoincrement'>
-
 export type SibylResponse<T> = {
   [Key in keyof T]:
   T[Key] extends boolean ? 0 | 1 :

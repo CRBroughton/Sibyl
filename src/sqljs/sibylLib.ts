@@ -1,4 +1,10 @@
-import type { DBEntry, DataStructure, SelectArgs, SibylResponse, UpdateArgs } from './types'
+import type { DBEntry } from '../types'
+import type {
+  DataStructure,
+  SelectArgs,
+  SibylResponse,
+  UpdateArgs,
+} from './types'
 
 export function formatInsertStatement<T extends Record<string, any>>(table: string, structs: T[]) {
   const sortedStructs = sortKeys(structs)
