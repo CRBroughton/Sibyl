@@ -25,7 +25,7 @@ jobs:
       - name: Download WASM DB
         run: wget https://github.com/sql-js/sql.js/releases/download/$VERSION/sqljs-wasm.zip && unzip sqljs-wasm.zip -d playground/public
       - name: Run unit tests
-        run: bun run test
+        run: bun test
       - uses: actions/upload-artifact@v3
         if: always()
         with:
