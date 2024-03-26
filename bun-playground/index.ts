@@ -78,7 +78,7 @@ const selectedREsponseWithORStatement = Select('firstTable', {
         name: 'Craig',
       },
       {
-        hasReadTheReadme: true,
+        hasReadTheReadme: 1,
       },
     ],
   },
