@@ -32,7 +32,7 @@ function Select<T extends TableKeys>(table: T, args: SelectArgs<AccessTable<T>>)
   const record = db.query<SibylResponse<AccessTable<T>>, SQLQueryBindings[]>(query)
 
   if (record !== undefined)
-    return record.all()[0]
+    return record.all()
 
   return undefined
 }
