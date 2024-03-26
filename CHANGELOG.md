@@ -1,5 +1,9 @@
 # @crbroughton/sibyl
 
+## 2.1.1
+
+- Bump version because of npm
+
 ## 2.1.0
 
 ### Minor Changes
