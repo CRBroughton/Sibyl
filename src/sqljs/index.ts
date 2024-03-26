@@ -1,5 +1,5 @@
 import type { Database } from 'sql.js'
-import type { DeleteArgs, MappedTable, SelectArgs, Sort, UpdateArgs } from '../types'
+import type { DeleteArgs, MappedTable, SelectArgs, SibylResponse, Sort, UpdateArgs } from '../types'
 import {
   buildSelectQuery,
   buildUpdateQuery,
@@ -23,7 +23,7 @@ function Insert<K extends TableKeys>(table: K, rows: AccessTable<K>[]) {
   db.run(statement)
 }
 
-function Select<T extends TableKeys>(table: T, args: SelectArgs<AccessTable<T>>) {
+function Select<T extends TableKeys>(table: T, args: SelectArgs<SibylResponse<AccessTable<T>>>) {
   const query = buildSelectQuery(String(table), args)
   const record = db.exec(query)
 

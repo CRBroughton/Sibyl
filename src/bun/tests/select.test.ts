@@ -386,7 +386,7 @@ describe('select tests', () => {
             name: 'Craig',
           },
           {
-            hasReadTheReadme: true,
+            hasReadTheReadme: 1,
           },
         ],
       },

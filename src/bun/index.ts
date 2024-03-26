@@ -27,7 +27,7 @@ function Insert<K extends TableKeys>(table: K, rows: AccessTable<K>[]) {
   const statement = formatInsertStatement(String(table), rows)
   db.run(statement)
 }
-function Select<T extends TableKeys>(table: T, args: SelectArgs<AccessTable<T>>) {
+function Select<T extends TableKeys>(table: T, args: SelectArgs<SibylResponse<AccessTable<T>>>) {
   const query = buildSelectQuery(String(table), args)
   const record = db.query<SibylResponse<AccessTable<T>>, SQLQueryBindings[]>(query)
 
