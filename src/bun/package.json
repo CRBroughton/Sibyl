@@ -1,7 +1,7 @@
 {
   "name": "@crbroughton/sibyl_bun",
   "type": "module",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A lightweight query builder for Bun",
   "author": "Craig R Broughton",
   "license": "MIT",
