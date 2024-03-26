@@ -56,7 +56,7 @@ function All<K extends TableKeys>(table: K, args?: { sort: Sort<Partial<AccessTa
     query += orders.join(', ')
   }
 
-  const record = db.query(query)
+  const record = db.query<SibylResponse<AccessTable<K>>, SQLQueryBindings[]>(query)
 
   if (record !== undefined)
     return record.all()
