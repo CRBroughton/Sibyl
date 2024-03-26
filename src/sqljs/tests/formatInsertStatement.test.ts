@@ -33,7 +33,7 @@ describe('formatInsertStatment tests', () => {
       },
     ])
 
-    expect(actual).toStrictEqual('INSERT INTO test VALUES (1,"Brighton","Craig"); INSERT INTO test VALUES (2,"Cornwall","Bob");')
+    expect(actual).toStrictEqual('INSERT INTO test VALUES (1,"Brighton","Craig"), (2,"Cornwall","Bob");')
   })
   it('catches incorrect insert keys being the wrong way around and fixes itself', async () => {
     const actual = formatInsertStatement<TableRow>('test', [
@@ -49,6 +49,6 @@ describe('formatInsertStatment tests', () => {
       },
     ])
 
-    expect(actual).toStrictEqual('INSERT INTO test VALUES (1,"Brighton","Craig"); INSERT INTO test VALUES (2,"Cornwall","Bob");')
+    expect(actual).toStrictEqual('INSERT INTO test VALUES (1,"Brighton","Craig"), (2,"Cornwall","Bob");')
   })
 })

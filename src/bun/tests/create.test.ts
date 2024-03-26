@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'bun:test'
 import { Database } from 'bun:sqlite'
 import bSibyl from '../index'
 
@@ -47,6 +47,6 @@ describe('create tests', () => {
       name: 'Craig',
       booleanTest: 1,
     }
-    expect(expectation).toStrictEqual(actual)
+    expect(expectation).toStrictEqual(actual!)
   })
 })
