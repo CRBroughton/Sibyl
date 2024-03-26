@@ -15,7 +15,7 @@ import {
   objectToWhereClause,
 } from '../sibylLib'
 
-export default async function bSibyl<T extends Record<string, any>>(db: Database) {
+export default async function Sibyl<T extends Record<string, any>>(db: Database) {
 type TableKeys = keyof T
 type AccessTable<I extends keyof T> = T[I]
 function createTable<T extends TableKeys>(table: T, tableRow: MappedTable<AccessTable<T>>) {

@@ -1,5 +1,7 @@
-import Sibyl from './sqljs'
+import sql from './sqljs'
+import bun from './bun'
 
 export {
-  Sibyl,
+  sql as SibylSQL,
+  bun as SibylBUN,
 }
