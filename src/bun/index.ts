@@ -1,9 +1,11 @@
 import type { Database, SQLQueryBindings } from 'bun:sqlite'
 import type {
+  DeleteArgs,
   MappedTable,
   SelectArgs,
   SibylResponse,
   Sort,
+  UpdateArgs,
 } from '../types'
 import {
   buildSelectQuery,
@@ -11,8 +13,7 @@ import {
   convertCreateTableStatement,
   formatInsertStatement,
   objectToWhereClause,
-} from '../sqljs/sibylLib'
-import type { DeleteArgs, UpdateArgs } from '../sqljs/types'
+} from '../sibylLib'
 
 export default async function bSibyl<T extends Record<string, any>>(db: Database) {
 type TableKeys = keyof T

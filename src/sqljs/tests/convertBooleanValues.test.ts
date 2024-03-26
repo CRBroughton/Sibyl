@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { convertBooleanValues } from '../sibylLib'
+import { convertBooleanValues } from '../../sibylLib'
 
 interface TableRow {
   id: number

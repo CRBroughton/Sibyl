@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { convertCreateTableStatement } from '../sibylLib'
+import { convertCreateTableStatement } from '../../sibylLib'
 import type { DBNumber, DBString, DBValue } from '../types'
 
 interface TableRow {

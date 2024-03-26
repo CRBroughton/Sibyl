@@ -1,5 +1,5 @@
 import type { Database } from 'sql.js'
-import type { MappedTable, SelectArgs, Sort } from '../types'
+import type { DeleteArgs, MappedTable, SelectArgs, Sort, UpdateArgs } from '../types'
 import {
   buildSelectQuery,
   buildUpdateQuery,
@@ -8,11 +8,7 @@ import {
   convertToObjects,
   formatInsertStatement,
   objectToWhereClause,
-} from './sibylLib'
-import type {
-  DeleteArgs,
-  UpdateArgs,
-} from './types'
+} from '../sibylLib'
 
 export default async function Sibyl<T extends Record<string, any>>(db: Database) {
 type TableKeys = keyof T

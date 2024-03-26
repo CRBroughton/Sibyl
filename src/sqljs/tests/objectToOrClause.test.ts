@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { objectToOrClause } from '../sibylLib'
+import { objectToOrClause } from '../../sibylLib'
 
 interface TableRow {
   id: number

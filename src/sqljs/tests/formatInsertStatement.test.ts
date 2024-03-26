@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatInsertStatement } from '../sibylLib'
+import { formatInsertStatement } from '../../sibylLib'
 
 interface TableRow {
   id: number
