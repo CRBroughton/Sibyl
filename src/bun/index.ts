@@ -10,8 +10,9 @@ import {
   buildUpdateQuery,
   convertCreateTableStatement,
   formatInsertStatement,
+  objectToWhereClause,
 } from '../sqljs/sibylLib'
-import type { UpdateArgs } from '../sqljs/types'
+import type { DeleteArgs, UpdateArgs } from '../sqljs/types'
 
 export default async function bSibyl<T extends Record<string, any>>(db: Database) {
 type TableKeys = keyof T
@@ -79,7 +80,9 @@ function Update<K extends TableKeys>(table: K, args: UpdateArgs<AccessTable<K>>)
 
   return undefined
 }
-function Delete() { }
+function Delete<K extends TableKeys>(table: K, args: DeleteArgs<AccessTable<K>>) {
+  db.run(`DELETE FROM ${String(table)} WHERE ${objectToWhereClause(args.where)}`)
+}
 
 return {
   createTable,
