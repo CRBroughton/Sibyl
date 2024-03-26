@@ -44,7 +44,7 @@ function Create<T extends TableKeys>(table: T, entry: AccessTable<T>) {
   })
 
   if (result !== undefined)
-    return result
+    return result[0]
 
   return undefined
 }
@@ -77,7 +77,7 @@ function Update<K extends TableKeys>(table: K, args: UpdateArgs<AccessTable<K>>)
   })
 
   if (result !== undefined)
-    return result
+    return result[0]
 
   return undefined
 }
