@@ -34,9 +34,6 @@
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
-  "dependencies": {
-    "sql.js": "^1.10.2"
-  },
   "devDependencies": {
     "@antfu/eslint-config": "^2.8.0",
     "@changesets/cli": "^2.27.1",
@@ -44,6 +41,7 @@
     "@types/bun": "latest",
     "@types/sql.js": "^1.4.9",
     "bun-plugin-dts": "^0.2.1",
-    "eslint": "^8.57.0"
+    "eslint": "^8.57.0",
+    "sql.js": "^1.10.2"
   }
 }
