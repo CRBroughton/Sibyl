@@ -25,11 +25,11 @@ jobs:
       - name: Install dependencies for sqljs
         run: cd src/sqljs && bun install
       - name: Run unit tests for sqljs
-        run: cd src/sqljs bun test
+        run: cd src/sqljs && bun test
       - name: Install dependencies for Bun
         run: cd src/bun && bun install
       - name: Run unit tests for Bun
-        run: cd src/bun bun test
+        run: cd src/bun && bun test
       - uses: actions/upload-artifact@v3
         if: always()
         with:
