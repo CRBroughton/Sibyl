@@ -1,12 +1,26 @@
 # @crbroughton/sibyl
 
+## 2.1.1
+
+- Bump version because of npm
+
+## 2.1.0
+
+### Minor Changes
+
+- e5d74e0: Add Bun support to Sibyl - See README.md for how to install with Bun
+
+### Patch Changes
+
+- 0092e73: fix boolean lookup when using the Select OR query
+
 ## 2.0.0
 
-Version 2.0.0 introduces some breaking API changes to how you create tables; Please see the README.md 
+Version 2.0.0 introduces some breaking API changes to how you create tables; Please see the README.md
 file for more information. A new type, SibylResponse, is introduced; You can wrap you table type with this
 type, to help convert boolean values. Sibyl now also supports more datatypes, including booleans, variable
-characters, and blob types. Siyby also now supports OR statements, again, see the README.md file for 
-more information. You can also now sort on both the 
+characters, and blob types. Siyby also now supports OR statements, again, see the README.md file for
+more information. You can also now sort on both the
 Select function and the All function.
 
 ### Major Changes

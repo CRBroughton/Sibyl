@@ -1,5 +1,6 @@
-import { describe, expect, it } from 'vitest'
-import { convertBooleanValues } from '../sibylLib'
+import { describe, expect, it } from 'bun:test'
+import { convertBooleanValues } from '../../sibylLib'
+import type { SibylResponse } from '../../types'
 
 interface TableRow {
   id: number
@@ -25,7 +26,7 @@ describe('convertBooleanValues tests', () => {
       },
     ])
 
-    const expectation = [
+    const expectation: SibylResponse<TableRow>[] = [
       {
         id: 1,
         booleanTest: 0,

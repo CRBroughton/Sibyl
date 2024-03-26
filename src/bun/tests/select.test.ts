@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest'
-import sql from 'sql.js'
+import { describe, expect, it } from 'bun:test'
+import { Database } from 'bun:sqlite'
 import Sibyl from '../index'
+import type { SibylResponse } from '../../types'
 
 interface TableRow {
   id: number
@@ -15,12 +16,7 @@ interface Tables {
 
 describe('select tests', () => {
   it('select an entry in the DB', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
+    const db = new Database(':memory:')
     const { createTable, Create, Select } = await Sibyl<Tables>(db)
 
     createTable('first', {
@@ -54,7 +50,7 @@ describe('select tests', () => {
       },
     })
 
-    const expectation = [{
+    const expectation: SibylResponse<TableRow>[] = [{
       id: 2344,
       location: 'Brighton',
       name: 'Craig',
@@ -63,12 +59,7 @@ describe('select tests', () => {
     expect(actual).toStrictEqual(expectation)
   })
   it('selects multiple entries in the DB', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
+    const db = new Database(':memory:')
     const { createTable, Insert, Select } = await Sibyl<Tables>(db)
 
     createTable('first', {
@@ -110,7 +101,7 @@ describe('select tests', () => {
       },
     })
 
-    const expectation = [
+    const expectation: SibylResponse<TableRow>[] = [
       {
         name: 'Bob',
         id: 1,
@@ -127,12 +118,7 @@ describe('select tests', () => {
     expect(actual).toStrictEqual(expectation)
   })
   it('selects multiple entries with the OR statement', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
+    const db = new Database(':memory:')
     const { createTable, Insert, Select } = await Sibyl<Tables>(db)
 
     createTable('first', {
@@ -186,7 +172,7 @@ describe('select tests', () => {
       },
     })
 
-    const expectation = [
+    const expectation: SibylResponse<TableRow>[] = [
       {
         name: 'Chris',
         id: 2,
@@ -203,12 +189,7 @@ describe('select tests', () => {
     expect(actual).toStrictEqual(expectation)
   })
   it('selects multiple entries with the OR statement (mixed object)', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
+    const db = new Database(':memory:')
     const { createTable, Insert, Select } = await Sibyl<Tables>(db)
 
     createTable('first', {
@@ -261,7 +242,7 @@ describe('select tests', () => {
       },
     })
 
-    const expectation = [
+    const expectation: SibylResponse<TableRow>[] = [
       {
         name: 'Chris',
         id: 2,
@@ -278,12 +259,7 @@ describe('select tests', () => {
     expect(actual).toStrictEqual(expectation)
   })
   it('selects multiple entries with the OR statement and sorts them in ascending order by id', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
+    const db = new Database(':memory:')
     const { createTable, Insert, Select } = await Sibyl<Tables>(db)
 
     createTable('first', {
@@ -334,7 +310,7 @@ describe('select tests', () => {
       },
     })
 
-    const expectation = [
+    const expectation: SibylResponse<TableRow>[] = [
       {
         id: 1,
         location: 'Brighton',
@@ -346,6 +322,87 @@ describe('select tests', () => {
         id: 2344,
         location: 'Brighton',
         booleanTest: 1,
+      },
+    ]
+    expect(actual).toStrictEqual(expectation)
+  })
+  it('selects using boolean value', async () => {
+    const db = new Database(':memory:')
+    // Create table schema
+    interface firstTable {
+      id: number
+      name: string
+      location: string
+      hasReadTheReadme: boolean
+    }
+    interface Tables {
+      firstTable: firstTable
+    }
+    const { createTable, Insert, Select } = await Sibyl<Tables>(db)
+
+    createTable('firstTable', {
+      id: {
+        autoincrement: true,
+        type: 'INTEGER',
+        primary: true,
+        unique: true,
+      },
+      name: {
+        type: 'char',
+      },
+      hasReadTheReadme: {
+        type: 'bool',
+      },
+      location: {
+        type: 'char',
+      },
+    })
+
+    Insert('firstTable', [
+      {
+        id: 1,
+        hasReadTheReadme: true,
+        location: 'Brighton',
+        name: 'Craig',
+      },
+      {
+        id: 2,
+        hasReadTheReadme: false,
+        location: 'Leeds',
+        name: 'Bob',
+      },
+      {
+        id: 3,
+        hasReadTheReadme: true,
+        location: 'Brighton',
+        name: 'David',
+      },
+    ])
+
+    const actual = Select('firstTable', {
+      where: {
+        OR: [
+          {
+            name: 'Craig',
+          },
+          {
+            hasReadTheReadme: 1,
+          },
+        ],
+      },
+    })
+    const expectation: SibylResponse<firstTable>[] = [
+      {
+        id: 1,
+        hasReadTheReadme: 1,
+        location: 'Brighton',
+        name: 'Craig',
+      },
+      {
+        id: 3,
+        hasReadTheReadme: 1,
+        location: 'Brighton',
+        name: 'David',
       },
     ]
     expect(actual).toStrictEqual(expectation)

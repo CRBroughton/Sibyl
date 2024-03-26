@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
-import { convertToObjects } from '../sibylLib'
+import { describe, expect, it } from 'bun:test'
+import { convertToObjects } from '../../sibylLib'
 
 describe('convertToObjects Tests', () => {
   it('converts the raw DB data into the correct shape', async () => {

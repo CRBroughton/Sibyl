@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
-import { buildUpdateQuery } from '../sibylLib'
+import { describe, expect, it } from 'bun:test'
+import { buildUpdateQuery } from '../../sibylLib'
 
 interface TableRow {
   id: number

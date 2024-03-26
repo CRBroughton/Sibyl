@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
-import sql from 'sql.js'
+import { describe, expect, it } from 'bun:test'
+import { Database } from 'bun:sqlite'
 import Sibyl from '../index'
 
 interface TableRow {
@@ -14,12 +14,7 @@ interface Tables {
 
 describe('all tests', () => {
   it('returns all data available in the given table', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
+    const db = new Database(':memory:')
     const { createTable, Insert, All } = await Sibyl<Tables>(db)
 
     createTable('first', {
@@ -68,12 +63,7 @@ describe('all tests', () => {
     expect(actual).toStrictEqual(expectation)
   })
   it('returns all data available in the given table and sorts then in ascending order by ID', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
+    const db = new Database(':memory:')
     const { createTable, Insert, All } = await Sibyl<Tables>(db)
 
     createTable('first', {
@@ -126,12 +116,7 @@ describe('all tests', () => {
     expect(actual).toStrictEqual(expectation)
   })
   it('returns all data available in the given table and sorts then in descending order by ID', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
+    const db = new Database(':memory:')
     const { createTable, Insert, All } = await Sibyl<Tables>(db)
 
     createTable('first', {

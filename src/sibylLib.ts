@@ -1,9 +1,16 @@
-import type { DBEntry, DataStructure, SelectArgs, SibylResponse, UpdateArgs } from './types'
+import type {
+  DBEntry,
+  DataStructure,
+  SelectArgs,
+  SibylResponse,
+  UpdateArgs,
+} from './types'
 
 export function formatInsertStatement<T extends Record<string, any>>(table: string, structs: T[]) {
   const sortedStructs = sortKeys(structs)
   const flattenedInsert = sortedStructs.map(obj => Object.values(obj))
   let insertions: string = ''
+  insertions += `INSERT INTO ${table} VALUES `
   for (const insert of flattenedInsert) {
     let row: T | string[] = []
     for (const cell of insert) {
@@ -13,10 +20,12 @@ export function formatInsertStatement<T extends Record<string, any>>(table: stri
       if (typeof cell === 'string')
         row = [...row, `"${cell}"`]
     }
-    insertions += `INSERT INTO ${table} VALUES (${row}); `
+    insertions += `(${row}), `
   }
-  insertions.slice(0, -1)
-  return insertions.trim()
+  insertions = insertions.slice(0, -2)
+  insertions.trim()
+  insertions += ';'
+  return insertions
 }
 
 export function sortKeys<T extends { [key: string]: any }>(arr: T[]): T[] {

@@ -1,8 +1,8 @@
 {
-  "name": "@crbroughton/sibyl",
+  "name": "@crbroughton/sibyl_bun",
   "type": "module",
-  "version": "2.1.0",
-  "description": "A lightweight query builder",
+  "version": "2.1.2",
+  "description": "A lightweight query builder for Bun",
   "author": "Craig R Broughton",
   "license": "MIT",
   "homepage": "https://github.com/crbroughton/sibyl",
@@ -18,15 +18,27 @@
     "typescript",
     "bun"
   ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "build": "bun run build.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "changeset": "npx changeset",
     "changeset:status": "npx changeset status --verbose",
-    "changeset:version": "npx changeset version"
+    "changeset:version": "npx changeset version",
+    "publish": "bun run build && npm publish --access=public"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.8.0",
     "@changesets/cli": "^2.27.1",
+    "@faker-js/faker": "^8.4.1",
     "@types/bun": "latest",
-    "eslint": "^8.57.0"
+    "bun-plugin-dts": "^0.2.1"
   }
 }

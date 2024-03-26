@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest'
-import sql from 'sql.js'
-import Sibyl from '../index'
+import { describe, expect, it } from 'bun:test'
+import { Database } from 'bun:sqlite'
+import bSibyl from '../index'
 
 interface TableRow {
   id: number
@@ -15,13 +15,8 @@ interface Tables {
 
 describe('create tests', () => {
   it('creates a new entry in the DB', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
-    const { createTable, Create } = await Sibyl<Tables>(db)
+    const db = new Database(':memory:')
+    const { createTable, Create } = await bSibyl<Tables>(db)
 
     createTable('first', {
       id: {
@@ -52,6 +47,6 @@ describe('create tests', () => {
       name: 'Craig',
       booleanTest: 1,
     }
-    expect(actual).toStrictEqual(expectation)
+    expect(expectation).toStrictEqual(actual!)
   })
 })

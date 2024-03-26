@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
-import { objectToOrClause } from '../sibylLib'
+import { describe, expect, it } from 'bun:test'
+import { objectToOrClause } from '../../sibylLib'
 
 interface TableRow {
   id: number

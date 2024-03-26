@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
-import { sortKeys } from '../sibylLib'
+import { describe, expect, it } from 'bun:test'
+import { sortKeys } from '../../sibylLib'
 
 interface TableRow {
   id: number

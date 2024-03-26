@@ -1,4 +1,4 @@
-name: Vitest Tests
+name: Bun Tests
 
 env:
   VERSION: v1.10.2
@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: [develop, master]
 jobs:
-  vitest:
+  bun_test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -20,15 +20,17 @@ jobs:
       - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
-      - name: Install FE dependencies
-        run: bun install
       - name: Download WASM DB
         run: wget https://github.com/sql-js/sql.js/releases/download/$VERSION/sqljs-wasm.zip && unzip sqljs-wasm.zip -d playground/public
+      - name: Install dependencies for sqljs
+        run: cd src/sqljs && bun install
+      - name: Install dependencies for Bun
+        run: cd src/bun && bun install
       - name: Run unit tests
-        run: bun run test
+        run: bun test
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: vitest-report
-          path: vitest-report/
+          name: bun-report
+          path: bun-report/
           retention-days: 30
