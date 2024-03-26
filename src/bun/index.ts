@@ -7,9 +7,11 @@ import type {
 } from '../types'
 import {
   buildSelectQuery,
+  buildUpdateQuery,
   convertCreateTableStatement,
   formatInsertStatement,
 } from '../sqljs/sibylLib'
+import type { UpdateArgs } from '../sqljs/types'
 
 export default async function bSibyl<T extends Record<string, any>>(db: Database) {
 type TableKeys = keyof T
@@ -64,7 +66,19 @@ function All<K extends TableKeys>(table: K, args?: { sort: Sort<Partial<AccessTa
   return undefined
 }
 
-function Update() { }
+function Update<K extends TableKeys>(table: K, args: UpdateArgs<AccessTable<K>>) {
+  const query = buildUpdateQuery(table, args)
+  db.exec(query)
+
+  const result = Select(table, {
+    where: args.where,
+  })
+
+  if (result !== undefined)
+    return result
+
+  return undefined
+}
 function Delete() { }
 
 return {
