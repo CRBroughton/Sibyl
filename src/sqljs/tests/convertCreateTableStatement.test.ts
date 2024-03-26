@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'bun:test'
 import { convertCreateTableStatement } from '../../sibylLib'
-import type { DBNumber, DBString, DBValue } from '../types'
+import type { DBNumber, DBString, DBValue } from '../../types'
 
 interface TableRow {
   id: DBValue<DBNumber>

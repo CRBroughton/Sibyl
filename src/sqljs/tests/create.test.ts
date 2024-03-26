@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'bun:test'
 import sql from 'sql.js'
 import Sibyl from '../index'
+import type { SibylResponse } from '../../types'
 
 interface TableRow {
   id: number
@@ -46,7 +47,7 @@ describe('create tests', () => {
       location: 'Brighton',
       booleanTest: true,
     })
-    const expectation = {
+    const expectation: SibylResponse<TableRow> = {
       id: 2344,
       location: 'Brighton',
       name: 'Craig',

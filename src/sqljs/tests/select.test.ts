@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'bun:test'
 import sql from 'sql.js'
 import Sibyl from '../index'
+import type { SibylResponse } from '../../types'
 
 interface TableRow {
   id: number
@@ -54,7 +55,7 @@ describe('select tests', () => {
       },
     })
 
-    const expectation = [{
+    const expectation: SibylResponse<TableRow>[] = [{
       id: 2344,
       location: 'Brighton',
       name: 'Craig',
@@ -110,7 +111,7 @@ describe('select tests', () => {
       },
     })
 
-    const expectation = [
+    const expectation: SibylResponse<TableRow>[] = [
       {
         name: 'Bob',
         id: 1,
@@ -186,7 +187,7 @@ describe('select tests', () => {
       },
     })
 
-    const expectation = [
+    const expectation: SibylResponse<TableRow>[] = [
       {
         name: 'Chris',
         id: 2,
@@ -261,7 +262,7 @@ describe('select tests', () => {
       },
     })
 
-    const expectation = [
+    const expectation: SibylResponse<TableRow>[] = [
       {
         name: 'Chris',
         id: 2,
@@ -334,7 +335,7 @@ describe('select tests', () => {
       },
     })
 
-    const expectation = [
+    const expectation: SibylResponse<TableRow>[] = [
       {
         id: 1,
         location: 'Brighton',
