@@ -1,13 +1,18 @@
 # Sibyl
 
-Sibyl is a lightweight SQLite query builder for <a href="https://github.com/sql-js/sql.js">SQL.js</a>, providing a Prisma-like query builder. Sibyl is in early development,
+Sibyl is a lightweight SQLite query builder for <a href="https://github.com/sql-js/sql.js">SQL.js</a> and <a href="https://bun.sh/docs/api/sqlite">Bun's sqlite3 driver</a>, providing a Prisma-like query builder. Sibyl is in early development,
 so expect breaking changes and rapid development.
 
 ## Getting Started
 
 ### Installation
 
-Sibyl depends on `sql.js`, which provides the lower-level API to interact with your
+Dependant on your chosen SQLite driver, you'll want to follow one
+of the following installation methods:
+
+#### SQL.js Installation
+
+If you choose to use Sibyl with `sql.js`, `sql.js` will provide the lower-level API to interact with your
 embedded SQLite database. You'll also need to install the `.wasm` file that `sql.js`
 provides; Please see their documentation at https://sql.js.org.
 
@@ -17,7 +22,19 @@ With the `.wasm` file now available, you can install Sibyl with the following co
 bun install sql.js @types/sql.js @crbroughton/sibyl
 ```
 
-You can download Sibyl at https://www.npmjs.com/package/@crbroughton/sibyl via NPM.
+#### Bun Installation
+
+If you are using Sibyl with Bun, you should already have access to the driver, and can refer to the <a href="https://bun.sh/docs/api/sqlite">
+Bun documentation</a>. The Bun implemenation of Sibyl can be installed
+with the following command:
+
+```bash
+bun install @crbroughton/sibyl:bun
+```
+Sibyl will then accept the native Bun SQLite `Database`, again, see the <a href="https://bun.sh/docs/api/sqlite">
+Bun documentation</a>.
+
+#### Getting Started
 
 To start off with Sibyl, you'll first have to ensure Sibyl is able to be run inside
 of a top-level async/await file, alongside your `sql.js` database connection. As
@@ -42,7 +59,7 @@ interface Tables {
   secondTable: secondRowType
 }
 
-const SQL = await sql({
+const SQL = await sql({ // sql.js implementation
   locateFile: () => {
     return '/sql-wasm.wasm'
   }
