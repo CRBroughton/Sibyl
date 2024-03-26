@@ -24,12 +24,10 @@ jobs:
         run: wget https://github.com/sql-js/sql.js/releases/download/$VERSION/sqljs-wasm.zip && unzip sqljs-wasm.zip -d playground/public
       - name: Install dependencies for sqljs
         run: cd src/sqljs && bun install
-      - name: Run unit tests for sqljs
-        run: cd src/sqljs && bun test
       - name: Install dependencies for Bun
         run: cd src/bun && bun install
-      - name: Run unit tests for Bun
-        run: cd src/bun && bun test
+      - name: Run unit tests
+        run: bun test
       - uses: actions/upload-artifact@v3
         if: always()
         with:
