@@ -29,7 +29,7 @@ Bun documentation</a>. The Bun implemenation of Sibyl can be installed
 with the following command:
 
 ```bash
-bun install @crbroughton/sibyl:bun
+bun install @crbroughton/sibyl_bun
 ```
 Sibyl will then accept the native Bun SQLite `Database`, again, see the <a href="https://bun.sh/docs/api/sqlite">
 Bun documentation</a>.
