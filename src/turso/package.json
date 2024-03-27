@@ -1,0 +1,45 @@
+{
+  "name": "@crbroughton/sibyl_turso",
+  "type": "module",
+  "version": "2.1.2",
+  "description": "A lightweight query builder for Turso",
+  "author": "Craig R Broughton",
+  "license": "MIT",
+  "homepage": "https://github.com/crbroughton/sibyl",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crbroughton/sibyl.git"
+  },
+  "keywords": [
+    "query builder",
+    "sqlite",
+    "wasm",
+    "embedded",
+    "typescript",
+    "turso"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "bun run build.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "changeset": "npx changeset",
+    "changeset:status": "npx changeset status --verbose",
+    "changeset:version": "npx changeset version",
+    "publish": "bun run build && npm publish --access=public"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1",
+    "@faker-js/faker": "^8.4.1",
+    "@libsql/client": "^0.5.6",
+    "@types/bun": "latest",
+    "bun-plugin-dts": "^0.2.1"
+  }
+}
