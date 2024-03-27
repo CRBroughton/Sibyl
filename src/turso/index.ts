@@ -1,4 +1,4 @@
-import type { Database, SQLQueryBindings } from 'bun:sqlite'
+import type { Client } from '@libsql/core/api'
 import type {
   DeleteArgs,
   MappedTable,
@@ -15,41 +15,41 @@ import {
   objectToWhereClause,
 } from '../sibylLib'
 
-export default async function Sibyl<T extends Record<string, any>>(db: Database) {
+export default async function Sibyl<T extends Record<string, any>>(client: Client) {
 type TableKeys = keyof T
 type AccessTable<I extends keyof T> = T[I]
 function createTable<T extends TableKeys>(table: T, tableRow: MappedTable<AccessTable<T>>) {
   const statement = convertCreateTableStatement(tableRow)
-  db.query(`CREATE TABLE ${String(table)} (${statement})`).run()
+  client.execute(`CREATE TABLE ${String(table)} (${statement})`)
 }
 
 function Insert<K extends TableKeys>(table: K, rows: AccessTable<K>[]) {
   const statement = formatInsertStatement(String(table), rows)
-  db.run(statement)
+  client.execute(statement)
 }
-function Select<T extends TableKeys>(table: T, args: SelectArgs<SibylResponse<AccessTable<T>>>) {
+async function Select<T extends TableKeys>(table: T, args: SelectArgs<SibylResponse<AccessTable<T>>>) {
   const query = buildSelectQuery(String(table), args)
-  const record = db.query<SibylResponse<AccessTable<T>>, SQLQueryBindings[]>(query)
+  const record = await client.execute(query)
 
   if (record !== undefined)
-    return record.all()
+    return record.toJSON()
 
   return undefined
 }
-function Create<T extends TableKeys>(table: T, entry: AccessTable<T>) {
+async function Create<T extends TableKeys>(table: T, entry: AccessTable<T>) {
   const statement = formatInsertStatement(String(table), [entry])
-  db.run(statement)
-  const result = Select(table, {
+  client.execute(statement)
+  const result = await Select(table, {
     where: entry,
   })
 
   if (result !== undefined)
-    return result[0]
+    return result
 
   return undefined
 }
 
-function All<K extends TableKeys>(table: K, args?: { sort: Sort<Partial<AccessTable<K>>> }) {
+async function All<K extends TableKeys>(table: K, args?: { sort: Sort<Partial<AccessTable<K>>> }) {
   let query = `SELECT * from ${String(table)}`
 
   if (args !== undefined && args.sort) {
@@ -60,29 +60,29 @@ function All<K extends TableKeys>(table: K, args?: { sort: Sort<Partial<AccessTa
     query += orders.join(', ')
   }
 
-  const record = db.query<SibylResponse<AccessTable<K>>, SQLQueryBindings[]>(query)
+  const record = await client.execute(query)
 
   if (record !== undefined)
-    return record.all()
+    return record.toJSON()
 
   return undefined
 }
 
-function Update<K extends TableKeys>(table: K, args: UpdateArgs<AccessTable<K>>) {
+async function Update<K extends TableKeys>(table: K, args: UpdateArgs<AccessTable<K>>) {
   const query = buildUpdateQuery(table, args)
-  db.exec(query)
+  client.execute(query)
 
-  const result = Select(table, {
+  const result = await Select(table, {
     where: args.where,
   })
 
   if (result !== undefined)
-    return result[0]
+    return result
 
   return undefined
 }
-function Delete<K extends TableKeys>(table: K, args: DeleteArgs<AccessTable<K>>) {
-  db.run(`DELETE FROM ${String(table)} WHERE ${objectToWhereClause(args.where)}`)
+async function Delete<K extends TableKeys>(table: K, args: DeleteArgs<AccessTable<K>>) {
+  client.execute(`DELETE FROM ${String(table)} WHERE ${objectToWhereClause(args.where)}`)
 }
 
 return {
