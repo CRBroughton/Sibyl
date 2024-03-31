@@ -4,13 +4,22 @@ export type SibylResponse<T> = {
     T[Key]
 }
 
-export interface DBEntry<T> {
-  type: T
+interface DBPrimary {
   primary?: boolean
   nullable?: boolean
   unique?: boolean
   autoincrement: boolean
 }
+
+export type DBEntry<T> = {
+  type: T
+} & (
+  T extends DBString
+    ? T extends 'varchar'
+      ? DBPrimary & { size: number }
+      : DBPrimary
+    : DBPrimary
+)
 
 export type DBValue<T> = T extends DBNumber
   ? DBEntry<T>
@@ -21,6 +30,7 @@ export type DBNumber = 'int' | 'real' | 'INTEGER'
 export type DBString = 'varchar' | 'char'
 export type DBDate = 'text' | 'int' | 'real'
 export type DBBlob = 'blob'
+export type DBTypes = DBBoolean | DBNumber | DBString | DBDate
 
 export type MappedTable<T> = {
   [Key in keyof T]:
