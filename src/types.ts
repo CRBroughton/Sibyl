@@ -30,6 +30,7 @@ export type DBNumber = 'int' | 'real' | 'INTEGER'
 export type DBString = 'varchar' | 'char'
 export type DBDate = 'text' | 'int' | 'real'
 export type DBBlob = 'blob'
+export type DBTypes = DBBoolean | DBNumber | DBString | DBDate
 
 export type MappedTable<T> = {
   [Key in keyof T]:

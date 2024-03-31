@@ -1,5 +1,6 @@
 import type {
   DBEntry,
+  DBTypes,
   DataStructure,
   SelectArgs,
   SibylResponse,
@@ -138,11 +139,14 @@ export function buildUpdateQuery<T, K extends string | number | symbol = 'id'>(t
 }
 export function convertCreateTableStatement<T extends Record<string, any>>(obj: T): string {
   let result = ''
-  for (const [columnName, columnType] of Object.entries<DBEntry<any>>(sortKeys([obj])[0])) {
+  for (const [columnName, columnType] of Object.entries<DBEntry<DBTypes>>(sortKeys([obj])[0])) {
     result += columnName
 
-    if (columnType.type)
+    if (columnType.type !== 'varchar')
       result += ` ${columnType.type}`
+
+    if (columnType.type === 'varchar' && 'size' in columnType)
+      result += ` ${columnType.type}(${columnType.size})`
 
     if (columnType.primary)
       result += ' PRIMARY KEY'
