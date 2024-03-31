@@ -94,7 +94,8 @@ createTable('firstTable', { // inferred table name and entry
     unique: true,
   },
   job: {
-    type: 'char',
+    type: 'varchar',
+    size: 100, // specify the size of the varchar
   },
   name: {
     type: 'char',
