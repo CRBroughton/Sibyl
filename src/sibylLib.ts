@@ -154,8 +154,9 @@ export function convertCreateTableStatement<T extends Record<string, any>>(obj: 
     if (columnType.autoincrement)
       result += ' AUTOINCREMENT'
 
-    if (columnType.nullable === false)
-      result += ' NOT NULL'
+    result += ' NOT NULL'
+    if (columnType.nullable === true)
+      result = result.replace(' NOT NULL', '')
 
     if (columnType.unique)
       result += ' UNIQUE'
