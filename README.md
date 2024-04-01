@@ -89,13 +89,13 @@ createTable('firstTable', { // inferred table name and entry
   id: {
     autoincrement: true,
     type: 'INTEGER', // only allows for known data types ('int', 'char', 'blob')
-    nullable: false,
     primary: true,
     unique: true,
   },
   job: {
     type: 'varchar',
     size: 100, // specify the size of the varchar
+    nullable: true
   },
   name: {
     type: 'char',

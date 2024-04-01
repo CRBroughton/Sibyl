@@ -6,7 +6,7 @@ export type SibylResponse<T> = {
 
 interface DBPrimary {
   primary?: boolean
-  nullable?: boolean
+  nullable?: true
   unique?: boolean
   autoincrement: boolean
 }
