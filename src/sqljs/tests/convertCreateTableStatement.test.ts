@@ -13,13 +13,11 @@ describe('convertCreateTableStatement tests', () => {
       id: {
         autoincrement: true,
         type: 'INTEGER',
-        nullable: false,
         primary: true,
         unique: true,
       },
       name: {
         type: 'char',
-        nullable: false,
       },
     })
 
@@ -31,14 +29,12 @@ describe('convertCreateTableStatement tests', () => {
       id: {
         autoincrement: true,
         type: 'INTEGER',
-        nullable: false,
         primary: true,
         unique: true,
       },
       name: {
         type: 'varchar',
         size: 200,
-        nullable: false,
       },
     })
 
@@ -50,21 +46,39 @@ describe('convertCreateTableStatement tests', () => {
       id: {
         autoincrement: true,
         type: 'INTEGER',
-        nullable: false,
         primary: true,
         unique: true,
       },
       name: {
         type: 'varchar',
         size: 200,
-        nullable: false,
       },
       location: {
         type: 'char',
       },
     })
-
-    const expectation = 'id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, location char, name varchar(200) NOT NULL'
+    const expectation = 'id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, location char NOT NULL, name varchar(200) NOT NULL'
+    expect(actual).toStrictEqual(expectation)
+  })
+  it('converts a table object to a statement, with nullable values', async () => {
+    const actual = convertCreateTableStatement<TableRow & { location: DBValue<DBString> }>({
+      id: {
+        autoincrement: true,
+        type: 'INTEGER',
+        primary: true,
+        unique: true,
+        nullable: true,
+      },
+      name: {
+        type: 'varchar',
+        size: 200,
+        nullable: true,
+      },
+      location: {
+        type: 'char',
+      },
+    })
+    const expectation = 'id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, location char, name varchar(200) NOT NULL'
     expect(actual).toStrictEqual(expectation)
   })
 })
