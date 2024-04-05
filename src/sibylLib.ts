@@ -148,22 +148,35 @@ export function convertCreateTableStatement<T extends Record<string, any>>(obj: 
     if (columnType.type === 'varchar' && 'size' in columnType)
       result += ` ${columnType.type}(${columnType.size})`
 
-    if (columnType.primary)
-      result += ' PRIMARY KEY'
-
-    if (columnType.autoincrement)
-      result += ' AUTOINCREMENT'
-
-    result += ' NOT NULL'
-    if (columnType.nullable === true)
-      result = result.replace(' NOT NULL', '')
-
-    if (columnType.unique)
-      result += ' UNIQUE'
+    if (columnType.type === 'primary')
+      result += processPrimaryType()
+    else
+      result += processNonPrimaryType(columnType)
 
     result += ', '
   }
 
   result = result.slice(0, -2)
+  return result
+}
+
+function processPrimaryType() {
+  return 'PRIMARY KEY NOT NULL UNIQUE'
+}
+
+function processNonPrimaryType(columnType: DBEntry<Omit<DBTypes, 'primary'>>) {
+  let result = ''
+  if (columnType.primary)
+    result += ' PRIMARY KEY'
+
+  if (columnType.autoincrement)
+    result += ' AUTOINCREMENT'
+
+  result += ' NOT NULL'
+  if (columnType.nullable === true)
+    result = result.replace(' NOT NULL', '')
+
+  if (columnType.unique)
+    result += ' UNIQUE'
   return result
 }
