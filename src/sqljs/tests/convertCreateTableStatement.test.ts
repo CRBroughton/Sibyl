@@ -96,7 +96,7 @@ describe('convertCreateTableStatement tests', () => {
         type: 'char',
       },
     })
-    const expectation = 'id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, location char NOT NULL, name varchar(200)'
+    const expectation = 'id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, location char NOT NULL, name varchar(200)'
     expect(actual).toStrictEqual(expectation)
   })
 })

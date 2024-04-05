@@ -142,14 +142,17 @@ export function convertCreateTableStatement<T extends Record<string, any>>(obj: 
   for (const [columnName, columnType] of Object.entries<DBEntry<DBTypes>>(sortKeys([obj])[0])) {
     result += columnName
 
-    if (columnType.type !== 'varchar')
+    if (columnType.type !== 'varchar' && columnType.type !== 'primary')
       result += ` ${columnType.type}`
+
+    if (columnType.type === 'primary')
+      result += ' INTEGER'
 
     if (columnType.type === 'varchar' && 'size' in columnType)
       result += ` ${columnType.type}(${columnType.size})`
 
     if (columnType.type === 'primary')
-      result += processPrimaryType()
+      result += processPrimaryType(columnType)
     else
       result += processNonPrimaryType(columnType)
 
@@ -160,8 +163,15 @@ export function convertCreateTableStatement<T extends Record<string, any>>(obj: 
   return result
 }
 
-function processPrimaryType() {
-  return 'PRIMARY KEY NOT NULL UNIQUE'
+function processPrimaryType(columnType: DBEntry<DBTypes>) {
+  let result = ' PRIMARY KEY'
+
+  if (columnType.autoincrement)
+    result += ' AUTOINCREMENT'
+
+  result += ' NOT NULL UNIQUE'
+
+  return result
 }
 
 function processNonPrimaryType(columnType: DBEntry<Omit<DBTypes, 'primary'>>) {
