@@ -81,4 +81,22 @@ describe('convertCreateTableStatement tests', () => {
     const expectation = 'id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, location char NOT NULL, name varchar(200)'
     expect(actual).toStrictEqual(expectation)
   })
+  it('converts a table object to a statement, with new primary type', async () => {
+    const actual = convertCreateTableStatement<TableRow & { location: DBValue<DBString> }>({
+      id: {
+        autoincrement: true,
+        type: 'primary',
+      },
+      name: {
+        type: 'varchar',
+        size: 200,
+        nullable: true,
+      },
+      location: {
+        type: 'char',
+      },
+    })
+    const expectation = 'id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, location char NOT NULL, name varchar(200)'
+    expect(actual).toStrictEqual(expectation)
+  })
 })
