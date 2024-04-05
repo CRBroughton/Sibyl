@@ -18,7 +18,11 @@ export type DBEntry<T> = {
     ? T extends 'varchar'
       ? DBPrimary & { size: number }
       : DBPrimary
-    : DBPrimary
+    : T extends DBNumber
+      ? T extends 'primary'
+        ? Omit<DBPrimary, 'nullable' | 'unique' | 'primary'>
+        : DBPrimary
+      : DBPrimary
 )
 
 export type DBValue<T> = T extends DBNumber
@@ -26,7 +30,7 @@ export type DBValue<T> = T extends DBNumber
   : Omit<DBEntry<T>, 'autoincrement'>
 
 export type DBBoolean = 'bool'
-export type DBNumber = 'int' | 'real' | 'INTEGER'
+export type DBNumber = 'int' | 'real' | 'INTEGER' | 'primary'
 export type DBString = 'varchar' | 'char'
 export type DBDate = 'text' | 'int' | 'real'
 export type DBBlob = 'blob'
