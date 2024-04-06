@@ -28,7 +28,6 @@ describe('select tests', () => {
       id: {
         primary: true,
         autoincrement: true,
-        nullable: false,
         type: 'INTEGER',
         unique: true,
       },
@@ -76,7 +75,6 @@ describe('select tests', () => {
       id: {
         autoincrement: true,
         type: 'INTEGER',
-        nullable: false,
         primary: true,
         unique: true,
       },
@@ -216,7 +214,6 @@ describe('select tests', () => {
       id: {
         autoincrement: true,
         type: 'INTEGER',
-        nullable: false,
         primary: true,
         unique: true,
       },
@@ -291,7 +288,6 @@ describe('select tests', () => {
       id: {
         autoincrement: true,
         type: 'INTEGER',
-        nullable: false,
         primary: true,
         unique: true,
       },

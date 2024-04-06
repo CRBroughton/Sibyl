@@ -26,7 +26,6 @@ describe('delete tests', () => {
       id: {
         autoincrement: true,
         type: 'INTEGER',
-        nullable: false,
         primary: true,
         unique: true,
       },
