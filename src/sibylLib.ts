@@ -142,28 +142,51 @@ export function convertCreateTableStatement<T extends Record<string, any>>(obj: 
   for (const [columnName, columnType] of Object.entries<DBEntry<DBTypes>>(sortKeys([obj])[0])) {
     result += columnName
 
-    if (columnType.type !== 'varchar')
+    if (columnType.type !== 'varchar' && columnType.type !== 'primary')
       result += ` ${columnType.type}`
+
+    if (columnType.type === 'primary')
+      result += ' INTEGER'
 
     if (columnType.type === 'varchar' && 'size' in columnType)
       result += ` ${columnType.type}(${columnType.size})`
 
-    if (columnType.primary)
-      result += ' PRIMARY KEY'
-
-    if (columnType.autoincrement)
-      result += ' AUTOINCREMENT'
-
-    result += ' NOT NULL'
-    if (columnType.nullable === true)
-      result = result.replace(' NOT NULL', '')
-
-    if (columnType.unique)
-      result += ' UNIQUE'
+    if (columnType.type === 'primary')
+      result += processPrimaryType(columnType)
+    else
+      result += processNonPrimaryType(columnType)
 
     result += ', '
   }
 
   result = result.slice(0, -2)
+  return result
+}
+
+function processPrimaryType(columnType: DBEntry<DBTypes>) {
+  let result = ' PRIMARY KEY'
+
+  if (columnType.autoincrement)
+    result += ' AUTOINCREMENT'
+
+  result += ' NOT NULL UNIQUE'
+
+  return result
+}
+
+function processNonPrimaryType(columnType: DBEntry<Omit<DBTypes, 'primary'>>) {
+  let result = ''
+  if (columnType.primary)
+    result += ' PRIMARY KEY'
+
+  if (columnType.autoincrement)
+    result += ' AUTOINCREMENT'
+
+  result += ' NOT NULL'
+  if (columnType.nullable === true)
+    result = result.replace(' NOT NULL', '')
+
+  if (columnType.unique)
+    result += ' UNIQUE'
   return result
 }
