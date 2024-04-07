@@ -223,6 +223,14 @@ const updatedEntry = Update('firstTable', { // infers the table and response typ
    }
 })
 ```
+### Primary type
+
+Sibyl offers a custom type, called the 'primary' type. When using
+this type, Sibyl will automatically set the entry to a primary key,
+not nullable and unique. Sibyl will also ensure that the underlying
+type changes, so your editor gives feedback about no longer requiring
+you to manually set these keys. Currently the primary type is only
+available as an integer type.
 
 ### Sibyl Responses
 
