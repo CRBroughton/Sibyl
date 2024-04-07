@@ -89,12 +89,13 @@ createTable('firstTable', { // inferred table name and entry
   id: {
     autoincrement: true,
     type: 'INTEGER', // only allows for known data types ('int', 'char', 'blob')
-    nullable: false,
     primary: true,
     unique: true,
   },
   job: {
-    type: 'char',
+    type: 'varchar',
+    size: 100, // specify the size of the varchar
+    nullable: true
   },
   name: {
     type: 'char',
@@ -222,6 +223,14 @@ const updatedEntry = Update('firstTable', { // infers the table and response typ
    }
 })
 ```
+### Primary type
+
+Sibyl offers a custom type, called the 'primary' type. When using
+this type, Sibyl will automatically set the entry to a primary key,
+not nullable and unique. Sibyl will also ensure that the underlying
+type changes, so your editor gives feedback about no longer requiring
+you to manually set these keys. Currently the primary type is only
+available as an integer type.
 
 ### Sibyl Responses
 
@@ -229,6 +238,27 @@ Sibyl also offers a custom type the `SibylResponse` type; This type can be helpf
 when wanting to convert data types to TypeScript types; At the moment the custom type
 only support boolean conversions from `boolean` to `0 | 1`. It's recommended to use
 this type as a wrapper, if you're ever using boolean values.
+
+### Working With Reactivity
+
+When working with any front-end framework, you'll want to combine
+Sibyl with your frameworks reactivity engine. I've provided some
+examples in the playground, in this case using Vue, but in general
+you should follow the following rules:
+
+- Sibyl is not responsive by default; You should aim for Sibyls
+responses to end up in a reactive object (see ref for Vue).
+- When working with your reactive state, it's good practice to ensure
+that the states type is the same of that of the response type from
+Sibyl
+- Sibyl provides the `SibylResponse` type; You can use this type
+as a 'wrapper' type like so:
+
+```typescript
+const results = ref<SibylResponse<Order>[]>([])
+```
+This ensures that when you work with the `results` array, it conforms
+to the shape and type Sibyl will return.
 
 ## Development
 

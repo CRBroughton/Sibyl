@@ -1,5 +1,6 @@
 import type {
   DBEntry,
+  DBTypes,
   DataStructure,
   SelectArgs,
   SibylResponse,
@@ -138,27 +139,54 @@ export function buildUpdateQuery<T, K extends string | number | symbol = 'id'>(t
 }
 export function convertCreateTableStatement<T extends Record<string, any>>(obj: T): string {
   let result = ''
-  for (const [columnName, columnType] of Object.entries<DBEntry<any>>(sortKeys([obj])[0])) {
+  for (const [columnName, columnType] of Object.entries<DBEntry<DBTypes>>(sortKeys([obj])[0])) {
     result += columnName
 
-    if (columnType.type)
+    if (columnType.type !== 'varchar' && columnType.type !== 'primary')
       result += ` ${columnType.type}`
 
-    if (columnType.primary)
-      result += ' PRIMARY KEY'
+    if (columnType.type === 'primary')
+      result += ' INTEGER'
 
-    if (columnType.autoincrement)
-      result += ' AUTOINCREMENT'
+    if (columnType.type === 'varchar' && 'size' in columnType)
+      result += ` ${columnType.type}(${columnType.size})`
 
-    if (columnType.nullable === false)
-      result += ' NOT NULL'
-
-    if (columnType.unique)
-      result += ' UNIQUE'
+    if (columnType.type === 'primary')
+      result += processPrimaryType(columnType)
+    else
+      result += processNonPrimaryType(columnType)
 
     result += ', '
   }
 
   result = result.slice(0, -2)
+  return result
+}
+
+function processPrimaryType(columnType: DBEntry<DBTypes>) {
+  let result = ' PRIMARY KEY'
+
+  if (columnType.autoincrement)
+    result += ' AUTOINCREMENT'
+
+  result += ' NOT NULL UNIQUE'
+
+  return result
+}
+
+function processNonPrimaryType(columnType: DBEntry<Omit<DBTypes, 'primary'>>) {
+  let result = ''
+  if (columnType.primary)
+    result += ' PRIMARY KEY'
+
+  if (columnType.autoincrement)
+    result += ' AUTOINCREMENT'
+
+  result += ' NOT NULL'
+  if (columnType.nullable === true)
+    result = result.replace(' NOT NULL', '')
+
+  if (columnType.unique)
+    result += ' UNIQUE'
   return result
 }
