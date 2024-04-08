@@ -1,4 +1,4 @@
-import type { Database } from 'sql.js'
+import type { Database } from 'libsql'
 import type { DeleteArgs, MappedTable, SelectArgs, SibylResponse, Sort, UpdateArgs } from '../types'
 import {
   buildSelectQuery,
@@ -15,12 +15,12 @@ type TableKeys = keyof T
 type AccessTable<I extends keyof T> = T[I]
 function createTable<T extends TableKeys>(table: T, tableRow: MappedTable<AccessTable<T>>) {
   const statement = convertCreateTableStatement(tableRow)
-  db.run(`CREATE TABLE ${String(table)} (${statement});`)
+  db.exec(`CREATE TABLE ${String(table)} (${statement});`)
 }
 
 function Insert<K extends TableKeys>(table: K, rows: AccessTable<K>[]) {
   const statement = formatInsertStatement(String(table), rows)
-  db.run(statement)
+  db.exec(statement)
 }
 
 function Select<T extends TableKeys>(table: T, args: SelectArgs<SibylResponse<AccessTable<T>>>) {
@@ -39,7 +39,7 @@ function Select<T extends TableKeys>(table: T, args: SelectArgs<SibylResponse<Ac
 
 function Create<T extends TableKeys>(table: T, entry: AccessTable<T>) {
   const statement = formatInsertStatement(String(table), [entry])
-  db.run(statement)
+  db.exec(statement)
   const result = Select(table, {
     where: entry,
   })
@@ -88,7 +88,7 @@ function Update<K extends TableKeys>(table: K, args: UpdateArgs<AccessTable<K>>)
 }
 
 function Delete<K extends TableKeys>(table: K, args: DeleteArgs<AccessTable<K>>) {
-  db.run(`DELETE FROM ${String(table)} WHERE ${objectToWhereClause(args.where)}`)
+  db.exec(`DELETE FROM ${String(table)} WHERE ${objectToWhereClause(args.where)}`)
 }
 
 return {

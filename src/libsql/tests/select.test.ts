@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import sql from 'sql.js'
+import Database from 'libsql'
 import Sibyl from '../index'
 import type { SibylResponse } from '../../types'
 
@@ -16,12 +16,7 @@ interface Tables {
 
 describe('select tests', () => {
   it('select an entry in the DB', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
+    const db = new Database(':memory:')
     const { createTable, Create, Select } = await Sibyl<Tables>(db)
 
     createTable('first', {
@@ -63,12 +58,7 @@ describe('select tests', () => {
     expect(actual).toStrictEqual(expectation)
   })
   it('selects multiple entries in the DB', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
+    const db = new Database(':memory:')
     const { createTable, Insert, Select } = await Sibyl<Tables>(db)
 
     createTable('first', {
@@ -126,12 +116,7 @@ describe('select tests', () => {
     expect(actual).toStrictEqual(expectation)
   })
   it('selects multiple entries with the OR statement', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
+    const db = new Database(':memory:')
     const { createTable, Insert, Select } = await Sibyl<Tables>(db)
 
     createTable('first', {
@@ -202,12 +187,7 @@ describe('select tests', () => {
     expect(actual).toStrictEqual(expectation)
   })
   it('selects multiple entries with the OR statement (mixed object)', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
+    const db = new Database(':memory:')
     const { createTable, Insert, Select } = await Sibyl<Tables>(db)
 
     createTable('first', {
@@ -276,12 +256,7 @@ describe('select tests', () => {
     expect(actual).toStrictEqual(expectation)
   })
   it('selects multiple entries with the OR statement and sorts them in ascending order by id', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
+    const db = new Database(':memory:')
     const { createTable, Insert, Select } = await Sibyl<Tables>(db)
 
     createTable('first', {
@@ -348,12 +323,7 @@ describe('select tests', () => {
     expect(actual).toStrictEqual(expectation)
   })
   it('selects using boolean value', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
+    const db = new Database(':memory:')
     // Create table schema
     interface firstTable {
       id: number

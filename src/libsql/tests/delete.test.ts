@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import sql from 'sql.js'
+import Database from 'libsql'
 import Sibyl from '../index'
 
 interface TableRow {
@@ -14,12 +14,7 @@ interface Tables {
 
 describe('delete tests', () => {
   it('deletes an entry in the DB', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
+    const db = new Database(':memory:')
     const { createTable, Insert, All, Delete } = await Sibyl<Tables>(db)
 
     createTable('first', {
