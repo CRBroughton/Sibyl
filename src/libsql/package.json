@@ -1,0 +1,45 @@
+{
+  "name": "@crbroughton/sibyl_libsql",
+  "type": "module",
+  "version": "2.1.2",
+  "description": "A lightweight query builder for libsql",
+  "author": "Craig R Broughton",
+  "license": "MIT",
+  "homepage": "https://github.com/crbroughton/sibyl",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crbroughton/sibyl.git"
+  },
+  "keywords": [
+    "query builder",
+    "sqlite",
+    "wasm",
+    "embedded",
+    "typescript",
+    "libsql"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "bun run build.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "changeset": "npx changeset",
+    "changeset:status": "npx changeset status --verbose",
+    "changeset:version": "npx changeset version",
+    "publish": "bun run build && npm publish --access=public"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@types/bun": "latest",
+    "@types/sql.js": "^1.4.9",
+    "bun-plugin-dts": "^0.2.1",
+    "libsql": "^0.3.10"
+  }
+}
