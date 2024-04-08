@@ -223,6 +223,19 @@ const updatedEntry = Update('firstTable', { // infers the table and response typ
    }
 })
 ```
+### Sorting
+
+Sibyl offers some basic sorting options, whenever you're returning
+entries from the database:
+
+```typescript
+const actual = All('firstTable', {
+  sort: {
+    name: 'ASC', // This can be 'ASC' or 'DESC'
+  },
+})
+```
+
 ### Primary type
 
 Sibyl offers a custom type, called the 'primary' type. When using
