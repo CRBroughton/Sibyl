@@ -6,7 +6,7 @@ import {
   convertBooleanValues,
   convertCreateTableStatement,
   convertToObjects,
-  formatInsertStatement,
+  formatInsertStatementLibSQL,
   objectToWhereClause,
 } from '../sibylLib'
 
@@ -19,33 +19,30 @@ function createTable<T extends TableKeys>(table: T, tableRow: MappedTable<Access
 }
 
 function Insert<K extends TableKeys>(table: K, rows: AccessTable<K>[]) {
-  const statement = formatInsertStatement(String(table), rows)
+  const statement = formatInsertStatementLibSQL(String(table), rows)
   db.exec(statement)
 }
 
 function Select<T extends TableKeys>(table: T, args: SelectArgs<SibylResponse<AccessTable<T>>>) {
   const query = buildSelectQuery(String(table), args)
-  const record = db.exec(query)
+  const record = db.prepare(query).get()
 
-  if (record[0]) {
-    return convertBooleanValues(convertToObjects<AccessTable<T>>({
-      columns: record[0].columns,
-      values: record[0].values,
-    }))
-  }
+  if (record !== undefined)
+    return record
 
   return undefined
 }
 
 function Create<T extends TableKeys>(table: T, entry: AccessTable<T>) {
-  const statement = formatInsertStatement(String(table), [entry])
+  const statement = formatInsertStatementLibSQL(String(table), [entry])
   db.exec(statement)
+
   const result = Select(table, {
     where: entry,
   })
 
   if (result !== undefined)
-    return result[0]
+    return result
 
   return undefined
 }
