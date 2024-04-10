@@ -25,7 +25,7 @@ function Insert<K extends TableKeys>(table: K, rows: AccessTable<K>[]) {
 
 function Select<T extends TableKeys>(table: T, args: SelectArgs<SibylResponse<AccessTable<T>>>) {
   const query = buildSelectQuery(String(table), args)
-  const record = db.prepare(query).get()
+  const record = db.prepare(query).get() as SibylResponse<AccessTable<T>>
 
   if (record !== undefined)
     return record
