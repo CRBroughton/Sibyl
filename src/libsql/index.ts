@@ -42,7 +42,7 @@ function Create<T extends TableKeys>(table: T, entry: AccessTable<T>) {
   })
 
   if (result !== undefined)
-    return result
+    return result[0]
 
   return undefined
 }
