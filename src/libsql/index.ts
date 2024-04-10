@@ -58,14 +58,10 @@ function All<K extends TableKeys>(table: K, args?: { sort: Sort<Partial<AccessTa
     query += orders.join(', ')
   }
 
-  const record = db.exec(query)
+  const record = db.prepare(query).all() as SibylResponse<AccessTable<K>>[]
 
-  if (record[0]) {
-    return convertBooleanValues(convertToObjects<AccessTable<K>>({
-      columns: record[0].columns,
-      values: record[0].values,
-    }))
-  }
+  if (record !== undefined)
+    return record
 
   return undefined
 }
