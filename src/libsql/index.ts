@@ -3,9 +3,7 @@ import type { DeleteArgs, MappedTable, SelectArgs, SibylResponse, Sort, UpdateAr
 import {
   buildSelectQuery,
   buildUpdateQuery,
-  convertBooleanValues,
   convertCreateTableStatement,
-  convertToObjects,
   formatInsertStatementLibSQL,
   objectToWhereClause,
 } from '../sibylLib'
