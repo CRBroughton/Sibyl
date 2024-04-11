@@ -1,6 +1,6 @@
 # Sibyl
 
-Sibyl is a lightweight SQLite query builder for <a href="https://github.com/sql-js/sql.js">libSQL</a>, <a href="https://bun.sh/docs/api/sqlite">Bun's sqlite3 driver</a>, and <a href="https://github.com/tursodatabase/libsql">libSQL</a>, providing a Prisma-like query builder. Sibyl is in early development,
+Sibyl is a lightweight SQLite query builder for <a href="https://github.com/sql-js/sql.js">SQL.js</a>, <a href="https://bun.sh/docs/api/sqlite">Bun's sqlite3 driver</a>, and <a href="https://github.com/tursodatabase/libsql">libSQL</a>, providing a Prisma-like query builder. Sibyl is in early development,
 so expect breaking changes and rapid development.
 
 ## Getting Started

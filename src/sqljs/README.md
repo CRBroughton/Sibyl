@@ -1,6 +1,6 @@
 # Sibyl
 
-Sibyl is a lightweight SQLite query builder for <a href="https://github.com/sql-js/sql.js">SQL.js</a> and <a href="https://bun.sh/docs/api/sqlite">Bun's sqlite3 driver</a>, providing a Prisma-like query builder. Sibyl is in early development,
+Sibyl is a lightweight SQLite query builder for <a href="https://github.com/sql-js/sql.js">SQL.js</a>, <a href="https://bun.sh/docs/api/sqlite">Bun's sqlite3 driver</a>, and <a href="https://github.com/tursodatabase/libsql">libSQL</a>, providing a Prisma-like query builder. Sibyl is in early development,
 so expect breaking changes and rapid development.
 
 ## Getting Started
@@ -33,6 +33,17 @@ bun install @crbroughton/sibyl_bun
 ```
 Sibyl will then accept the native Bun SQLite `Database`, again, see the <a href="https://bun.sh/docs/api/sqlite">
 Bun documentation</a>.
+
+#### libSQL Installation
+
+The libSQL implemenation of Sibyl can be installed
+with the following command:
+
+```bash
+bun install @crbroughton/sibyl_libsql libsql
+```
+Sibyl will then accept libSQL `Database`, then see the <a href="https://github.com/tursodatabase/libsql-js?tab=readme-ov-file#getting-started">
+libSQL Getting Started Guide</a>.
 
 #### Getting Started
 
@@ -89,12 +100,13 @@ createTable('firstTable', { // inferred table name and entry
   id: {
     autoincrement: true,
     type: 'INTEGER', // only allows for known data types ('int', 'char', 'blob')
-    nullable: false,
     primary: true,
     unique: true,
   },
   job: {
-    type: 'char',
+    type: 'varchar',
+    size: 100, // specify the size of the varchar
+    nullable: true
   },
   name: {
     type: 'char',
@@ -222,6 +234,14 @@ const updatedEntry = Update('firstTable', { // infers the table and response typ
    }
 })
 ```
+### Primary type
+
+Sibyl offers a custom type, called the 'primary' type. When using
+this type, Sibyl will automatically set the entry to a primary key,
+not nullable and unique. Sibyl will also ensure that the underlying
+type changes, so your editor gives feedback about no longer requiring
+you to manually set these keys. Currently the primary type is only
+available as an integer type.
 
 ### Sibyl Responses
 
@@ -229,6 +249,27 @@ Sibyl also offers a custom type the `SibylResponse` type; This type can be helpf
 when wanting to convert data types to TypeScript types; At the moment the custom type
 only support boolean conversions from `boolean` to `0 | 1`. It's recommended to use
 this type as a wrapper, if you're ever using boolean values.
+
+### Working With Reactivity
+
+When working with any front-end framework, you'll want to combine
+Sibyl with your frameworks reactivity engine. I've provided some
+examples in the playground, in this case using Vue, but in general
+you should follow the following rules:
+
+- Sibyl is not responsive by default; You should aim for Sibyls
+responses to end up in a reactive object (see ref for Vue).
+- When working with your reactive state, it's good practice to ensure
+that the states type is the same of that of the response type from
+Sibyl
+- Sibyl provides the `SibylResponse` type; You can use this type
+as a 'wrapper' type like so:
+
+```typescript
+const results = ref<SibylResponse<Order>[]>([])
+```
+This ensures that when you work with the `results` array, it conforms
+to the shape and type Sibyl will return.
 
 ## Development
 
