@@ -1,6 +1,6 @@
 # Sibyl
 
-Sibyl is a lightweight SQLite query builder for <a href="https://github.com/sql-js/sql.js">SQL.js</a> and <a href="https://bun.sh/docs/api/sqlite">Bun's sqlite3 driver</a>, providing a Prisma-like query builder. Sibyl is in early development,
+Sibyl is a lightweight SQLite query builder for <a href="https://github.com/sql-js/sql.js">libSQL</a>, <a href="https://bun.sh/docs/api/sqlite">Bun's sqlite3 driver</a>, and <a href="https://github.com/tursodatabase/libsql">libSQL</a>, providing a Prisma-like query builder. Sibyl is in early development,
 so expect breaking changes and rapid development.
 
 ## Getting Started
@@ -29,10 +29,21 @@ Bun documentation</a>. The Bun implemenation of Sibyl can be installed
 with the following command:
 
 ```bash
-bun install @crbroughton/sibyl:bun
+bun install @crbroughton/sibyl_bun
 ```
 Sibyl will then accept the native Bun SQLite `Database`, again, see the <a href="https://bun.sh/docs/api/sqlite">
 Bun documentation</a>.
+
+#### libSQL Installation
+
+The libSQL implemenation of Sibyl can be installed
+with the following command:
+
+```bash
+bun install @crbroughton/sibyl_libsql libsql
+```
+Sibyl will then accept libSQL `Database`, then see the <a href="https://github.com/tursodatabase/libsql-js?tab=readme-ov-file#getting-started">
+libSQL Getting Started Guide</a>.
 
 #### Getting Started
 

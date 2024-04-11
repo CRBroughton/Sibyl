@@ -190,3 +190,38 @@ function processNonPrimaryType(columnType: DBEntry<Omit<DBTypes, 'primary'>>) {
     result += ' UNIQUE'
   return result
 }
+
+export function formatInsertStatementLibSQL<T extends Record<string, any>>(table: string, structs: T[]) {
+  const sortedStructs = sortKeys(structs)
+  const flattenedInsert = sortedStructs.map(obj => Object.values(obj))
+  const flattenedKeys = sortedStructs.map(obj => Object.keys(obj))[0]
+  let insertions: string = ''
+  insertions += `INSERT INTO ${table} `
+
+  let tableKeys = ''
+  for (const key of flattenedKeys)
+    tableKeys += `${key}, `
+
+  tableKeys = tableKeys.slice(0, -2)
+  tableKeys.trim()
+  tableKeys = `(${tableKeys}) `
+
+  insertions += tableKeys
+  insertions += 'VALUES '
+
+  for (const insert of flattenedInsert) {
+    let row: T | string[] = []
+    for (const cell of insert) {
+      if (typeof cell !== 'string')
+        row = [...row, cell]
+
+      if (typeof cell === 'string')
+        row = [...row, `\'${cell}\'`]
+    }
+    insertions += `(${row}), `
+  }
+  insertions = insertions.slice(0, -2)
+  insertions.trim()
+  insertions += ';'
+  return insertions
+}
