@@ -6,6 +6,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@crbroughton/sibyl_libsql": "^2.1.2",
     "libsql": "^0.3.11"
   },
   "devDependencies": {
