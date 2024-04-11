@@ -1,5 +1,20 @@
 # @crbroughton/sibyl
 
+## 2.2.1
+
+### Patch Changes
+
+- 63b74c4: update README.md files with correct information
+
+## 2.2.0
+
+### Minor Changes
+
+- 890ee0c: varchar type now supports size key:value
+- d87af46: entries are now NOT NULL by default; The nullable option can now only be set to true
+- 348db96: add the primary type - this type can be used, which will allow you to omit the nullable, primary and unique key:values
+- 0060407: Add libSQL support - Sibyl now supports the libSQL implementation of SQLite
+
 ## 2.1.1
 
 - Bump version because of npm
