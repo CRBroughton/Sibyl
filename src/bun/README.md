@@ -16,6 +16,8 @@ If you choose to use Sibyl with `sql.js`, `sql.js` will provide the lower-level 
 embedded SQLite database. You'll also need to install the `.wasm` file that `sql.js`
 provides; Please see their documentation at https://sql.js.org.
 
+The SQL.js implementation has been tested against SQL.js version 1.10.2.
+
 With the `.wasm` file now available, you can install Sibyl with the following command:
 
 ```bash
@@ -34,6 +36,8 @@ bun install @crbroughton/sibyl_bun
 Sibyl will then accept the native Bun SQLite `Database`, again, see the <a href="https://bun.sh/docs/api/sqlite">
 Bun documentation</a>.
 
+The Bun implementation has been tested against Bun version 1.1.3.
+
 #### libSQL Installation
 
 The libSQL implemenation of Sibyl can be installed
@@ -44,6 +48,8 @@ bun install @crbroughton/sibyl_libsql libsql
 ```
 Sibyl will then accept libSQL `Database`, then see the <a href="https://github.com/tursodatabase/libsql-js?tab=readme-ov-file#getting-started">
 libSQL Getting Started Guide</a>.
+
+The libSQL implementation has been tested against libSQL version 0.3.11.
 
 #### Getting Started
 
@@ -234,6 +240,19 @@ const updatedEntry = Update('firstTable', { // infers the table and response typ
    }
 })
 ```
+### Sorting
+
+Sibyl offers some basic sorting options, whenever you're returning
+entries from the database:
+
+```typescript
+const actual = All('firstTable', {
+  sort: {
+    name: 'ASC', // This can be 'ASC' or 'DESC'
+  },
+})
+```
+
 ### Primary type
 
 Sibyl offers a custom type, called the 'primary' type. When using
