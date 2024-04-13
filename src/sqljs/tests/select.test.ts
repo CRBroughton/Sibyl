@@ -433,4 +433,77 @@ describe('select tests', () => {
     ]
     expect(actual).toStrictEqual(expectation)
   })
+  it('selects using the limited option', async () => {
+    const SQL = await sql({
+      locateFile: () => {
+        return 'playground/public/sql-wasm.wasm'
+      },
+    })
+    const db = new SQL.Database()
+    // Create table schema
+    interface firstTable {
+      id: number
+      name: string
+      location: string
+      hasReadTheReadme: boolean
+    }
+    interface Tables {
+      firstTable: firstTable
+    }
+    const { createTable, Insert, Select } = await Sibyl<Tables>(db)
+
+    createTable('firstTable', {
+      id: {
+        autoincrement: true,
+        type: 'INTEGER',
+        primary: true,
+        unique: true,
+      },
+      name: {
+        type: 'char',
+      },
+      hasReadTheReadme: {
+        type: 'bool',
+      },
+      location: {
+        type: 'char',
+      },
+    })
+
+    Insert('firstTable', [
+      {
+        id: 1,
+        hasReadTheReadme: true,
+        location: 'Brighton',
+        name: 'Craig',
+      },
+      {
+        id: 2,
+        hasReadTheReadme: false,
+        location: 'Leeds',
+        name: 'Bob',
+      },
+      {
+        id: 3,
+        hasReadTheReadme: true,
+        location: 'Brighton',
+        name: 'David',
+      },
+    ])
+
+    const actual = Select('firstTable', {
+      where: {
+        name: 'Craig',
+        hasReadTheReadme: 1,
+      },
+      limited: true,
+    })
+    const expectation: SibylResponse<firstTable>[] = [
+      {
+        hasReadTheReadme: 1,
+        name: 'Craig',
+      },
+    ]
+    expect(actual).toStrictEqual(expectation)
+  })
 })

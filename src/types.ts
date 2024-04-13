@@ -60,6 +60,7 @@ export interface SelectArgs<T> {
   offset?: number
   limit?: number
   sort?: Sort<Partial<T>>
+  limited?: boolean
 }
 
 export interface UpdateArgs<T, K extends string | number | symbol = 'id'> {
