@@ -13,7 +13,7 @@ import {
 export default async function Sibyl<T extends Record<string, any>>(db: Database) {
 type TableKeys = keyof T
 type AccessTable = T[TableKeys]
-function createTable<T extends TableKeys>(table: T, tableRow: MappedTable<AccessTable<T>>) {
+function createTable<T extends TableKeys>(table: T, tableRow: MappedTable<AccessTable>) {
   const statement = convertCreateTableStatement(tableRow)
   db.run(`CREATE TABLE ${String(table)} (${statement});`)
 }
