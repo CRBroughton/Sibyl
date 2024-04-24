@@ -142,15 +142,14 @@ export function convertCreateTableStatement<T extends Record<string, any>>(obj: 
   for (const [columnName, columnType] of Object.entries<DBEntry<DBTypes>>(sortKeys([obj])[0])) {
     result += columnName
 
-    if (columnType.type !== 'varchar' && columnType.type !== 'primary')
+    if (columnType.type !== 'varchar' && columnType.type !== 'char' && columnType.type !== 'primary')
       result += ` ${columnType.type}`
 
     if (columnType.type === 'primary')
       result += ' INTEGER'
 
-    if (columnType.type === 'varchar' && 'size' in columnType)
+    if ((columnType.type === 'varchar' && 'size' in columnType) || (columnType.type === 'char' && 'size' in columnType))
       result += ` ${columnType.type}(${columnType.size})`
-
     if (columnType.type === 'primary')
       result += processPrimaryType(columnType)
     else
