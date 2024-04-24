@@ -28,9 +28,11 @@ describe('update tests', () => {
       },
       location: {
         type: 'char',
+        size: 8,
       },
       name: {
         type: 'char',
+        size: 4,
       },
       booleanTest: {
         type: 'bool',
