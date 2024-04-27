@@ -18,10 +18,11 @@ describe('convertCreateTableStatement tests', () => {
       },
       name: {
         type: 'char',
+        size: 10,
       },
     })
 
-    const expectation = 'id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, name char NOT NULL'
+    const expectation = 'id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, name char(10) NOT NULL'
     expect(actual).toStrictEqual(expectation)
   })
   it('converts a table object to a statement, with a varchar type', async () => {
@@ -55,9 +56,10 @@ describe('convertCreateTableStatement tests', () => {
       },
       location: {
         type: 'char',
+        size: 10,
       },
     })
-    const expectation = 'id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, location char NOT NULL, name varchar(200) NOT NULL'
+    const expectation = 'id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, location char(10) NOT NULL, name varchar(200) NOT NULL'
     expect(actual).toStrictEqual(expectation)
   })
   it('converts a table object to a statement, with nullable values', async () => {
@@ -76,9 +78,10 @@ describe('convertCreateTableStatement tests', () => {
       },
       location: {
         type: 'char',
+        size: 10,
       },
     })
-    const expectation = 'id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, location char NOT NULL, name varchar(200)'
+    const expectation = 'id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, location char(10) NOT NULL, name varchar(200)'
     expect(actual).toStrictEqual(expectation)
   })
   it('converts a table object to a statement, with new primary type', async () => {
@@ -94,9 +97,10 @@ describe('convertCreateTableStatement tests', () => {
       },
       location: {
         type: 'char',
+        size: 10,
       },
     })
-    const expectation = 'id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, location char NOT NULL, name varchar(200)'
+    const expectation = 'id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, location char(10) NOT NULL, name varchar(200)'
     expect(actual).toStrictEqual(expectation)
   })
 })
