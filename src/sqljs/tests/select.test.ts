@@ -473,12 +473,14 @@ describe('select tests', () => {
       },
       name: {
         type: 'char',
+        size: 10,
       },
       hasReadTheReadme: {
         type: 'bool',
       },
       location: {
         type: 'char',
+        size: 10,
       },
     })
 
