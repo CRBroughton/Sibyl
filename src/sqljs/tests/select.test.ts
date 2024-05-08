@@ -1,5 +1,7 @@
+/* eslint-disable unused-imports/no-unused-vars */
 import { describe, expect, it } from 'bun:test'
 import sql from 'sql.js'
+import type { Equals, Expect } from '@crbroughton/ts-test-utils'
 import Sibyl from '../index'
 import type { SibylResponse } from '../../types'
 
@@ -512,6 +514,13 @@ describe('select tests', () => {
       },
       limited: true,
     })
+
+    // Type tests
+    const singluarActual = actual![0]
+    type ExpectedType = Omit<SibylResponse<firstTable>, 'id' | 'location'>
+    type ResultType = Expect<Equals<typeof singluarActual, ExpectedType>>
+    //   ^?
+
     const expectation: SibylResponse<firstTable>[] = [
       {
         hasReadTheReadme: 1,
