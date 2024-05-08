@@ -116,9 +116,11 @@ createTable('firstTable', { // inferred table name and entry
   },
   name: {
     type: 'char',
+    size: 4,
   },
   sex: {
     type: 'char',
+    size: 3,
   },
   hasReadTheReadme: {
     type: 'bool',

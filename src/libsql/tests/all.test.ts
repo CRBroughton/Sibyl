@@ -26,9 +26,11 @@ describe('all tests', () => {
       },
       location: {
         type: 'char',
+        size: 8,
       },
       name: {
         type: 'char',
+        size: 4,
       },
     })
 
@@ -75,9 +77,11 @@ describe('all tests', () => {
       },
       location: {
         type: 'char',
+        size: 8,
       },
       name: {
         type: 'char',
+        size: 4,
       },
     })
 
@@ -128,9 +132,11 @@ describe('all tests', () => {
       },
       location: {
         type: 'char',
+        size: 8,
       },
       name: {
         type: 'char',
+        size: 4,
       },
     })
 

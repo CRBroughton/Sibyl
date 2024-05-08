@@ -33,9 +33,11 @@ describe('create tests', () => {
       },
       location: {
         type: 'char',
+        size: 8,
       },
       name: {
         type: 'char',
+        size: 8,
       },
       booleanTest: {
         type: 'bool',

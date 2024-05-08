@@ -33,9 +33,11 @@ describe('select tests', () => {
       },
       location: {
         type: 'char',
+        size: 8,
       },
       name: {
         type: 'char',
+        size: 4,
       },
       booleanTest: {
         type: 'bool',
@@ -80,9 +82,11 @@ describe('select tests', () => {
       },
       location: {
         type: 'char',
+        size: 8,
       },
       name: {
         type: 'char',
+        size: 4,
       },
       booleanTest: {
         type: 'bool',
@@ -143,9 +147,11 @@ describe('select tests', () => {
       },
       location: {
         type: 'char',
+        size: 8,
       },
       name: {
         type: 'char',
+        size: 4,
       },
       booleanTest: {
         type: 'bool',
@@ -219,9 +225,11 @@ describe('select tests', () => {
       },
       location: {
         type: 'char',
+        size: 8,
       },
       name: {
         type: 'char',
+        size: 8,
       },
       booleanTest: {
         type: 'bool',
@@ -293,9 +301,11 @@ describe('select tests', () => {
       },
       location: {
         type: 'char',
+        size: 8,
       },
       name: {
         type: 'char',
+        size: 4,
       },
       booleanTest: {
         type: 'bool',
@@ -375,12 +385,14 @@ describe('select tests', () => {
       },
       name: {
         type: 'char',
+        size: 4,
       },
       hasReadTheReadme: {
         type: 'bool',
       },
       location: {
         type: 'char',
+        size: 8,
       },
     })
 

@@ -15,7 +15,7 @@ export type DBEntry<T> = {
   type: T
 } & (
   T extends DBString
-    ? T extends 'varchar'
+    ? T extends 'char' | 'varchar'
       ? DBPrimary & { size: number }
       : DBPrimary
     : T extends DBNumber
