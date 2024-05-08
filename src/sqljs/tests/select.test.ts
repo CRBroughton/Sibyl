@@ -521,7 +521,7 @@ describe('select tests', () => {
     type ResultType = Expect<Equals<typeof singluarActual, ExpectedType>>
     //   ^?
 
-    const expectation: SibylResponse<firstTable>[] = [
+    const expectation: ExpectedType[] = [
       {
         hasReadTheReadme: 1,
         name: 'Craig',
