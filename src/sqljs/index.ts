@@ -40,25 +40,15 @@ function LimitedSelect<T extends TableKeys, U = AccessTable>(table: T, args: Lim
   return undefined
 }
 
-function Select<T extends TableKeys, U = AccessTable>(table: T, args: SelectArgs<SibylResponse<U>>) {
+function Select<T extends TableKeys>(table: T, args: SelectArgs<SibylResponse<AccessTable>>) {
   const query = buildSelectQuery(String(table), args)
   const record = db.exec(query)
 
-  type ReplaceValues<T, U> = {
-    [K in keyof T]: K extends keyof U ? U[K] : T[K];
-  }
-  if (record[0] && args.limited === true) {
+  if (record[0]) {
     return convertBooleanValues(convertToObjects<AccessTable>({
       columns: record[0].columns,
       values: record[0].values,
-    })) as Omit<SibylResponse<ReplaceValues<U, AccessTable>>, 'OR'>[]
-  }
-
-  if (record[0] && !args.limited) {
-    return convertBooleanValues(convertToObjects<AccessTable>({
-      columns: record[0].columns,
-      values: record[0].values,
-    })) as SibylResponse<AccessTable>[]
+    }))
   }
 
   return undefined
