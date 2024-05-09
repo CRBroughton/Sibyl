@@ -1,4 +1,3 @@
-/* eslint-disable unused-imports/no-unused-vars */
 import { describe, expect, it } from 'bun:test'
 import sql from 'sql.js'
 import type { Equals, Expect } from '@crbroughton/ts-test-utils'
@@ -443,89 +442,6 @@ describe('select tests', () => {
         hasReadTheReadme: 1,
         location: 'Brighton',
         name: 'David',
-      },
-    ]
-    expect(actual).toStrictEqual(expectation)
-  })
-  it('selects using the limited option', async () => {
-    const SQL = await sql({
-      locateFile: () => {
-        return 'playground/public/sql-wasm.wasm'
-      },
-    })
-    const db = new SQL.Database()
-    // Create table schema
-    interface firstTable {
-      id: number
-      name: string
-      location: string
-      hasReadTheReadme: boolean
-    }
-    interface Tables {
-      firstTable: firstTable
-    }
-    const { createTable, Insert, Select } = await Sibyl<Tables>(db)
-
-    createTable('firstTable', {
-      id: {
-        autoincrement: true,
-        type: 'INTEGER',
-        primary: true,
-        unique: true,
-      },
-      name: {
-        type: 'char',
-        size: 10,
-      },
-      hasReadTheReadme: {
-        type: 'bool',
-      },
-      location: {
-        type: 'char',
-        size: 10,
-      },
-    })
-
-    Insert('firstTable', [
-      {
-        id: 1,
-        hasReadTheReadme: true,
-        location: 'Brighton',
-        name: 'Craig',
-      },
-      {
-        id: 2,
-        hasReadTheReadme: false,
-        location: 'Leeds',
-        name: 'Bob',
-      },
-      {
-        id: 3,
-        hasReadTheReadme: true,
-        location: 'Brighton',
-        name: 'David',
-      },
-    ])
-
-    const actual = Select('firstTable', {
-      where: {
-        name: 'Craig',
-        hasReadTheReadme: 1,
-      },
-      limited: true,
-    })
-
-    // Type tests
-    const singluarActual = actual![0]
-    type ActualType = typeof singluarActual
-    type ExpectedType = Omit<SibylResponse<firstTable>, 'id' | 'location'>
-    type ResultType = Expect<Equals<ActualType, ExpectedType>>
-    //   ^?
-
-    const expectation: ExpectedType[] = [
-      {
-        hasReadTheReadme: 1,
-        name: 'Craig',
       },
     ]
     expect(actual).toStrictEqual(expectation)

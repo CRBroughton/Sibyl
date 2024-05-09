@@ -1,5 +1,5 @@
 import type { Database } from 'sql.js'
-import type { DeleteArgs, MappedTable, SelectArgs, SibylResponse, Sort, UpdateArgs } from '../types'
+import type { DeleteArgs, LimitedSelectArgs, MappedTable, SelectArgs, SibylResponse, Sort, UpdateArgs } from '../types'
 import {
   buildSelectQuery,
   buildUpdateQuery,
@@ -21,6 +21,23 @@ function createTable<T extends TableKeys>(table: T, tableRow: MappedTable<Access
 function Insert<K extends TableKeys>(table: K, rows: AccessTable[]) {
   const statement = formatInsertStatement(String(table), rows)
   db.run(statement)
+}
+
+function LimitedSelect<T extends TableKeys, U = AccessTable>(table: T, args: LimitedSelectArgs<SibylResponse<U>>) {
+  const query = buildSelectQuery(String(table), args)
+  const record = db.exec(query)
+
+  type ReplaceValues<T, U> = {
+    [K in keyof T]: K extends keyof U ? U[K] : T[K]
+  }
+  if (record[0]) {
+    return convertBooleanValues(convertToObjects<AccessTable>({
+      columns: record[0].columns,
+      values: record[0].values,
+    })) as SibylResponse<ReplaceValues<U, AccessTable>>[]
+  }
+
+  return undefined
 }
 
 function Select<T extends TableKeys, U = AccessTable>(table: T, args: SelectArgs<SibylResponse<U>>) {
@@ -103,6 +120,7 @@ function Delete<K extends TableKeys>(table: K, args: DeleteArgs<AccessTable>) {
 
 return {
   createTable,
+  LimitedSelect,
   Select,
   All,
   Insert,

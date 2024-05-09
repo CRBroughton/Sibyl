@@ -60,6 +60,9 @@ export interface SelectArgs<T> {
   offset?: number
   limit?: number
   sort?: Sort<Partial<T>>
+}
+
+export interface LimitedSelectArgs<T> extends SelectArgs<T> {
   limited?: boolean
 }
 
