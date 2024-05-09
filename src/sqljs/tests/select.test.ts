@@ -517,8 +517,9 @@ describe('select tests', () => {
 
     // Type tests
     const singluarActual = actual![0]
+    type ActualType = typeof singluarActual
     type ExpectedType = Omit<SibylResponse<firstTable>, 'id' | 'location'>
-    type ResultType = Expect<Equals<typeof singluarActual, ExpectedType>>
+    type ResultType = Expect<Equals<ActualType, ExpectedType>>
     //   ^?
 
     const expectation: ExpectedType[] = [
