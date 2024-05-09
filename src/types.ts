@@ -63,7 +63,7 @@ export interface SelectArgs<T> {
 }
 
 export interface LimitedSelectArgs<T> extends SelectArgs<T> {
-  limited?: boolean
+  limited: boolean
 }
 
 export interface UpdateArgs<T, K extends string | number | symbol = 'id'> {

@@ -2,6 +2,7 @@ import type {
   DBEntry,
   DBTypes,
   DataStructure,
+  LimitedSelectArgs,
   SelectArgs,
   SibylResponse,
   UpdateArgs,
@@ -92,23 +93,22 @@ export function convertBooleanValues<T>(arr: T[]) {
   })
 }
 
-export function buildSelectQuery<T>(table: string, args: SelectArgs<T>) {
+export function buildSelectQuery<T>(table: string, args: SelectArgs<T> | LimitedSelectArgs<T>) {
   let query: string = ''
 
-  if (!args.limited)
-    query += 'SELECT * '
+  if ('limited' in args) {
+    if (args.limited === true) {
+      let selectedKeys = ''
+      for (const [key] of Object.entries(args.where))
+        selectedKeys += `${key}, `
 
-  if (args.limited === true) {
-    let selectedKeys = ''
-    for (const [key] of Object.entries(args.where))
-      selectedKeys += `${key}, `
+      selectedKeys = selectedKeys.slice(0, -2)
 
-    selectedKeys = selectedKeys.slice(0, -2)
-
-    query = `SELECT ${selectedKeys} from ${table} WHERE ${objectToWhereClause(args.where)}`
+      query = `SELECT ${selectedKeys} from ${table} WHERE ${objectToWhereClause(args.where)}`
+    }
   }
-
-  if (!args.limited) {
+  else {
+    query += 'SELECT * '
     if (args.where.OR === undefined)
       query += `from ${table} WHERE ${objectToWhereClause(args.where)}`
 

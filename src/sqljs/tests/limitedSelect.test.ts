@@ -15,8 +15,8 @@ interface Tables {
   firstTable: firstTable
 }
 
-describe('select tests', () => {
-  it('select an entry from the DB, using the limited functionality', async () => {
+describe('LimitedSelect tests', () => {
+  it('selects an entry from the DB, using the limited functionality', async () => {
     const SQL = await sql({
       locateFile: () => {
         return 'playground/public/sql-wasm.wasm'
@@ -45,26 +45,48 @@ describe('select tests', () => {
       },
     })
 
+    Insert('firstTable', [
+      {
+        id: 1,
+        hasReadTheReadme: true,
+        location: 'Brighton',
+        name: 'Craig',
+      },
+      {
+        id: 2,
+        hasReadTheReadme: false,
+        location: 'Leeds',
+        name: 'Bob',
+      },
+      {
+        id: 3,
+        hasReadTheReadme: true,
+        location: 'Brighton',
+        name: 'David',
+      },
+    ])
+
     const actual = LimitedSelect('firstTable', {
       where: {
         name: 'Craig',
         hasReadTheReadme: 1,
       },
+      limited: true,
     })
 
     // Type tests
     const singluarActual = actual![0]
-     type ActualType = typeof singluarActual
-     type ExpectedType = Omit<SibylResponse<firstTable>, 'id' | 'location'>
-     type ResultType = Expect<Equals<ActualType, ExpectedType>>
-     //   ^?
+    type ActualType = typeof singluarActual
+    type ExpectedType = Omit<SibylResponse<firstTable>, 'id' | 'location'>
+    type ResultType = Expect<Equals<ActualType, ExpectedType>>
+    //   ^?
 
-     const expectation: ExpectedType[] = [
-       {
-         hasReadTheReadme: 1,
-         name: 'Craig',
-       },
-     ]
-     expect(actual).toStrictEqual(expectation)
+    const expectation: ExpectedType[] = [
+      {
+        hasReadTheReadme: 1,
+        name: 'Craig',
+      },
+    ]
+    expect(actual).toStrictEqual(expectation)
   })
 })
