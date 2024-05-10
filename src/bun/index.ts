@@ -2,6 +2,7 @@ import type { Database, SQLQueryBindings } from 'bun:sqlite'
 import type {
   DeleteArgs,
   MappedTable,
+  ReplaceValues,
   SelectArgs,
   SibylResponse,
   Sort,
@@ -27,6 +28,17 @@ function Insert<K extends TableKeys>(table: K, rows: AccessTable[]) {
   const statement = formatInsertStatement(String(table), rows)
   db.run(statement)
 }
+
+function LimitedSelect<T extends TableKeys, U = AccessTable>(table: T, args: SelectArgs<SibylResponse<U>>) {
+  const query = buildSelectQuery(String(table), { ...args, limited: true })
+  const record = db.query<SibylResponse<ReplaceValues<U, AccessTable>>, SQLQueryBindings[]>(query)
+
+  if (record !== undefined)
+    return record.all()
+
+  return undefined
+}
+
 function Select<T extends TableKeys>(table: T, args: SelectArgs<SibylResponse<AccessTable>>) {
   const query = buildSelectQuery(String(table), args)
   const record = db.query<SibylResponse<AccessTable>, SQLQueryBindings[]>(query)
@@ -88,6 +100,7 @@ function Delete<K extends TableKeys>(table: K, args: DeleteArgs<AccessTable>) {
 return {
   createTable,
   Insert,
+  LimitedSelect,
   Select,
   Create,
   All,
