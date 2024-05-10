@@ -1,5 +1,13 @@
 import type { Database } from 'libsql'
-import type { DeleteArgs, MappedTable, SelectArgs, SibylResponse, Sort, UpdateArgs } from '../types'
+import type {
+  DeleteArgs,
+  MappedTable,
+  ReplaceValues,
+  SelectArgs,
+  SibylResponse,
+  Sort,
+  UpdateArgs,
+} from '../types'
 import {
   buildSelectQuery,
   buildUpdateQuery,
@@ -19,6 +27,16 @@ function createTable<T extends TableKeys>(table: T, tableRow: MappedTable<Access
 function Insert<K extends TableKeys>(table: K, rows: AccessTable[]) {
   const statement = formatInsertStatementLibSQL(String(table), rows)
   db.exec(statement)
+}
+
+function LimitedSelect<T extends TableKeys, U = AccessTable>(table: T, args: SelectArgs<SibylResponse<U>>) {
+  const query = buildSelectQuery(String(table), { ...args, limited: true })
+  const record = db.prepare(query).all() as SibylResponse<ReplaceValues<U, AccessTable>>[]
+
+  if (record !== undefined)
+    return record
+
+  return undefined
 }
 
 function Select<T extends TableKeys>(table: T, args: SelectArgs<SibylResponse<AccessTable>>) {
@@ -84,6 +102,7 @@ function Delete<K extends TableKeys>(table: K, args: DeleteArgs<AccessTable>) {
 
 return {
   createTable,
+  LimitedSelect,
   Select,
   All,
   Insert,
