@@ -93,6 +93,8 @@ functions:
 - `Create` - Creates and returns a new entry into your selected table
 - `Insert` - Allows you to provide an array of insertable entries into your selected table
 - `Select` - Returns a type-safe array of entries from the selected table
+- `LimitedSelect` - Returns a type-safe, limited array of entries from
+the selected table
 - `All` - Returns all entries from the selected table
 - `Update` Updates and returns a single entry from the selected table
 - `Delete` - Deletes an entry from a selected table
@@ -173,6 +175,26 @@ you have supplied to Sybil main function (see above `tableRowType`).
 
 ```typescript
 selection.value = Select('firstTable', {
+   where: {
+    id: 1,
+    name: "Craig", // can combine multiple where clauses
+   },
+   limit: 20, // limit the response from Sibyl
+   offset: 10, // offset the response, useful for pagination
+})
+```
+
+### Selecting limited entries from the DB
+
+When selecting entries from the database but you want to be selective about the responses values, you can utilise the `LimitedSelect` function
+to retrieve an array of type-safe entries, based from the generic interface
+you have supplied to Sybil main function (see above `tableRowType`).
+
+The core difference here is that the `where` clause now also controls
+what values you get back.
+
+```typescript
+selection.value = LimitedSelect('firstTable', {
    where: {
     id: 1,
     name: "Craig", // can combine multiple where clauses
