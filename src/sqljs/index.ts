@@ -1,5 +1,14 @@
 import type { Database } from 'sql.js'
-import type { DeleteArgs, LimitedSelectArgs, MappedTable, SelectArgs, SibylResponse, Sort, UpdateArgs } from '../types'
+import type {
+  DeleteArgs,
+  LimitedSelectArgs,
+  MappedTable,
+  ReplaceValues,
+  SelectArgs,
+  SibylResponse,
+  Sort,
+  UpdateArgs,
+} from '../types'
 import {
   buildSelectQuery,
   buildUpdateQuery,
@@ -27,9 +36,6 @@ function LimitedSelect<T extends TableKeys, U = AccessTable>(table: T, args: Lim
   const query = buildSelectQuery(String(table), args)
   const record = db.exec(query)
 
-  type ReplaceValues<T, U> = {
-    [K in keyof T]: K extends keyof U ? U[K] : T[K]
-  }
   if (record[0]) {
     return convertBooleanValues(convertToObjects<AccessTable>({
       columns: record[0].columns,
