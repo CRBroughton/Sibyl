@@ -62,10 +62,6 @@ export interface SelectArgs<T> {
   sort?: Sort<Partial<T>>
 }
 
-export interface LimitedSelectArgs<T> extends SelectArgs<T> {
-  limited: boolean
-}
-
 export interface UpdateArgs<T, K extends string | number | symbol = 'id'> {
   where: Partial<T>
   updates: Partial<Omit<T, | K>>

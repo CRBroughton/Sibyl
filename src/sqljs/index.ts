@@ -1,7 +1,6 @@
 import type { Database } from 'sql.js'
 import type {
   DeleteArgs,
-  LimitedSelectArgs,
   MappedTable,
   ReplaceValues,
   SelectArgs,
@@ -32,8 +31,8 @@ function Insert<K extends TableKeys>(table: K, rows: AccessTable[]) {
   db.run(statement)
 }
 
-function LimitedSelect<T extends TableKeys, U = AccessTable>(table: T, args: LimitedSelectArgs<SibylResponse<U>>) {
-  const query = buildSelectQuery(String(table), args)
+function LimitedSelect<T extends TableKeys, U = AccessTable>(table: T, args: SelectArgs<SibylResponse<U>>) {
+  const query = buildSelectQuery(String(table), { ...args, limited: true })
   const record = db.exec(query)
 
   if (record[0]) {

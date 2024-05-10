@@ -2,7 +2,6 @@ import type {
   DBEntry,
   DBTypes,
   DataStructure,
-  LimitedSelectArgs,
   SelectArgs,
   SibylResponse,
   UpdateArgs,
@@ -93,7 +92,7 @@ export function convertBooleanValues<T>(arr: T[]) {
   })
 }
 
-export function buildSelectQuery<T>(table: string, args: SelectArgs<T> | LimitedSelectArgs<T>) {
+export function buildSelectQuery<T>(table: string, args: SelectArgs<T> | SelectArgs<T> & { limited: boolean }) {
   let query: string = ''
 
   if ('limited' in args) {

@@ -71,7 +71,6 @@ describe('LimitedSelect tests', () => {
         name: 'Craig',
         hasReadTheReadme: 1,
       },
-      limited: true,
     })
 
     // Type tests
