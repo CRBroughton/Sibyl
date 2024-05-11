@@ -171,7 +171,7 @@ const test = Insert('firstTable', insertions)
 
 When selecting entries from the database, you can utilise the `Select` function
 to retrieve an array of type-safe entries, based from the generic interface
-you have supplied to Sybil main function (see above `tableRowType`).
+you have supplied to Sibyl main function (see above `tableRowType`).
 
 ```typescript
 selection.value = Select('firstTable', {
@@ -188,7 +188,7 @@ selection.value = Select('firstTable', {
 
 When selecting entries from the database but you want to be selective about the responses values, you can utilise the `LimitedSelect` function
 to retrieve an array of type-safe entries, based from the generic interface
-you have supplied to Sybil main function (see above `tableRowType`).
+you have supplied to Sibyl main function (see above `tableRowType`).
 
 The core difference here is that the `where` clause now also controls
 what values you get back.
