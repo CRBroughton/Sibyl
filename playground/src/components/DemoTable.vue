@@ -169,7 +169,7 @@ const amountOfOrders = computed(() => {
     <Card class="w-full lg:w-[980px]">
       <CardHeader>
         <CardTitle>
-          Sybil Table
+          Sibyl Table
         </CardTitle>
         <CardDescription>
           Order amount: {{ amountOfOrders }}

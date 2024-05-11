@@ -23,7 +23,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "bun run build.ts",
+    "typecheck": "tsc --skipLibCheck --noEmit",
+    "build": "bun run typecheck && bun run build.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "changeset": "npx changeset",

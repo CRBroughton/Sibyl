@@ -75,3 +75,7 @@ export interface DataStructure {
   columns: string[]
   values: any[][]
 }
+
+export type ReplaceValues<T, U> = {
+  [K in keyof T]: K extends keyof U ? U[K] : T[K]
+}

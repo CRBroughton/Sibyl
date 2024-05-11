@@ -234,4 +234,17 @@ describe('buildSelectQuery tests', () => {
 
     expect(actual).toStrictEqual(expectation)
   })
+  it('builds a SELECT query with a single where clause, using the limited option', async () => {
+    const actual = buildSelectQuery<TableRow>('test', {
+      where: {
+        id: 1,
+        name: 'Craig',
+      },
+      limited: true,
+    })
+
+    const expectation = `SELECT id, name from test WHERE id = '1' AND name = 'Craig';`
+
+    expect(actual).toStrictEqual(expectation)
+  })
 })

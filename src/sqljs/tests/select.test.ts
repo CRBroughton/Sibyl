@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import sql from 'sql.js'
+import type { Equals, Expect } from '@crbroughton/ts-test-utils'
 import Sibyl from '../index'
 import type { SibylResponse } from '../../types'
 

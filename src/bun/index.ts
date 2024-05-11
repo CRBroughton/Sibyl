@@ -2,6 +2,7 @@ import type { Database, SQLQueryBindings } from 'bun:sqlite'
 import type {
   DeleteArgs,
   MappedTable,
+  ReplaceValues,
   SelectArgs,
   SibylResponse,
   Sort,
@@ -17,26 +18,37 @@ import {
 
 export default async function Sibyl<T extends Record<string, any>>(db: Database) {
 type TableKeys = keyof T
-type AccessTable<I extends keyof T> = T[I]
-function createTable<T extends TableKeys>(table: T, tableRow: MappedTable<AccessTable<T>>) {
+type AccessTable = T[TableKeys]
+function createTable<T extends TableKeys>(table: T, tableRow: MappedTable<AccessTable>) {
   const statement = convertCreateTableStatement(tableRow)
   db.query(`CREATE TABLE ${String(table)} (${statement})`).run()
 }
 
-function Insert<K extends TableKeys>(table: K, rows: AccessTable<K>[]) {
+function Insert<K extends TableKeys>(table: K, rows: AccessTable[]) {
   const statement = formatInsertStatement(String(table), rows)
   db.run(statement)
 }
-function Select<T extends TableKeys>(table: T, args: SelectArgs<SibylResponse<AccessTable<T>>>) {
-  const query = buildSelectQuery(String(table), args)
-  const record = db.query<SibylResponse<AccessTable<T>>, SQLQueryBindings[]>(query)
+
+function LimitedSelect<T extends TableKeys, U = AccessTable>(table: T, args: SelectArgs<SibylResponse<U>>) {
+  const query = buildSelectQuery(String(table), { ...args, limited: true })
+  const record = db.query<SibylResponse<ReplaceValues<U, AccessTable>>, SQLQueryBindings[]>(query)
 
   if (record !== undefined)
     return record.all()
 
   return undefined
 }
-function Create<T extends TableKeys>(table: T, entry: AccessTable<T>) {
+
+function Select<T extends TableKeys>(table: T, args: SelectArgs<SibylResponse<AccessTable>>) {
+  const query = buildSelectQuery(String(table), args)
+  const record = db.query<SibylResponse<AccessTable>, SQLQueryBindings[]>(query)
+
+  if (record !== undefined)
+    return record.all()
+
+  return undefined
+}
+function Create<T extends TableKeys>(table: T, entry: AccessTable) {
   const statement = formatInsertStatement(String(table), [entry])
   db.run(statement)
   const result = Select(table, {
@@ -49,7 +61,7 @@ function Create<T extends TableKeys>(table: T, entry: AccessTable<T>) {
   return undefined
 }
 
-function All<K extends TableKeys>(table: K, args?: { sort: Sort<Partial<AccessTable<K>>> }) {
+function All<K extends TableKeys>(table: K, args?: { sort: Sort<Partial<AccessTable>> }) {
   let query = `SELECT * from ${String(table)}`
 
   if (args !== undefined && args.sort) {
@@ -60,7 +72,7 @@ function All<K extends TableKeys>(table: K, args?: { sort: Sort<Partial<AccessTa
     query += orders.join(', ')
   }
 
-  const record = db.query<SibylResponse<AccessTable<K>>, SQLQueryBindings[]>(query)
+  const record = db.query<SibylResponse<AccessTable>, SQLQueryBindings[]>(query)
 
   if (record !== undefined)
     return record.all()
@@ -68,7 +80,7 @@ function All<K extends TableKeys>(table: K, args?: { sort: Sort<Partial<AccessTa
   return undefined
 }
 
-function Update<K extends TableKeys>(table: K, args: UpdateArgs<AccessTable<K>>) {
+function Update<K extends TableKeys>(table: K, args: UpdateArgs<AccessTable>) {
   const query = buildUpdateQuery(table, args)
   db.exec(query)
 
@@ -81,13 +93,14 @@ function Update<K extends TableKeys>(table: K, args: UpdateArgs<AccessTable<K>>)
 
   return undefined
 }
-function Delete<K extends TableKeys>(table: K, args: DeleteArgs<AccessTable<K>>) {
+function Delete<K extends TableKeys>(table: K, args: DeleteArgs<AccessTable>) {
   db.run(`DELETE FROM ${String(table)} WHERE ${objectToWhereClause(args.where)}`)
 }
 
 return {
   createTable,
   Insert,
+  LimitedSelect,
   Select,
   Create,
   All,

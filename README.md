@@ -169,7 +169,7 @@ const test = Insert('firstTable', insertions)
 
 When selecting entries from the database, you can utilise the `Select` function
 to retrieve an array of type-safe entries, based from the generic interface
-you have supplied to Sybil main function (see above `tableRowType`).
+you have supplied to Sibyl main function (see above `tableRowType`).
 
 ```typescript
 selection.value = Select('firstTable', {
